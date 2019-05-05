@@ -1,0 +1,26 @@
+{
+  "name": "bordeaux",
+  "version": "1.0.0",
+  "description": "A JavaScript library that can [...].",
+  "main": "server.js",
+  "dependencies": {
+    "medoc": "^1.0.3",
+    "petrus": "^1.0.2",
+    "yquem": "^1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Wifsimster/bordeaux.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Wifsimster/bordeaux/issues"
+  },
+  "homepage": "https://github.com/Wifsimster/bordeaux#readme"
+}
