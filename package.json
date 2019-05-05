@@ -4,9 +4,9 @@
   "description": "A JavaScript library that can [...].",
   "main": "server.js",
   "dependencies": {
-    "medoc": "^1.0.3",
-    "petrus": "^1.0.2",
-    "yquem": "^1.0.0"
+    "medoc": "^1.0.7",
+    "petrus": "^1.0.3",
+    "yquem": "^1.0.2"
   },
   "devDependencies": {},
   "scripts": {
