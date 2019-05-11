@@ -6,6 +6,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
     "@babel/runtime": "^7.4.4",
+    "beta-scss": "^1.0.1",
     "medoc": "^1.0.8",
     "petrus": "^1.0.4",
     "vue": "^2.6.10",

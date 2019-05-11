@@ -1,0 +1,7 @@
+$style: ("capitalize", "lowercase", "none", "uppercase");
+
+@each $name in $style {
+  .transform\:#{$name} {
+    text-transform: $name;
+  }
+}

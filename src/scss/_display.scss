@@ -1,0 +1,7 @@
+$display: ("block", "inline-block", "inline", "hidden", "flex", "inline-flex");
+
+@each $name in $display {
+  .#{$name} {
+    display: $name;
+  }
+}

@@ -12,9 +12,6 @@
 </template>
 
 <script>
+import "beta-scss";
 export default {};
 </script>
-
-
-<style lang="scss">
-</style>

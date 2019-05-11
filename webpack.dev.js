@@ -12,10 +12,7 @@ module.exports = {
     pathinfo: false
   },
   resolve: {
-    modules: [path.join(__dirname, "src"), "node_modules"],
-    alias: {
-      vue$: "vue/dist/vue.esm.js"
-    }
+    modules: [path.join(__dirname, "src"), "node_modules"]
   },
   plugins: [new CleanWebpackPlugin(), new VueLoaderPlugin()],
   module: {
