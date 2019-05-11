@@ -1,27 +1,34 @@
 module.exports = [
-  // `Arrow`,
+  // == Lundi
   // `Billions`,
+  // `The Simpsons`,
+  // `Killing Eve`,
+  // `Supergirl`,
   // `Barry`,
-  // `Brooklyn Nine Nine`,
-  // `Doom Patrol`,
-  // `Empire`,
-  // `The Big Bang Theory`,
+  // `Game of Thrones`,
+  // == Mardi
+  // `Arrow`,
   // `Legends of tomorrow`,
   // `Into the Badlands`,
-  // `One-Punch Man`,
-  // `Cloak Dagger`,
-  // `The Blacklist`,
-  // `Killing Eve`,
-  // `The Simpsons`,
-  // `Supergirl`,
-  // `Game of Thrones`,
+  // `One-Punch Man`
+  // == Mercredi
   // `The 100`,
-  // `The Flash`,
-  `Modern Family`
+  // `The Flash`
+  // == Jeudi
+  // `Empire`,
+  // `Modern Family`,
   // `Happy`,
-  // `Strike Back`,
-  // `You re the Worst,`
+  // == Vendredi
+  // `Cloak Dagger`,
+  // `The Big Bang Theory`,
   // `Young Sheldon`,
   // `iZombie`,
+  // `Brooklyn Nine Nine`,
+  // `Doom Patrol`,
+  // == Samedi
+  // `The Blacklist`,
+  // `Agents of S.H.I.E.L.D.`,
   // `Warrior`
+  // `Strike Back`,
+  // `You re the Worst,`
 ].sort()

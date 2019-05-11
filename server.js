@@ -1,30 +1,50 @@
-// const Petrus = require("petrus")
+const Petrus = require("petrus")
 const Medoc = require("medoc")
 const Yquem = require("yquem")
 
 const config = require("./transmission-config")
-// const shows = require("./shows")
+const shows = require("./shows")
 
 const PATH_TO_SCAN = `w:`
 const PATH_TO_PUSH = `z:`
 
-// Grab magnet links from TPB
-// const petrus = new Petrus(config)
-// petrus.run(shows)
-
-// Move downloaded files from a/ to b/
+const petrus = new Petrus(config)
 const medoc = new Medoc(PATH_TO_SCAN, PATH_TO_PUSH)
+const yquem = new Yquem(PATH_TO_PUSH)
 
-medoc
-  .run()
-  .then(() => {
-    // Search and download subtitles for recents episodes
-    Yquem.run(PATH_TO_PUSH)
-      .then(() => {})
+const action = `download`
+// const action = `move`
+// const action = `subtitles`
+
+switch (action) {
+  case `download`:
+    petrus
+      .run(shows)
+      .then(results => {
+        console.log(results)
+      })
       .catch(err => {
         console.error(err)
       })
-  })
-  .catch(err => {
-    console.error(err)
-  })
+    break
+  case "move":
+    medoc
+      .run()
+      .then(results => {
+        console.log(results)
+      })
+      .catch(err => {
+        console.error(err)
+      })
+    break
+  case `subtitles`:
+    yquem
+      .run()
+      .then(results => {
+        console.log(results)
+      })
+      .catch(err => {
+        console.error(err)
+      })
+    break
+}
