@@ -1,8 +1,8 @@
 
 <template>
-  <div class="app">
-    <div class="wrapper">
-      <div class="container">
+  <div class="app bg:black text:white h:screen w:screen">
+    <div class="flex">
+      <div class="flex:1">
         <transition name="opacity" mode="out-in">
           <router-view></router-view>
         </transition>
