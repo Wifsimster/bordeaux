@@ -12,9 +12,9 @@ const petrus = new Petrus(config)
 const medoc = new Medoc(PATH_TO_SCAN, PATH_TO_PUSH)
 const yquem = new Yquem(PATH_TO_PUSH)
 
-const action = `download`
+// const action = `download`
 // const action = `move`
-// const action = `subtitles`
+const action = `subtitles`
 
 switch (action) {
   case `download`:

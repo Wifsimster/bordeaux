@@ -29,6 +29,4 @@ module.exports = [
   // `The Blacklist`,
   // `Agents of S.H.I.E.L.D.`,
   // `Warrior`
-  // `Strike Back`,
-  // `You re the Worst,`
 ].sort()
