@@ -5,19 +5,17 @@ module.exports = [
   // `Killing Eve`,
   // `Supergirl`,
   // `Barry`,
-  // `Game of Thrones`,
   // == Mardi
-  // `Arrow`,
-  // `Legends of tomorrow`,
+  `Legends of tomorrow`,
   // `Into the Badlands`,
-  // `One-Punch Man`
+  `One-Punch Man`
   // == Mercredi
   // `The 100`,
   // `The Flash`
   // == Jeudi
   // `Empire`,
   // `Modern Family`,
-  // `Happy`,
+  // `Happy`
   // == Vendredi
   // `Cloak Dagger`,
   // `The Big Bang Theory`,
@@ -25,6 +23,7 @@ module.exports = [
   // `iZombie`,
   // `Brooklyn Nine Nine`,
   // `Doom Patrol`,
+  // `Elementary`
   // == Samedi
   // `The Blacklist`,
   // `Agents of S.H.I.E.L.D.`,

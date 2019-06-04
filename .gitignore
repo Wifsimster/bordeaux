@@ -1,2 +1,5 @@
 node_modules/
 .vscode/
+dist/
+transmission-config.js
+shows.js
