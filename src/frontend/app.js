@@ -1,10 +1,10 @@
 import Vue from "vue"
-import App from "./pages/App.vue"
+import App from "pages/App.vue"
 import router from "./router"
 
-import Alert from "Components/Alert.vue"
-import Button from "Components/Button.vue"
-import Card from "Components/Card.vue"
+import Alert from "components/Alert.vue"
+import Button from "components/Button.vue"
+import Card from "components/Card.vue"
 
 Vue.component("Alert", Alert)
 Vue.component("Btn", Button)

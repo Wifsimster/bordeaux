@@ -4,7 +4,7 @@ const VueLoaderPlugin = require("vue-loader/lib/plugin")
 
 module.exports = {
   mode: "development",
-  entry: ["@babel/polyfill", path.resolve("src/app.js")],
+  entry: ["@babel/polyfill", path.resolve("src/frontend/app.js")],
   output: {
     filename: "[name].bundle.js",
     path: path.resolve(__dirname, "dist"),
@@ -23,9 +23,9 @@ module.exports = {
   resolve: {
     modules: [path.join(__dirname, "src"), "node_modules"],
     alias: {
-      Components: path.resolve(__dirname, "src/components/"),
-      Pages: path.resolve(__dirname, "src/pages/"),
-      Scss: path.resolve(__dirname, "src/scss/")
+      components: path.resolve(__dirname, "src/frontend/components/"),
+      pages: path.resolve(__dirname, "src/frontend/pages/"),
+      scss: path.resolve(__dirname, "src/frontend/scss/")
     }
   },
   plugins: [new CleanWebpackPlugin(), new VueLoaderPlugin()],
