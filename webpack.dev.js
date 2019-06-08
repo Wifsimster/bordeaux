@@ -11,6 +11,15 @@ module.exports = {
     publicPath: "dist/",
     pathinfo: false
   },
+  devServer: {
+    contentBase: path.join(__dirname),
+    historyApiFallback: true,
+    publicPath: "/dist",
+    compress: true,
+    port: 9000,
+    open: true,
+    hot: true
+  },
   resolve: {
     modules: [path.join(__dirname, "src"), "node_modules"]
   },

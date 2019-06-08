@@ -1,16 +1,22 @@
 <template>
-  <div class="w-screen">
-    <ul class="list-reset">
-      <li>
-        <router-link to="/download" class="cursor:pointer text:grey-darkest text:3/2">Download</router-link>
-      </li>
-      <li>
-        <router-link to="/transfert" class="cursor:pointer text:grey-darkest text:3/2">Move</router-link>
-      </li>
-      <li>
-        <router-link to="/subtitles" class="cursor:pointer text:grey-darkest text:3/2">Subtitles</router-link>
-      </li>
-    </ul>
+  <div class="bg:white shadow:large">
+    <div class="px:3/2">
+      <router-link
+        to="/download"
+        class="no-underline text:grey-darkest text:3/2 py:1"
+        active-class="text:purple"
+      >Download</router-link>
+      <router-link
+        to="/transfert"
+        class="no-underline text:grey-darkest text:3/2 py:1"
+        active-class="text:purple"
+      >Move</router-link>
+      <router-link
+        to="/subtitles"
+        class="no-underline text:grey-darkest text:3/2 py:1"
+        active-class="text:purple"
+      >Subtitles</router-link>
+    </div>
   </div>
 </template>
 
