@@ -21,7 +21,12 @@ module.exports = {
     hot: true
   },
   resolve: {
-    modules: [path.join(__dirname, "src"), "node_modules"]
+    modules: [path.join(__dirname, "src"), "node_modules"],
+    alias: {
+      Components: path.resolve(__dirname, "src/components/"),
+      Pages: path.resolve(__dirname, "src/pages/"),
+      Scss: path.resolve(__dirname, "src/scss/")
+    }
   },
   plugins: [new CleanWebpackPlugin(), new VueLoaderPlugin()],
   module: {

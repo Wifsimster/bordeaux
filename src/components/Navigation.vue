@@ -10,7 +10,7 @@
         to="/transfert"
         class="no-underline text:grey-darkest text:3/2 py:1"
         active-class="text:purple"
-      >Move</router-link>
+      >Transfert</router-link>
       <router-link
         to="/subtitles"
         class="no-underline text:grey-darkest text:3/2 py:1"

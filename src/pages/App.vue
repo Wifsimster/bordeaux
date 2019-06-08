@@ -1,12 +1,14 @@
 <template>
-  <div class="app bg:grey-lighter text:white h:screen w:screen">
+  <div class="app text:white h:screen w:screen">
     <div class="flex flex:wrap h:full">
       <logo class="h:1/12 w:2/12"></logo>
       <navigation class="w:10/12"></navigation>
       <sidebar class="h:11/12 w:2/12"></sidebar>
-      <transition name="opacity" mode="out-in">
-        <router-view></router-view>
-      </transition>
+      <div class="w:10/12 bg:grey-lighter p:1">
+        <transition name="opacity" mode="out-in">
+          <router-view></router-view>
+        </transition>
+      </div>
     </div>
   </div>
 </template>
