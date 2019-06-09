@@ -2,7 +2,7 @@ const WebSocket = require("ws")
 
 const wss = new WebSocket.Server({ port: 8080 })
 
-console.log(`Web Socket serveur started !`)
+console.log(`Web Socket server started !`)
 
 const Download = require("./src/backend/channels/download")
 const Transfert = require("./src/backend/channels/transfert")

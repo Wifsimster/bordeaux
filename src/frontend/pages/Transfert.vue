@@ -1,13 +1,15 @@
 <template>
   <card>
-    <div class="flex">
-      <div class="w:1/3 bg:grey text:center">Image</div>
-      <div class="w:2/3 p:1">
-        <alert color="red" v-if="error">{{ error }}</alert>
-        <alert v-if="message">{{ message }}</alert>
-        <div class="text:3/2 text:bold mb:1">Transfert episodes from {{ from }} to {{ to }}</div>
-        <btn @click="transfert()">Transfert</btn>
-      </div>
+    <div class="p:1">
+      <alert color="red" v-if="error">{{ error }}</alert>
+      <alert v-if="message">
+        <p>Transfert files :</p>
+        <ul class="list-reset py:1 px:1/2">
+          <li v-for="item in message" :key="item">{{ item }}</li>
+        </ul>
+      </alert>
+      <div class="text:3/2 text:bold mb:1">Transfert episodes from {{ from }} to {{ to }}</div>
+      <btn @click="transfert()">Transfert</btn>
     </div>
   </card>
 </template>
@@ -26,21 +28,15 @@ export default {
   created() {
     this.ws = new WebSocket("ws://localhost:8080/transfert");
 
-    this.ws.onmessage = evt => {
-      const data = JSON.parse(evt.data);
-      if (data.error) {
-        this.error = data.error;
-      } else {
-        this.message = data.results;
-      }
-    };
-
     this.ws.onopen = evt => {
-      console.log(`Open : ${evt}`);
-    };
-
-    this.ws.onclose = evt => {
-      console.log(`Close : ${evt}`);
+      this.ws.onmessage = evt => {
+        const data = JSON.parse(evt.data);
+        if (data.error) {
+          this.error = data.error;
+        } else {
+          this.message = data.results;
+        }
+      };
     };
   },
   methods: {

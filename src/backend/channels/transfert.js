@@ -5,9 +5,9 @@ const Medoc = require("medoc")
 
 class Transfert {
   constructor(ws) {
-    this.ws
+    this.ws = ws
 
-    ws.on("message", data => {
+    this.ws.on("message", data => {
       data = JSON.parse(data)
       switch (data.method) {
         case "run":
@@ -17,16 +17,16 @@ class Transfert {
             .then(results => {
               console.log(results)
               data.results = results
-              ws.send(JSON.stringify(data))
+              this.ws.send(JSON.stringify(data))
             })
             .catch(err => {
               console.error(err)
               data.error = err
-              ws.send(JSON.stringify(data))
+              this.ws.send(JSON.stringify(data))
             })
           break
         default:
-          console.log(`Unknow method : ${data.method}`)
+          console.log(`[transfert] Unknow method : ${data.method}`)
       }
     })
   }

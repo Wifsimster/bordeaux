@@ -1,24 +1,43 @@
 const Petrus = require("petrus")
+const fs = require("fs")
+
 const config = require("../../../transmission-config")
-const shows = require("../../../shows")
+
+const ENCODING = `utf-8`
+const SHOWS_FILE = `./shows.txt`
 
 class Download {
   constructor(ws) {
-    this.ws
+    this.ws = ws
 
-    ws.on("message", function incoming(data) {
+    this.ws.on("message", data => {
+      data = JSON.parse(data)
       switch (data.method) {
+        case "getShows":
+          data.results = fs.readFileSync(SHOWS_FILE, { encoding: ENCODING })
+          this.ws.send(JSON.stringify(data))
+          break
+        case "updateShows":
+          fs.writeFileSync(SHOWS_FILE, data.params, { encoding: ENCODING })
+          data.results = fs.readFileSync(SHOWS_FILE, { encoding: ENCODING })
+          this.ws.send(JSON.stringify(data))
+          break
         case "run":
           const petrus = new Petrus(config)
           petrus
-            .run(shows)
+            .run(data.params.shows)
             .then(results => {
-              ws.send(results)
+              data.results = results
+              this.ws.send(JSON.stringify(data))
             })
             .catch(err => {
-              ws.send(err)
+              console.error(err)
+              data.error = err
+              this.ws.send(JSON.stringify(data))
             })
           break
+        default:
+          console.log(`[download] Unknow method : ${data.method}`)
       }
     })
   }
