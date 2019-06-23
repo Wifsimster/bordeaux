@@ -16,7 +16,6 @@ class Transmission {
           this.ws.send(JSON.stringify(data))
           break
         case "update":
-          console.log(data.params)
           fs.writeFileSync(TRANSMISSION_FILE, JSON.stringify(data.params), { encoding: ENCODING })
           data.results = JSON.parse(fs.readFileSync(TRANSMISSION_FILE, { encoding: ENCODING }))
           this.ws.send(JSON.stringify(data))

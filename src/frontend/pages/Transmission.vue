@@ -7,6 +7,8 @@
         <input v-model="data.port">
         <input v-model="data.username">
         <input type="password" v-model="data.password">
+        <btn @click="update()">Update</btn>
+        <btn @click="test()">Test</btn>
       </div>
     </div>
   </card>
@@ -52,11 +54,6 @@ export default {
       };
     };
   },
-  watch: {
-    data(val) {
-      this.update(val);
-    }
-  },
   methods: {
     getAll() {
       this.ws.send(
@@ -65,13 +62,16 @@ export default {
         })
       );
     },
-    update(data) {
+    update() {
       this.ws.send(
         JSON.stringify({
           method: "update",
-          params: Object.assign({}, data)
+          params: Object.assign({}, this.data)
         })
       );
+    },
+    test() {
+      console.log("TODO");
     }
   }
 };
