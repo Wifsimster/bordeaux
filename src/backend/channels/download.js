@@ -23,7 +23,7 @@ class Download {
           this.ws.send(JSON.stringify(data))
           break
         case "run":
-          const petrus = new Petrus(config)
+          var petrus = new Petrus(config)
           petrus
             .run(data.params.shows)
             .then(results => {

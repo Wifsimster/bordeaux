@@ -1,24 +1,33 @@
 const Yquem = require("yquem")
 
-// const PATH_TO_PUSH = `z:`
-
 class Subtitles {
   constructor(ws) {
-    this.ws
+    this.ws = ws
 
-    ws.on("message", function incoming(data) {
+    this.ws.on("message", data => {
+      data = JSON.parse(data)
       switch (data.method) {
+        case "search":
+          var yquem = new Yquem(data.params.from)
+          data.results = yquem.getRecentFilesFromDirectory(data.params.from, data.params.fileAge)
+          this.ws.send(JSON.stringify(data))
+          break
         case "run":
-          const yquem = new Yquem(params.from)
+          var yquem = new Yquem(data.params.from)
           yquem
             .run()
             .then(results => {
-              ws.send(results)
+              data.results = results
+              this.ws.send(JSON.stringify(data))
             })
             .catch(err => {
-              ws.send(err)
+              console.error(err)
+              data.error = err
+              this.ws.send(JSON.stringify(data))
             })
           break
+        default:
+          console.log(`[subtitles] Unknow method : ${data.method}`)
       }
     })
   }

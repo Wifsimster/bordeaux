@@ -1,6 +1,7 @@
 <template>
   <card>
     <div class="p:1">
+      <div class="text:3/2 text:bold mb:1">Searching for shows</div>
       <alert color="red" v-if="error">{{ error }}</alert>
       <alert v-if="message">
         <p>Fichiers ajoutés à Transmission :</p>
@@ -8,9 +9,14 @@
           <li v-for="item in message" :key="item.id">{{ item.name }}</li>
         </ul>
       </alert>
-      <div class="text:3/2 text:bold mb:1">Searching for shows</div>
-      <textarea class="block w:full border mb:1 text:1" style="min-height: 150px" v-model="shows"></textarea>
-      <btn @click="run()">Searching</btn>
+      <loader v-if="isLoading"></loader>
+      <textarea
+        v-if="!isLoading"
+        class="block w:full border mb:1 text:1"
+        style="min-height: 150px"
+        v-model="shows"
+      ></textarea>
+      <btn v-if="!isLoading" @click="run()">Searching</btn>
     </div>
   </card>
 </template>
@@ -22,7 +28,8 @@ export default {
       error: null,
       message: null,
       shows: null,
-      ws: null
+      ws: null,
+      isLoading: false
     };
   },
   created() {
@@ -49,6 +56,7 @@ export default {
             }
             break;
           case "run":
+            this.isLoading = false;
             if (data.error) {
               this.error = data.error;
             } else {
@@ -83,6 +91,7 @@ export default {
       );
     },
     run() {
+      this.isLoading = true;
       this.ws.send(
         JSON.stringify({
           method: "run",

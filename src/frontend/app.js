@@ -5,10 +5,12 @@ import router from "./router"
 import Alert from "components/Alert.vue"
 import Button from "components/Button.vue"
 import Card from "components/Card.vue"
+import Loader from "components/Loader.vue"
 
 Vue.component("Alert", Alert)
 Vue.component("Btn", Button)
 Vue.component("Card", Card)
+Vue.component("Loader", Loader)
 
 new Vue({
   el: "#app",
