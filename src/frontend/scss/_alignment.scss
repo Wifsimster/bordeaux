@@ -1,7 +1,0 @@
-$alignment: ("left", "center", "right", "justify");
-
-@each $name in $alignment {
-  .text\:#{$name} {
-    text-align: $name;
-  }
-}

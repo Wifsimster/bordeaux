@@ -3,10 +3,10 @@
     <div class="p:1">
       <h1>Transmission settings</h1>
       <div v-if="data">
-        <input v-model="data.host">
-        <input v-model="data.port">
-        <input v-model="data.username">
-        <input type="password" v-model="data.password">
+        <input v-model="data.host" placeholder="Host">
+        <input v-model="data.port" placeholder="Port">
+        <input v-model="data.username" placeholder="Username">
+        <input type="password" v-model="data.password" placeholder="Password">
         <btn @click="update()">Update</btn>
         <btn @click="test()">Test</btn>
       </div>
@@ -76,3 +76,20 @@ export default {
   }
 };
 </script>
+
+
+<style lang="scss" scoped>
+@import "../../../node_modules/beta-scss/scss/global";
+
+input {
+  @extend .shadow;
+  @extend .border;
+  @extend .rounded;
+  @extend .w\:full;
+  @extend .text\:grey-darkest;
+  @extend .placeholder\:grey;
+  @extend .p\:1;
+  @extend .mx\:1;
+  @extend .block;
+}
+</style>

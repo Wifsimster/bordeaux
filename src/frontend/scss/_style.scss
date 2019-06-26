@@ -1,7 +1,0 @@
-$style: ("italic", "normal", "oblique");
-
-@each $name in $style {
-  .style\:#{$name} {
-    font-style: $name;
-  }
-}

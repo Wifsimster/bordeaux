@@ -11,7 +11,7 @@
       <alert v-if="hasEpisodes">
         <p>Episodes found :</p>
         <ul class="list-reset py:1 px:1/2">
-          <li v-for="item in episodes" :key="item">{{ item }}</li>
+          <li v-for="item in episodes" :key="item">{{ item.file }}</li>
         </ul>
       </alert>
       <alert v-if="hasNoEpisode">No espiode found on {{ from }}/ :(</alert>
@@ -88,7 +88,7 @@ export default {
     },
     transfert() {
       this.isLoading = true;
-      this.loadingMessage = `Transfering files...`;
+      this.loadingMessage = `Transfering files to ${this.to}...`;
       this.ws.send(
         JSON.stringify({
           method: "run",
