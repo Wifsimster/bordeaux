@@ -8,6 +8,7 @@ const Download = require("./src/backend/channels/download")
 const Transfert = require("./src/backend/channels/transfert")
 const Subtitles = require("./src/backend/channels/subtitles")
 const Transmission = require("./src/backend/channels/transmission")
+const Show = require("./src/backend/channels/show")
 
 wss.on("connection", function connection(ws, req) {
   console.log(`New connection : ${req.connection.remoteAddress}`)
@@ -25,7 +26,10 @@ wss.on("connection", function connection(ws, req) {
     case `/transmission`:
       new Transmission(ws)
       break
+    case `/show`:
+      new Show(ws)
+      break
     default:
-      console.log(req.url)
+      console.error(`Unknow channel : ${req.url}`)
   }
 })

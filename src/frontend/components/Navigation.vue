@@ -16,6 +16,11 @@
         class="no-underline text:grey-darkest text:3/2 py:1"
         active-class="text:purple"
       >Subtitles</router-link>
+      <router-link
+        to="/shows"
+        class="no-underline text:grey-darkest text:3/2 py:1"
+        active-class="text:purple"
+      >Shows</router-link>
     </div>
   </div>
 </template>

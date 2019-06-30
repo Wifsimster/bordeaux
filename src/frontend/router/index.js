@@ -6,6 +6,7 @@ const Download = () => import("../pages/Download.vue")
 const Transfert = () => import("../pages/Transfert.vue")
 const Subtitles = () => import("../pages/Subtitles.vue")
 const Transmission = () => import("../pages/Transmission.vue")
+const Shows = () => import("../pages/Shows.vue")
 
 Vue.use(Router)
 
@@ -16,7 +17,8 @@ let router = new Router({
     { path: "/download", component: Download },
     { path: "/transfert", component: Transfert },
     { path: "/subtitles", component: Subtitles },
-    { path: "/transmission", component: Transmission }
+    { path: "/transmission", component: Transmission },
+    { path: "/shows", component: Shows }
   ]
 })
 

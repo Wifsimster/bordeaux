@@ -1,7 +1,7 @@
 <template>
   <card>
     <div class="p:1">
-      <div class="text:3/2 text:bold mb:1">Searching for shows</div>
+      <div class="text:3/2 text:bold mb:1">Latest episodes available</div>
       <alert color="red" v-if="error">{{ error }}</alert>
       <alert v-if="message">
         <p>Fichiers ajoutés à Transmission :</p>
@@ -10,13 +10,22 @@
         </ul>
       </alert>
       <loader v-if="isLoading"></loader>
-      <textarea
-        v-if="!isLoading"
-        class="block w:full border mb:1 text:1"
-        style="min-height: 150px"
-        v-model="shows"
-      ></textarea>
-      <btn v-if="!isLoading" @click="run()">Searching</btn>
+      <div>
+        Shows :
+        <div v-for="show in shows" :key="show.id" class="mx:1">
+          {{ show.title }}
+          <span
+            v-if="!show.magnetLink"
+            class="border rounded bg:grey-light text:grey-darker px:1/4 py:1/2 cursor:pointer"
+            @click="searchLatestEpisode(show)"
+          >Search latest episode</span>
+          <span
+            v-if="show.magnetLink"
+            class="border rounded bg:grey-light text:grey-darker px:1/4 py:1/2 cursor:pointer"
+            @click="addToTransmission(show.magnetLink)"
+          >Ajouter à Transmission</span>
+        </div>
+      </div>
     </div>
   </card>
 </template>
@@ -41,14 +50,33 @@ export default {
       this.ws.onmessage = evt => {
         const data = JSON.parse(evt.data);
         switch (data.method) {
-          case "getShows":
+          case "addToTransmission":
+            this.isLoading = false;
             if (data.error) {
               this.error = data.error;
             } else {
-              this.shows = data.results;
+              this.shows = this.shows.map((show, index) => {
+                if (show.id === data.params.id) {
+                  show.magnetLink = null;
+                }
+                return show;
+              });
             }
             break;
-          case "updateShows":
+          case "searchLatestEpisode":
+            this.isLoading = false;
+            if (data.error) {
+              this.error = data.error;
+            } else {
+              this.shows = this.shows.map((show, index) => {
+                if (show.id === data.params.id) {
+                  show.magnetLink = data.results;
+                }
+                return show;
+              });
+            }
+            break;
+          case "getShows":
             if (data.error) {
               this.error = data.error;
             } else {
@@ -69,17 +97,20 @@ export default {
       };
     };
   },
-  watch: {
-    shows(val) {
-      this.updateShows(val);
-    }
-  },
   methods: {
-    updateShows(data) {
+    addToTransmission(magnetLink) {
       this.ws.send(
         JSON.stringify({
-          method: "updateShows",
-          params: data
+          method: "addToTransmission",
+          params: magnetLink
+        })
+      );
+    },
+    searchLatestEpisode(show) {
+      this.ws.send(
+        JSON.stringify({
+          method: "searchLatestEpisode",
+          params: show
         })
       );
     },
