@@ -22,12 +22,15 @@ export default {
       message: null,
       data: null,
       ws: null,
+      firstLoad: true,
       isLoading: false
     };
   },
   watch: {
-    "data.host"() {
-      this.update();
+    "data.host"(newVal, oldVal) {
+      if (oldVal) {
+        this.update();
+      }
     }
   },
   created() {
@@ -47,6 +50,7 @@ export default {
             }
             break;
           case "update":
+            console.log("Update return", data);
             if (data.error) {
               this.error = data.error;
             } else {
@@ -58,10 +62,6 @@ export default {
         }
       };
     };
-
-    this.ws.onclose = evt => {
-      console.log("WS closed !");
-    };
   },
   methods: {
     getAll() {
@@ -72,7 +72,6 @@ export default {
       );
     },
     update() {
-      console.log("Update data");
       this.ws.send(
         JSON.stringify({
           method: "update",

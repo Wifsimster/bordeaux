@@ -1,8 +1,8 @@
 const Petrus = require('petrus')
-const fs = require('fs')
 
-const config = require('../data/transmission-config')
-const SHOWS_FILE = `../data/shows.json`
+const TRANSMISSION_FILE = 'transmission-config'
+const SHOWS_FILE = `shows`
+
 const ENCODING = `utf-8`
 
 class Download {

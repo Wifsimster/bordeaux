@@ -11,7 +11,7 @@
           class="inline-block w:2/4 border mb:1 text:1 py:1/2"
           style="height: 46px;"
           @keyup.enter="search()"
-        >
+        />
         <btn v-if="!isLoading" class="inline-block w:1/4" @click="search()">Searching</btn>
         <span v-if="results" @click="results = null" class="cursor:pointer p:1">Cancel</span>
 
@@ -20,10 +20,10 @@
           <div v-for="(show, index) in results" :key="index" class="w:1/2" @click="add(show)">
             <div
               class="flex bg:grey-lightest border hover:bg:blue-lightest cursor:pointer rounded m:1/4"
-              style="max-height: 165px"
+              style="max-height: 197px"
             >
               <div class="w:1/4 pr:1/2 overflow:hidden">
-                <img v-if="show.images.poster" class="w:full rounded:l" :src="show.images.poster">
+                <img v-if="show.images.poster" class="w:full rounded:l" v-lazy="show.images.poster" />
                 <div v-else class="w:full h:full bg:grey-light pr:1/2"></div>
               </div>
               <div class="w:3/4">
@@ -84,14 +84,19 @@
       </div>
 
       <!-- Shows -->
-      <div v-if="!results && shows && shows.length > 0" class="flex flex:wrap mt:1">
-        <div v-for="(show, index) in shows" :key="index" class="w:1/2" @click="remove(show)">
+      <transition-group
+        name="slide"
+        tag="div"
+        v-if="!results && shows && shows.length > 0"
+        class="flex flex:wrap mt:1"
+      >
+        <div v-for="show in shows" :key="show.id" class="w:1/2" @click="remove(show)">
           <div
             class="flex bg:grey-lightest border hover:bg:blue-lightest cursor:pointer rounded m:1/4"
-            style="max-height: 165px"
+            style="max-height: 197px"
           >
             <div class="w:3/12 pr:1/2 overflow:hidden">
-              <img v-if="show.images.poster" class="w:full rounded:l" :src="show.images.poster">
+              <img v-if="show.images.poster" class="w:full rounded:l" v-lazy="show.images.poster" />
               <div v-else class="w:full h:full bg:grey-light pr:1/2"></div>
             </div>
             <div class="w:7/12 relative">
@@ -146,11 +151,13 @@
               </div>
             </div>
             <div class="self:center w:2/12 h:full">
-              <span @click="remove(show)">Supprimer</span>
+              <span @click="remove(show)">
+                <i class="trash text:grey-darkest" title="Remove"></i>
+              </span>
             </div>
           </div>
         </div>
-      </div>
+      </transition-group>
       <div v-if="!results && shows && shows.length === 0" class="text:center">No show added :(</div>
     </div>
   </card>
@@ -248,3 +255,51 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+img {
+  transition: opacity 1s;
+  opacity: 0;
+}
+img[lazy="loaded"] {
+  opacity: 1;
+}
+.trash {
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  width: 22px;
+  height: 22px;
+  border-radius: 0 0 3px 3px;
+  border-top: none;
+  margin: 9px 6px 3px;
+  border: 2px solid;
+  &:before {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 2px;
+    top: -5px;
+    box-shadow: inset 0 0 0 32px, -10px 2px 0 0, -6px 2px 0 0, 0 2px 0 0,
+      6px 2px 0 0, 10px 2px 0 0;
+    left: 25%;
+    transition: all 0.3s;
+  }
+  &:hover:before {
+    transform: translateY(-5px);
+  }
+}
+
+// Transitions
+.slide-fade-enter-active {
+  transition: all 0.3s ease;
+}
+.slide-fade-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.slide-fade-enter,
+.slide-fade-leave-to {
+  transform: translateX(10px);
+  opacity: 0;
+}
+</style>
