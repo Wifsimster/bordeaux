@@ -1,23 +1,21 @@
-const fs = require("fs")
+const File = require('../utils/file')
 
-const TRANSMISSION_FILE = "./transmission-config.json"
-
-const ENCODING = `utf-8`
+const TRANSMISSION_FILE = 'transmission-config'
 
 class Transmission {
   constructor(ws) {
     this.ws = ws
 
-    this.ws.on("message", data => {
+    this.ws.on('message', data => {
       data = JSON.parse(data)
       switch (data.method) {
-        case "getAll":
-          data.results = JSON.parse(fs.readFileSync(TRANSMISSION_FILE, { encoding: ENCODING }))
+        case 'getAll':
+          data.results = File.readFile(TRANSMISSION_FILE)
           this.ws.send(JSON.stringify(data))
           break
-        case "update":
-          fs.writeFileSync(TRANSMISSION_FILE, JSON.stringify(data.params), { encoding: ENCODING })
-          data.results = JSON.parse(fs.readFileSync(TRANSMISSION_FILE, { encoding: ENCODING }))
+        case 'update':
+          File.writeFile(TRANSMISSION_FILE, data.params)
+          data.results = File.readFile(TRANSMISSION_FILE)
           this.ws.send(JSON.stringify(data))
           break
         default:

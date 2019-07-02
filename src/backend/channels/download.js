@@ -1,19 +1,18 @@
-const Petrus = require("petrus")
-const fs = require("fs")
+const Petrus = require('petrus')
+const fs = require('fs')
 
-const config = require("../../../transmission-config")
-
+const config = require('../data/transmission-config')
+const SHOWS_FILE = `../data/shows.json`
 const ENCODING = `utf-8`
-const SHOWS_FILE = `./shows.json`
 
 class Download {
   constructor(ws) {
     this.ws = ws
 
-    this.ws.on("message", async data => {
+    this.ws.on('message', async data => {
       data = JSON.parse(data)
       switch (data.method) {
-        case "addToTransmission":
+        case 'addToTransmission':
           var petrus = new Petrus(config)
           var results = await petrus.addMagnetLink(data.params).catch(err => {
             data.error = err
@@ -22,7 +21,7 @@ class Download {
           data.results = results
           this.ws.send(JSON.stringify(data))
           break
-        case "searchLatestEpisode":
+        case 'searchLatestEpisode':
           var petrus = new Petrus(config)
           var results = await petrus.getMagnetLink(data.params.title).catch(err => {
             data.error = err
@@ -31,12 +30,12 @@ class Download {
           data.results = results
           this.ws.send(JSON.stringify(data))
           break
-        case "getShows":
+        case 'getShows':
           var shows = this.getDataFile()
           data.results = shows
           this.ws.send(JSON.stringify(data))
           break
-        case "run":
+        case 'run':
           var petrus = new Petrus(config)
           var results = await petrus.run(data.params.shows).catch(err => {
             data.error = err
@@ -53,9 +52,9 @@ class Download {
   }
 
   getDataFile() {
-    var fileData = fs.readFileSync(SHOWS_FILE, { encoding: ENCODING, flag: "a+" })
+    var fileData = fs.readFileSync(SHOWS_FILE, { encoding: ENCODING, flag: 'a+' })
 
-    if (fileData === "") {
+    if (fileData === '') {
       return []
     } else {
       return JSON.parse(fileData)

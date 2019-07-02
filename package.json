@@ -1,7 +1,7 @@
 {
   "name": "bordeaux",
   "version": "1.0.0",
-  "description": "A JavaScript library that can [...].",
+  "description": "",
   "main": "server.js",
   "scripts": {
     "dev": "webpack --config webpack.dev.js",
@@ -34,7 +34,7 @@
     "url-loader": "^1.1.2",
     "vue-loader": "^15.7.0",
     "vue-template-compiler": "^2.6.10",
-    "webpack": "^4.35.0",
+    "webpack": "^4.35.2",
     "webpack-cli": "^3.3.5",
     "webpack-dev-server": "^3.7.2"
   },

@@ -3,11 +3,11 @@
     <div class="p:1">
       <h1>Transmission settings</h1>
       <div v-if="data">
-        <input v-model="data.host" placeholder="Host">
-        <input v-model="data.port" placeholder="Port">
-        <input v-model="data.username" placeholder="Username">
-        <input type="password" v-model="data.password" placeholder="Password">
-        <btn @click="update()">Update</btn>
+        <input v-model="data.host" placeholder="Host" />
+        <input v-model="data.port" placeholder="Port" />
+        <input v-model="data.username" placeholder="Username" />
+        <input type="password" v-model="data.password" placeholder="Password" />
+        <!-- <btn @click="update()">Update</btn> -->
         <btn @click="test()">Test</btn>
       </div>
     </div>
@@ -24,6 +24,11 @@ export default {
       ws: null,
       isLoading: false
     };
+  },
+  watch: {
+    "data.host"() {
+      this.update();
+    }
   },
   created() {
     this.ws = new WebSocket("ws://localhost:8080/transmission");
@@ -53,6 +58,10 @@ export default {
         }
       };
     };
+
+    this.ws.onclose = evt => {
+      console.log("WS closed !");
+    };
   },
   methods: {
     getAll() {
@@ -63,6 +72,7 @@ export default {
       );
     },
     update() {
+      console.log("Update data");
       this.ws.send(
         JSON.stringify({
           method: "update",
