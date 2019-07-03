@@ -11,28 +11,53 @@ const Transmission = require('./src/backend/channels/transmission')
 const Show = require('./src/backend/channels/show')
 
 wss.on('connection', function connection(ws, req) {
-  console.log(`New connection : ${req.connection.remoteAddress}`)
+  console.log(`New client connection for ${req.url}`)
 
-  switch (req.url) {
-    case `/`:
-      console.log('Default channel')
-      break
-    case `/download`:
-      new Download(ws)
-      break
-    case `/transfert`:
-      new Transfert(ws)
-      break
-    case `/subtitles`:
-      new Subtitles(ws)
-      break
-    case `/transmission`:
-      new Transmission(ws)
-      break
-    case `/show`:
-      new Show(ws)
-      break
-    default:
-      console.error(`Unknow channel : ${req.url}`)
-  }
+  // Detect and close broken connections
+  ws.isAlive = true
+
+  ws.on('pong', () => {
+    ws.isAlive = true
+  })
+
+  setInterval(function ping() {
+    wss.clients.forEach(function each(ws) {
+      if (ws.isAlive === false) {
+        return ws.terminate()
+      }
+      ws.isAlive = false
+      ws.ping(() => {})
+    })
+  }, 5000)
+
+  ws.on('message', async data => {
+    data = JSON.parse(data)
+
+    switch (data.object) {
+      case `download`:
+        data = await Download.response(data)
+        break
+      case `transfert`:
+        data = await Transfert.response(data)
+        break
+      case `subtitles`:
+        data = await Subtitles.response(data)
+        break
+      case `transmission`:
+        data = await Transmission.response(data)
+        break
+      case `show`:
+        data = await Show.response(data)
+        break
+      default:
+        console.error(`Unknow object : '${data.object}'`)
+    }
+
+    // Broadcast response to all connected clients
+    wss.clients.forEach(function each(client) {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(JSON.stringify(data))
+      }
+    })
+  })
 })

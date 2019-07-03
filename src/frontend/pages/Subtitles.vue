@@ -20,34 +20,34 @@
 
 <script>
 export default {
-  data() {
-    return {
-      error: null,
-      message: null,
-      episodes: null,
-      ws: null,
-      from: "z:",
-      isLoading: false,
-      loadingMessage: null,
-      fileAge: 2
-    };
-  },
   computed: {
     hasEpisodes() {
       return this.episodes && this.episodes.length > 0;
     },
     hasNoEpisode() {
       return this.episodes && this.episodes.length === 0;
+    },
+    ws() {
+      return this.$store.getters["webSocket/ws"];
     }
   },
+  data() {
+    return {
+      error: null,
+      message: null,
+      episodes: null,
+      from: "z:",
+      isLoading: false,
+      loadingMessage: null,
+      fileAge: 2
+    };
+  },
   created() {
-    this.ws = new WebSocket("ws://localhost:8080/subtitles");
+    this.search();
 
-    this.ws.onopen = evt => {
-      this.search();
-
-      this.ws.onmessage = evt => {
-        const data = JSON.parse(evt.data);
+    this.ws.onmessage = evt => {
+      const data = JSON.parse(evt.data);
+      if (data.object === "subtitles") {
         switch (data.method) {
           case "getRecentEpisodes":
             this.isLoading = false;
@@ -68,18 +68,17 @@ export default {
           default:
             console.log(`Unknow method : ${data.method}`);
         }
-      };
+      }
     };
   },
   methods: {
     search() {
       this.episodes = null;
       this.isLoading = true;
-      this.loadingMessage = `Searching ${this.from}/ for recent episodes (${
-        this.fileAge
-      } days old)...`;
+      this.loadingMessage = `Searching ${this.from}/ for recent episodes (${this.fileAge} days old)...`;
       this.ws.send(
         JSON.stringify({
+          object: "subtitles",
           method: "search",
           params: { from: this.from, fileAge: this.fileAge }
         })
@@ -90,6 +89,7 @@ export default {
       this.loadingMessage = `Searching subtitles...`;
       this.ws.send(
         JSON.stringify({
+          object: "subtitles",
           method: "run",
           params: { from: this.from }
         })

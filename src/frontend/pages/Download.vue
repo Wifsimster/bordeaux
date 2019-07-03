@@ -32,23 +32,25 @@
 
 <script>
 export default {
+  computed: {
+    ws() {
+      return this.$store.getters["webSocket/ws"];
+    }
+  },
   data() {
     return {
       error: null,
       message: null,
       shows: null,
-      ws: null,
       isLoading: false
     };
   },
   created() {
-    this.ws = new WebSocket("ws://localhost:8080/download");
+    this.getShows();
 
-    this.ws.onopen = evt => {
-      this.getShows();
-
-      this.ws.onmessage = evt => {
-        const data = JSON.parse(evt.data);
+    this.ws.onmessage = evt => {
+      const data = JSON.parse(evt.data);
+      if (data.object === "download") {
         switch (data.method) {
           case "addToTransmission":
             this.isLoading = false;
@@ -94,13 +96,14 @@ export default {
           default:
             console.log(`Unknow method : ${data.method}`);
         }
-      };
+      }
     };
   },
   methods: {
     addToTransmission(magnetLink) {
       this.ws.send(
         JSON.stringify({
+          object: "download",
           method: "addToTransmission",
           params: magnetLink
         })
@@ -109,6 +112,7 @@ export default {
     searchLatestEpisode(show) {
       this.ws.send(
         JSON.stringify({
+          object: "download",
           method: "searchLatestEpisode",
           params: show
         })
@@ -117,6 +121,7 @@ export default {
     getShows() {
       this.ws.send(
         JSON.stringify({
+          object: "download",
           method: "getShows"
         })
       );
@@ -125,6 +130,7 @@ export default {
       this.isLoading = true;
       this.ws.send(
         JSON.stringify({
+          object: "download",
           method: "run",
           params: { shows: this.shows.split(",") }
         })

@@ -165,37 +165,39 @@
 
 <script>
 export default {
+  computed: {
+    message() {
+      return this.$store.getters["webSocket/message"];
+    }
+  },
   data() {
     return {
       error: null,
       shows: null,
-      ws: null,
       results: null,
       query: null,
       isLoading: false
     };
   },
   created() {
-    this.ws = new WebSocket("ws://localhost:8080/show");
-
-    this.ws.onopen = evt => {
-      this.getAll();
-
-      this.ws.onmessage = evt => {
-        const data = JSON.parse(evt.data);
+    this.getAll();
+  },
+  watch: {
+    message(data) {
+      if (data.object === "show") {
         switch (data.method) {
-          case "search":
-            if (data.error) {
-              this.error = data.error;
-            } else {
-              this.results = data.results;
-            }
-            break;
           case "getAll":
             if (data.error) {
               this.error = data.error;
             } else {
-              this.shows = data.results;
+              this.shows = Object.assign([], data.results);
+            }
+            break;
+          case "search":
+            if (data.error) {
+              this.error = data.error;
+            } else {
+              this.results = Object.assign([], data.results);
             }
             break;
           case "add":
@@ -211,46 +213,42 @@ export default {
             if (data.error) {
               this.error = data.error;
             } else {
-              this.shows = data.results;
+              this.shows = Object.assign([], data.results);
             }
             break;
           default:
             console.log(`Unknow method : ${data.method}`);
         }
-      };
-    };
+      }
+    }
   },
   methods: {
     search() {
-      this.ws.send(
-        JSON.stringify({
-          method: "search",
-          params: { query: this.query }
-        })
-      );
+      this.$store.commit("webSocket/send", {
+        object: "show",
+        method: "search",
+        params: { query: this.query }
+      });
     },
     getAll() {
-      this.ws.send(
-        JSON.stringify({
-          method: "getAll"
-        })
-      );
+      this.$store.commit("webSocket/send", {
+        object: "show",
+        method: "getAll"
+      });
     },
     add(show) {
-      this.ws.send(
-        JSON.stringify({
-          method: "add",
-          params: Object.assign({}, show)
-        })
-      );
+      this.$store.commit("webSocket/send", {
+        object: "show",
+        method: "add",
+        params: show
+      });
     },
     remove(show) {
-      this.ws.send(
-        JSON.stringify({
-          method: "remove",
-          params: Object.assign({}, show)
-        })
-      );
+      this.$store.commit("webSocket/send", {
+        object: "show",
+        method: "remove",
+        params: show
+      });
     }
   }
 };
@@ -258,12 +256,15 @@ export default {
 
 <style lang="scss" scoped>
 img {
-  transition: opacity 1s;
-  opacity: 0;
+  transition: filter 0.5s;
+}
+img[lazy="loading"] {
+  filter: blur(20px);
 }
 img[lazy="loaded"] {
-  opacity: 1;
+  filter: blur(0);
 }
+
 .trash {
   display: inline-block;
   vertical-align: middle;

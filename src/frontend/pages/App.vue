@@ -23,6 +23,20 @@ export default {
     Navigation,
     Logo,
     Sidebar
+  },
+  data() {
+    return {};
+  },
+  created() {
+    this.connect();
+  },
+  methods: {
+    connect() {
+      this.$store.dispatch(
+        "webSocket/ws",
+        new WebSocket("ws://localhost:8080")
+      );
+    }
   }
 };
 </script>

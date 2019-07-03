@@ -24,34 +24,34 @@
 
 <script>
 export default {
-  data() {
-    return {
-      error: null,
-      from: "w:",
-      to: "z:",
-      ws: null,
-      message: null,
-      episodes: null,
-      isLoading: false,
-      loadingMessage: null
-    };
-  },
   computed: {
     hasEpisodes() {
       return this.episodes && this.episodes.length > 0;
     },
     hasNoEpisode() {
       return this.episodes && this.episodes.length === 0;
+    },
+    ws() {
+      return this.$store.getters["webSocket/ws"];
     }
   },
+  data() {
+    return {
+      error: null,
+      from: "w:",
+      to: "z:",
+      message: null,
+      episodes: null,
+      isLoading: false,
+      loadingMessage: null
+    };
+  },
   created() {
-    this.ws = new WebSocket("ws://localhost:8080/transfert");
+    this.search();
 
-    this.ws.onopen = evt => {
-      this.search();
-
-      this.ws.onmessage = evt => {
-        const data = JSON.parse(evt.data);
+    this.ws.onmessage = evt => {
+      const data = JSON.parse(evt.data);
+      if (data.object === "transfert") {
         switch (data.method) {
           case "search":
             this.isLoading = false;
@@ -72,7 +72,7 @@ export default {
           default:
             console.log(`Unknow method : ${data.method}`);
         }
-      };
+      }
     };
   },
   methods: {
@@ -81,6 +81,7 @@ export default {
       this.loadingMessage = `Searching new files on ${this.from}...`;
       this.ws.send(
         JSON.stringify({
+          object: "transfert",
           method: "search",
           params: { from: this.from, to: this.to }
         })
@@ -91,6 +92,7 @@ export default {
       this.loadingMessage = `Transfering files to ${this.to}...`;
       this.ws.send(
         JSON.stringify({
+          object: "transfert",
           method: "run",
           params: { from: this.from, to: this.to }
         })

@@ -2,12 +2,11 @@
   <card>
     <div class="p:1">
       <h1>Transmission settings</h1>
-      <div v-if="data">
-        <input v-model="data.host" placeholder="Host" />
-        <input v-model="data.port" placeholder="Port" />
-        <input v-model="data.username" placeholder="Username" />
-        <input type="password" v-model="data.password" placeholder="Password" />
-        <!-- <btn @click="update()">Update</btn> -->
+      <div v-if="settings">
+        <input v-model="settings.host" placeholder="Host" />
+        <input type="number" v-model="settings.port" placeholder="Port" />
+        <input v-model="settings.username" placeholder="Username" />
+        <input type="password" v-model="settings.password" placeholder="Password" />
         <btn @click="test()">Test</btn>
       </div>
     </div>
@@ -16,68 +15,78 @@
 
 <script>
 export default {
+  computed: {
+    message() {
+      return this.$store.getters["webSocket/message"];
+    }
+  },
   data() {
     return {
       error: null,
-      message: null,
-      data: null,
-      ws: null,
-      firstLoad: true,
+      settings: null,
       isLoading: false
     };
   },
+  created() {
+    this.getAll();
+  },
   watch: {
-    "data.host"(newVal, oldVal) {
+    "settings.host"(newVal, oldVal) {
       if (oldVal) {
         this.update();
       }
-    }
-  },
-  created() {
-    this.ws = new WebSocket("ws://localhost:8080/transmission");
-
-    this.ws.onopen = evt => {
-      this.getAll();
-
-      this.ws.onmessage = evt => {
-        const data = JSON.parse(evt.data);
+    },
+    "settings.port"(newVal, oldVal) {
+      if (oldVal) {
+        this.update();
+      }
+    },
+    "settings.username"(newVal, oldVal) {
+      if (oldVal) {
+        this.update();
+      }
+    },
+    "settings.password"(newVal, oldVal) {
+      if (oldVal) {
+        this.update();
+      }
+    },
+    message(data) {
+      if (data.object === "transmission") {
         switch (data.method) {
           case "getAll":
             if (data.error) {
               this.error = data.error;
             } else {
-              this.data = data.results;
+              this.settings = Object.assign({}, data.results);
             }
             break;
           case "update":
-            console.log("Update return", data);
             if (data.error) {
               this.error = data.error;
             } else {
-              this.data = data.results;
+              this.settings = Object.assign({}, data.results);
             }
             break;
           default:
             console.log(`Unknow method : ${data.method}`);
         }
-      };
-    };
+      }
+    }
   },
   methods: {
     getAll() {
-      this.ws.send(
-        JSON.stringify({
-          method: "getAll"
-        })
-      );
+      this.$store.commit("webSocket/send", {
+        object: "transmission",
+        method: "getAll"
+      });
     },
     update() {
-      this.ws.send(
-        JSON.stringify({
-          method: "update",
-          params: Object.assign({}, this.data)
-        })
-      );
+      this.$store.commit("webSocket/send", {
+        object: "transmission",
+        method: "update",
+        params: this.settings
+      });
     },
     test() {
       console.log("TODO");
