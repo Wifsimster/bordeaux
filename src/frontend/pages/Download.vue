@@ -33,23 +33,23 @@
 <script>
 export default {
   computed: {
-    ws() {
-      return this.$store.getters["webSocket/ws"];
+    message() {
+      return this.$store.getters["webSocket/message"];
     }
   },
   data() {
     return {
       error: null,
-      message: null,
+      results: null,
       shows: null,
       isLoading: false
     };
   },
   created() {
     this.getShows();
-
-    this.ws.onmessage = evt => {
-      const data = JSON.parse(evt.data);
+  },
+  watch: {
+    message(data) {
       if (data.object === "download") {
         switch (data.method) {
           case "addToTransmission":
@@ -72,7 +72,7 @@ export default {
             } else {
               this.shows = this.shows.map((show, index) => {
                 if (show.id === data.params.id) {
-                  show.magnetLink = data.results;
+                  show.magnetLink = Object.assign({}, data.results);
                 }
                 return show;
               });
@@ -82,7 +82,7 @@ export default {
             if (data.error) {
               this.error = data.error;
             } else {
-              this.shows = data.results;
+              this.shows = Object.assign([], data.results);
             }
             break;
           case "run":
@@ -90,51 +90,43 @@ export default {
             if (data.error) {
               this.error = data.error;
             } else {
-              this.message = data.results;
+              this.results = Object.assign([], data.results);
             }
             break;
           default:
             console.log(`Unknow method : ${data.method}`);
         }
       }
-    };
+    }
   },
   methods: {
     addToTransmission(magnetLink) {
-      this.ws.send(
-        JSON.stringify({
-          object: "download",
-          method: "addToTransmission",
-          params: magnetLink
-        })
-      );
+      this.$store.commit("webSocket/send", {
+        object: "download",
+        method: "addToTransmission",
+        params: magnetLink
+      });
     },
     searchLatestEpisode(show) {
-      this.ws.send(
-        JSON.stringify({
-          object: "download",
-          method: "searchLatestEpisode",
-          params: show
-        })
-      );
+      this.$store.commit("webSocket/send", {
+        object: "download",
+        method: "searchLatestEpisode",
+        params: show
+      });
     },
     getShows() {
-      this.ws.send(
-        JSON.stringify({
-          object: "download",
-          method: "getShows"
-        })
-      );
+      this.$store.commit("webSocket/send", {
+        object: "download",
+        method: "getShows"
+      });
     },
     run() {
       this.isLoading = true;
-      this.ws.send(
-        JSON.stringify({
-          object: "download",
-          method: "run",
-          params: { shows: this.shows.split(",") }
-        })
-      );
+      this.$store.commit("webSocket/send", {
+        object: "download",
+        method: "run",
+        params: { shows: this.shows.split(",") }
+      });
     }
   }
 };

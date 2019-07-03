@@ -5,7 +5,7 @@
       <alert v-if="message">
         <p>Transfert files :</p>
         <ul class="list-reset py:1 px:1/2">
-          <li v-for="item in message" :key="item">{{ item }}</li>
+          <li v-for="item in results" :key="item">{{ item }}</li>
         </ul>
       </alert>
       <alert v-if="hasEpisodes">
@@ -31,8 +31,8 @@ export default {
     hasNoEpisode() {
       return this.episodes && this.episodes.length === 0;
     },
-    ws() {
-      return this.$store.getters["webSocket/ws"];
+    message() {
+      return this.$store.getters["webSocket/message"];
     }
   },
   data() {
@@ -40,17 +40,17 @@ export default {
       error: null,
       from: "w:",
       to: "z:",
-      message: null,
       episodes: null,
+      results: null,
       isLoading: false,
       loadingMessage: null
     };
   },
   created() {
     this.search();
-
-    this.ws.onmessage = evt => {
-      const data = JSON.parse(evt.data);
+  },
+  watch: {
+    message(data) {
       if (data.object === "transfert") {
         switch (data.method) {
           case "search":
@@ -58,7 +58,7 @@ export default {
             if (data.error) {
               this.error = data.error;
             } else {
-              this.episodes = data.results;
+              this.episodes = Object.assign([], data.results);
             }
             break;
           case "run":
@@ -66,37 +66,33 @@ export default {
             if (data.error) {
               this.error = data.error;
             } else {
-              this.message = data.results;
+              this.results = Object.assign([], data.results);
             }
             break;
           default:
             console.log(`Unknow method : ${data.method}`);
         }
       }
-    };
+    }
   },
   methods: {
     search() {
       this.isLoading = true;
       this.loadingMessage = `Searching new files on ${this.from}...`;
-      this.ws.send(
-        JSON.stringify({
-          object: "transfert",
-          method: "search",
-          params: { from: this.from, to: this.to }
-        })
-      );
+      this.$store.commit("webSocket/send", {
+        object: "transfert",
+        method: "search",
+        params: { from: this.from, to: this.to }
+      });
     },
     transfert() {
       this.isLoading = true;
       this.loadingMessage = `Transfering files to ${this.to}...`;
-      this.ws.send(
-        JSON.stringify({
-          object: "transfert",
-          method: "run",
-          params: { from: this.from, to: this.to }
-        })
-      );
+      this.$store.commit("webSocket/send", {
+        object: "transfert",
+        method: "run",
+        params: { from: this.from, to: this.to }
+      });
     }
   }
 };

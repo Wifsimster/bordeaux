@@ -27,16 +27,16 @@ export default {
     hasNoEpisode() {
       return this.episodes && this.episodes.length === 0;
     },
-    ws() {
-      return this.$store.getters["webSocket/ws"];
+    message() {
+      return this.$store.getters["webSocket/message"];
     }
   },
   data() {
     return {
       error: null,
-      message: null,
       episodes: null,
       from: "z:",
+      results: null,
       isLoading: false,
       loadingMessage: null,
       fileAge: 2
@@ -44,17 +44,17 @@ export default {
   },
   created() {
     this.search();
-
-    this.ws.onmessage = evt => {
-      const data = JSON.parse(evt.data);
+  },
+  watch: {
+    message(data) {
       if (data.object === "subtitles") {
         switch (data.method) {
-          case "getRecentEpisodes":
+          case "search":
             this.isLoading = false;
             if (data.error) {
               this.error = data.error;
             } else {
-              this.episodes = data.results;
+              this.episodes = Object.assign([], data.results);
             }
             break;
           case "run":
@@ -62,38 +62,34 @@ export default {
             if (data.error) {
               this.error = data.error;
             } else {
-              this.message = data.results;
+              this.results = Object.assign([], data.results);
             }
             break;
           default:
             console.log(`Unknow method : ${data.method}`);
         }
       }
-    };
+    }
   },
   methods: {
     search() {
       this.episodes = null;
       this.isLoading = true;
       this.loadingMessage = `Searching ${this.from}/ for recent episodes (${this.fileAge} days old)...`;
-      this.ws.send(
-        JSON.stringify({
-          object: "subtitles",
-          method: "search",
-          params: { from: this.from, fileAge: this.fileAge }
-        })
-      );
+      this.$store.commit("webSocket/send", {
+        object: "subtitles",
+        method: "search",
+        params: { from: this.from, fileAge: this.fileAge }
+      });
     },
     run() {
       this.isLoading = true;
       this.loadingMessage = `Searching subtitles...`;
-      this.ws.send(
-        JSON.stringify({
-          object: "subtitles",
-          method: "run",
-          params: { from: this.from }
-        })
-      );
+      this.$store.commit("webSocket/send", {
+        object: "subtitles",
+        method: "run",
+        params: { from: this.from }
+      });
     }
   }
 };
