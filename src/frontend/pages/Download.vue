@@ -26,7 +26,7 @@
           <span
             v-if="show.magnetLink && !show.isLoading"
             class="border rounded bg:grey-light text:grey-darker px:1/4 py:1/2 cursor:pointer"
-            @click="addToTransmission(show.magnetLink)"
+            @click="addToTransmission(show.magnetLink, index)"
           >Ajouter à Transmission</span>
         </div>
       </div>
@@ -46,14 +46,30 @@ export default {
       error: null,
       results: null,
       shows: null,
+      settings: null,
       isLoading: false
     };
   },
   created() {
+    this.getTransmissionSettings();
     this.getShows();
   },
   watch: {
     message(data) {
+      if (data.object === "transmission") {
+        switch (data.method) {
+          case "getAll":
+            if (data.error) {
+              this.error = data.error;
+            } else {
+              this.settings = Object.assign({}, data.results);
+            }
+            break;
+          default:
+            console.log(`Unknow method : ${data.method}`);
+        }
+      }
+
       if (data.object === "download") {
         switch (data.method) {
           case "addToTransmission":
@@ -63,7 +79,10 @@ export default {
             } else {
               this.shows = this.shows.map((show, index) => {
                 if (show.id === data.params.id) {
-                  show.magnetLink = null;
+                  show.isLoading = false;
+                  if (data.results) {
+                    // TODO
+                  }
                 }
                 return show;
               });
@@ -77,7 +96,7 @@ export default {
                 if (show.id === data.params.id) {
                   show.isLoading = false;
                   if (data.results) {
-                    show.magnetLink = Object.assign({}, data.results);
+                    show.magnetLink = data.results;
                   } else {
                     show.magnetLink = null;
                   }
@@ -115,11 +134,19 @@ export default {
     }
   },
   methods: {
-    addToTransmission(magnetLink) {
+    getTransmissionSettings() {
+      this.$store.commit("webSocket/send", {
+        object: "transmission",
+        method: "getAll"
+      });
+    },
+    addToTransmission(magnetLink, index) {
+      this.shows[index].isLoading = true;
+
       this.$store.commit("webSocket/send", {
         object: "download",
         method: "addToTransmission",
-        params: magnetLink
+        params: { magnetLink, settings: this.settings }
       });
     },
     searchLatestEpisode(show, index) {

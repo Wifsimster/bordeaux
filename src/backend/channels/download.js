@@ -9,8 +9,8 @@ class Download {
   static async response(data) {
     switch (data.method) {
       case "addToTransmission":
-        var petrus = new Petrus(config)
-        var results = await petrus.addMagnetLink(data.params).catch(err => {
+        var petrus = new Petrus(data.params.settings)
+        var results = await petrus.addMagnetLink(data.params.magnetLink).catch(err => {
           data.error = err
         })
         data.results = results
