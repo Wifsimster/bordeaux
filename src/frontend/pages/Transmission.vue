@@ -1,14 +1,14 @@
 <template>
   <card>
     <div class="p:1">
-      <h1>Transmission settings</h1>
-      <div v-if="settings">
+      <div class="text:white text:3/2">Transmission settings</div>
+      <form v-if="settings">
         <input v-model="settings.host" placeholder="Host" />
         <input type="number" v-model="settings.port" placeholder="Port" />
         <input v-model="settings.username" placeholder="Username" />
         <input type="password" v-model="settings.password" placeholder="Password" />
         <btn @click="test()">Test</btn>
-      </div>
+      </form>
     </div>
   </card>
 </template>
@@ -95,18 +95,20 @@ export default {
 };
 </script>
 
-
 <style lang="scss" scoped>
 @import "../../../node_modules/beta-scss/scss/global";
 
 input {
-  @extend .shadow;
-  @extend .border;
-  @extend .rounded;
+  height: 44px;
+  caret-color: map-get($colors, "blue-dark");
   @extend .w\:full;
-  @extend .text\:grey-darkest;
-  @extend .placeholder\:grey;
-  @extend .p\:1;
+  @extend .text\:2;
+  @extend .text\:grey-dark;
+  @extend .bg\:transparent;
+  @extend .border\:b;
+  @extend .border\:grey;
+  @extend .placeholder\:grey-light;
+  // @extend .p\:1;
   @extend .mx\:1;
   @extend .block;
 }

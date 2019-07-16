@@ -1,14 +1,15 @@
 <template>
-  <div class="text:white h:screen w:screen overflow:hidden">
-    <div class="flex flex:wrap h:screen">
-      <logo class="h:1/12 w:2/12"></logo>
-      <navigation class="h:1/12 w:10/12"></navigation>
-      <sidebar class="h:11/12 w:2/12"></sidebar>
-      <div class="w:10/12 bg:grey-lighter p:1 h:11/12 overflow-y:auto">
+  <div class="bg:black text:white h:screen w:screen overflow:hidden">
+    <div class="flex flex:col h:screen">
+      <nav class="h:1/12 w:screen flex">
+        <logo class="w:3/12"></logo>
+        <navigation class="w:9/12"></navigation>
+      </nav>
+      <main class="h:11/12 p:1 overflow-y:auto">
         <transition name="opacity" mode="out-in">
           <router-view></router-view>
         </transition>
-      </div>
+      </main>
     </div>
   </div>
 </template>
@@ -16,13 +17,11 @@
 <script>
 const Navigation = () => import("components/Navigation.vue");
 const Logo = () => import("components/Logo.vue");
-const Sidebar = () => import("components/Sidebar.vue");
 import "beta-scss";
 export default {
   components: {
     Navigation,
-    Logo,
-    Sidebar
+    Logo
   },
   data() {
     return {};
@@ -40,3 +39,19 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+@import "../../../node_modules/beta-scss/scss/global";
+
+* {
+  ::-webkit-scrollbar {
+    width: 2px;
+  }
+  ::-webkit-scrollbar-track {
+    background: map-get($colors, "grey-darkest");
+  }
+  ::-webkit-scrollbar-thumb {
+    background: map-get($colors, "blue-dark");
+  }
+}
+</style>

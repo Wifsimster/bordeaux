@@ -1,105 +1,31 @@
 <template>
-  <card>
-    <div class="p:1">
-      <div class="text:3/2 text:bold mb:1">Manage your shows</div>
-      <alert color="red" v-if="error">{{ error }}</alert>
-      <loader v-if="isLoading"></loader>
-      <div>
-        <input
-          v-model="query"
-          placeholder="Search a new show"
-          class="inline-block w:2/4 border mb:1 text:1 py:1/2"
-          style="height: 46px;"
-          @keyup.enter="search()"
-        />
-        <btn v-if="!isLoading" class="inline-block w:1/4" @click="search()">Searching</btn>
-        <span v-if="results" @click="results = null" class="cursor:pointer p:1">Cancel</span>
+  <div>
+    <div class="text:3/2 text:bold mb:1">Manage your shows</div>
+    <alert color="red" v-if="error">{{ error }}</alert>
+    <loader v-if="isLoading"></loader>
+    <div>
+      <input
+        v-model="query"
+        placeholder="Search a new show"
+        class="inline-block w:2/4 border mb:1 text:1 py:1/2"
+        style="height: 46px;"
+        @keyup.enter="search()"
+      />
+      <btn v-if="!isLoading" class="inline-block w:1/4" @click="search()">Searching</btn>
+      <span v-if="results" @click="results = null" class="cursor:pointer p:1">Cancel</span>
 
-        <!-- Search results -->
-        <div v-if="results && results.length > 0" class="flex flex:wrap mt:1">
-          <div v-for="(show, index) in results" :key="index" class="w:1/2" @click="add(show)">
-            <div
-              class="flex bg:grey-lightest border hover:bg:blue-lightest cursor:pointer rounded m:1/4"
-              style="max-height: 197px"
-            >
-              <div class="w:1/4 pr:1/2 overflow:hidden">
-                <img v-if="show.images.poster" class="w:full rounded:l" v-lazy="show.images.poster" />
-                <div v-else class="w:full h:full bg:grey-light pr:1/2"></div>
-              </div>
-              <div class="w:3/4">
-                <div class="mt:1/2">
-                  <a
-                    :href="`https://www.imdb.com/title/${show.imdb_id}`"
-                    targetAll="_blank"
-                  >{{ show.title }}</a>
-                  ({{ show.creation }})
-                  <span
-                    v-if="show.status === 'Ended'"
-                    class="inline-block text:7/8 bg:red-light text:white text:center rounded py:1/2 px:1/4 mx:1/4"
-                  >{{ show.status }}</span>
-                  <span
-                    v-if="show.status === 'Continuing'"
-                    class="inline-block text:7/8 bg:green-light text:white text:center rounded py:1/2 px:1/4 mx:1/4"
-                  >{{ show.status }}</span>
-                </div>
-                <span
-                  v-for="genre in show.genres"
-                  :key="genre"
-                  class="inline-block text:7/8 bg:grey-light text:grey-darker rounded py:1/2 px:1/4 mr:1/2 mx:1/4"
-                >{{ genre }}</span>
-                <div>
-                  <span
-                    v-if="show.language"
-                    class="inline-block text:7/8 bg:grey-light text:grey-darker rounded py:1/2 px:1/4 mr:1/2 mx:1/4"
-                  >{{ show.language }}</span>
-                  <span
-                    v-if="show.network"
-                    class="inline-block text:7/8 bg:grey-light text:grey-darker rounded py:1/2 px:1/4 mr:1/2 mx:1/4"
-                  >{{ show.network }}</span>
-                  <span
-                    v-if="show.rating"
-                    class="inline-block text:7/8 bg:grey-light text:grey-darker rounded py:1/2 px:1/4 mr:1/2 mx:1/4"
-                  >{{ show.rating }}</span>
-                  <span
-                    v-if="show.length"
-                    class="inline-block text:7/8 bg:grey-light text:grey-darker rounded py:1/2 px:1/4 mr:1/2 mx:1/4"
-                  >{{ show.length }} min</span>
-                </div>
-                <div>
-                  <span
-                    v-if="show.notes"
-                    :title="show.notes.total + ' votes'"
-                    class="inline-block text:7/8 bg:grey-light text:grey-darker rounded py:1/2 px:1/4 mr:1/2 mx:1/4"
-                  >{{ show.notes.mean.toFixed(1) }}/5</span>
-                  <span
-                    v-if="show.seasons"
-                    class="inline-block text:7/8 bg:grey-light text:grey-darker rounded py:1/2 px:1/4 mr:1/2 mx:1/4"
-                  >Seasons {{ show.seasons }}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div v-if="results && results.length === 0" class="text:center">No result found :(</div>
-      </div>
-
-      <!-- Shows -->
-      <transition-group
-        name="slide"
-        tag="div"
-        v-if="!results && shows && shows.length > 0"
-        class="flex flex:wrap mt:1"
-      >
-        <div v-for="show in shows" :key="show.id" class="w:1/2" @click="remove(show)">
+      <!-- Search results -->
+      <div v-if="results && results.length > 0" class="flex flex:wrap mt:1">
+        <div v-for="(show, index) in results" :key="index" class="w:1/2" @click="add(show)">
           <div
             class="flex bg:grey-lightest border hover:bg:blue-lightest cursor:pointer rounded m:1/4"
             style="max-height: 197px"
           >
-            <div class="w:3/12 pr:1/2 overflow:hidden">
+            <div class="w:1/4 pr:1/2 overflow:hidden">
               <img v-if="show.images.poster" class="w:full rounded:l" v-lazy="show.images.poster" />
               <div v-else class="w:full h:full bg:grey-light pr:1/2"></div>
             </div>
-            <div class="w:7/12 relative">
+            <div class="w:3/4">
               <div class="mt:1/2">
                 <a
                   :href="`https://www.imdb.com/title/${show.imdb_id}`"
@@ -150,17 +76,85 @@
                 >Seasons {{ show.seasons }}</span>
               </div>
             </div>
-            <div class="self:center w:2/12 h:full">
-              <span @click="remove(show)">
-                <i class="trash text:grey-darkest" title="Remove"></i>
-              </span>
-            </div>
           </div>
         </div>
-      </transition-group>
-      <div v-if="!results && shows && shows.length === 0" class="text:center">No show added :(</div>
+      </div>
+      <div v-if="results && results.length === 0" class="text:center">No result found :(</div>
     </div>
-  </card>
+
+    <!-- Shows -->
+    <transition-group
+      name="slide"
+      tag="div"
+      v-if="!results && shows && shows.length > 0"
+      class="flex flex:wrap mt:1"
+    >
+      <div v-for="show in shows" :key="show.id" class="w:1/3" @click="remove(show)">
+        <div
+          class="flex border:grey-darkest bg:grey-darkest border hover:bg:grey-darker cursor:pointer rounded m:1/4 overflow:hidden"
+        >
+          <div class="w:3/12 pr:1/2 overflow:hidden">
+            <img v-if="show.images.poster" class="w:full rounded:l" v-lazy="show.images.poster" />
+            <div v-else class="w:full h:full bg:grey-light pr:1/2"></div>
+          </div>
+          <div class="w:7/12 relative">
+            <div class="mt:1/2">
+              <a
+                class="text:white"
+                :href="`https://www.imdb.com/title/${show.imdb_id}`"
+                targetAll="_blank"
+              >{{ show.title }}</a>
+              ({{ show.creation }})
+              <span
+                v-if="show.status === 'Ended'"
+                class="inline-block text:7/8 bg:red-light text:white text:center rounded py:1/2 px:1/4 mx:1/4"
+              >{{ show.status }}</span>
+              <span
+                v-if="show.status === 'Continuing'"
+                class="inline-block text:7/8 bg:green-light text:white text:center rounded py:1/2 px:1/4 mx:1/4"
+              >{{ show.status }}</span>
+            </div>
+            <span
+              v-for="genre in show.genres"
+              :key="genre"
+              class="inline-block text:7/8 bg:grey-light text:grey-darker rounded py:1/2 px:1/4 mr:1/2 mx:1/4"
+            >{{ genre }}</span>
+            <span
+              v-if="show.language"
+              class="inline-block text:7/8 bg:grey-light text:grey-darker rounded py:1/2 px:1/4 mr:1/2 mx:1/4"
+            >{{ show.language }}</span>
+            <span
+              v-if="show.network"
+              class="inline-block text:7/8 bg:grey-light text:grey-darker rounded py:1/2 px:1/4 mr:1/2 mx:1/4"
+            >{{ show.network }}</span>
+            <span
+              v-if="show.rating"
+              class="inline-block text:7/8 bg:grey-light text:grey-darker rounded py:1/2 px:1/4 mr:1/2 mx:1/4"
+            >{{ show.rating }}</span>
+            <span
+              v-if="show.length"
+              class="inline-block text:7/8 bg:grey-light text:grey-darker rounded py:1/2 px:1/4 mr:1/2 mx:1/4"
+            >{{ show.length }} min</span>
+            <span
+              v-if="show.notes"
+              :title="show.notes.total + ' votes'"
+              class="inline-block text:7/8 bg:grey-light text:grey-darker rounded py:1/2 px:1/4 mr:1/2 mx:1/4"
+            >{{ show.notes.mean.toFixed(1) }}/5</span>
+            <span
+              v-if="show.seasons"
+              class="inline-block text:7/8 bg:grey-light text:grey-darker rounded py:1/2 px:1/4 mr:1/2 mx:1/4"
+            >Seasons {{ show.seasons }}</span>
+          </div>
+          <div class="self:center w:2/12 h:full">
+            <span @click="remove(show)">
+              <i class="trash text:grey-darkest" title="Remove"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+    </transition-group>
+    <div v-if="!results && shows && shows.length === 0" class="text:center">No show added :(</div>
+  </div>
 </template>
 
 <script>
@@ -255,6 +249,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../../../node_modules/beta-scss/scss/global";
+
 img {
   transition: filter 0.5s;
 }
@@ -303,4 +299,19 @@ img[lazy="loaded"] {
   transform: translateX(10px);
   opacity: 0;
 }
+
+input {
+  height: 48px;
+  caret-color: map-get($colors, "blue-dark");
+  @extend .w\:full;
+  @extend .text\:2;
+  @extend .text\:grey-dark;
+  @extend .bg\:transparent;
+  @extend .border\:b;
+  @extend .border\:grey;
+  @extend .placeholder\:grey-light;
+  @extend .mx\:1;
+  @extend .block;
+}
 </style>
+
