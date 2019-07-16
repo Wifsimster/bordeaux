@@ -1,5 +1,5 @@
-const Petrus = require('petrus')
-const File = require('../utils/file')
+const Petrus = require("petrus")
+const File = require("../utils/file")
 
 const SHOWS_FILE = `shows`
 
@@ -8,24 +8,22 @@ class Download {
 
   static async response(data) {
     switch (data.method) {
-      case 'addToTransmission':
+      case "addToTransmission":
         var petrus = new Petrus(config)
         var results = await petrus.addMagnetLink(data.params).catch(err => {
           data.error = err
         })
         data.results = results
         break
-      case 'searchLatestEpisode':
-        var petrus = new Petrus(config)
-        var results = await petrus.getMagnetLink(data.params.title).catch(err => {
+      case "searchLatestEpisode":
+        data.results = await Petrus.getMagnetLink(data.params.title).catch(err => {
           data.error = err
         })
-        data.results = results
         break
-      case 'getShows':
+      case "getShows":
         data.results = File.readFile(SHOWS_FILE)
         break
-      case 'run':
+      case "run":
         var petrus = new Petrus(config)
         var results = await petrus.run(data.params.shows).catch(err => {
           data.error = err

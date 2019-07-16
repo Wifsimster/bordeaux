@@ -1,9 +1,9 @@
 <template>
   <card>
     <div class="p:1">
-      <div class="text:3/2 text:bold mb:1">Latest episodes available</div>
+      <div class="text:3/2 text:bold mb:1">Latest episodes available on TPB</div>
       <alert color="red" v-if="error">{{ error }}</alert>
-      <alert v-if="message">
+      <alert v-if="results">
         <p>Fichiers ajoutés à Transmission :</p>
         <ul class="list-reset pl:1 px:1/2">
           <li v-for="item in message" :key="item.id">{{ item.name }}</li>
@@ -12,15 +12,19 @@
       <loader v-if="isLoading"></loader>
       <div>
         Shows :
-        <div v-for="show in shows" :key="show.id" class="mx:1">
+        <div v-for="(show, index) in shows" :key="show.id" class="mx:1">
           {{ show.title }}
           <span
-            v-if="!show.magnetLink"
+            v-if="!show.magnetLink && !show.isLoading"
             class="border rounded bg:grey-light text:grey-darker px:1/4 py:1/2 cursor:pointer"
-            @click="searchLatestEpisode(show)"
+            @click="searchLatestEpisode(show, index)"
           >Search latest episode</span>
           <span
-            v-if="show.magnetLink"
+            v-if="show.isLoading"
+            class="border rounded bg:grey-light text:grey-darker px:1/4 py:1/2"
+          >Loading...</span>
+          <span
+            v-if="show.magnetLink && !show.isLoading"
             class="border rounded bg:grey-light text:grey-darker px:1/4 py:1/2 cursor:pointer"
             @click="addToTransmission(show.magnetLink)"
           >Ajouter à Transmission</span>
@@ -66,13 +70,17 @@ export default {
             }
             break;
           case "searchLatestEpisode":
-            this.isLoading = false;
             if (data.error) {
               this.error = data.error;
             } else {
               this.shows = this.shows.map((show, index) => {
                 if (show.id === data.params.id) {
-                  show.magnetLink = Object.assign({}, data.results);
+                  show.isLoading = false;
+                  if (data.results) {
+                    show.magnetLink = Object.assign({}, data.results);
+                  } else {
+                    show.magnetLink = null;
+                  }
                 }
                 return show;
               });
@@ -82,7 +90,14 @@ export default {
             if (data.error) {
               this.error = data.error;
             } else {
-              this.shows = Object.assign([], data.results);
+              if (data.results) {
+                let shows = Object.assign([], data.results);
+                this.shows = shows.map(item => ({
+                  ...item,
+                  isLoading: false,
+                  magnetLink: null
+                }));
+              }
             }
             break;
           case "run":
@@ -107,7 +122,9 @@ export default {
         params: magnetLink
       });
     },
-    searchLatestEpisode(show) {
+    searchLatestEpisode(show, index) {
+      this.shows[index].isLoading = true;
+
       this.$store.commit("webSocket/send", {
         object: "download",
         method: "searchLatestEpisode",
