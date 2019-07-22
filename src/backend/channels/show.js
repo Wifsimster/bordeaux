@@ -1,13 +1,13 @@
-const axios = require('axios')
-const File = require('../utils/file')
+const axios = require("axios")
+const File = require("../utils/file")
 
 const SHOWS_FILE = `shows`
-const API_KEY = '0b07bc22f051'
+const API_KEY = "0b07bc22f051"
 
 const instance = axios.create({
   baseURL: `http://api.betaseries.com/`,
   timeout: 1000,
-  headers: { 'X-BetaSeries-Version': '3.0', 'X-BetaSeries-Key': API_KEY }
+  headers: { "X-BetaSeries-Version": "3.0", "X-BetaSeries-Key": API_KEY }
 })
 
 class Show {
@@ -15,7 +15,7 @@ class Show {
 
   static async response(data) {
     switch (data.method) {
-      case 'search':
+      case "search":
         let results = await instance.get(`shows/search?title=${data.params.query}`).catch(err => {
           console.error(err)
         })
@@ -27,19 +27,27 @@ class Show {
         }
 
         break
-      case 'getAll':
+      case "getAll":
         data.results = File.readFile(SHOWS_FILE)
         break
-      case 'add':
+      case "add":
         var shows = File.readFile(SHOWS_FILE)
 
-        shows.push(data.params)
+        let exist = shows.filter(show => {
+          if (data.params.id === show.id) {
+            return true
+          }
+        })
 
-        File.writeFile(SHOWS_FILE, shows)
-
-        data.results = File.readFile(SHOWS_FILE)
+        if (exist.length > 0) {
+          data.error = "Show already exist !"
+        } else {
+          shows.push(data.params)
+          File.writeFile(SHOWS_FILE, shows)
+          data.results = File.readFile(SHOWS_FILE)
+        }
         break
-      case 'remove':
+      case "remove":
         var shows = File.readFile(SHOWS_FILE)
 
         shows = shows.filter(show => show.id !== data.params.id)

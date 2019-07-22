@@ -1,6 +1,8 @@
 <template>
-  <card>
-    <div class="p:1">
+  <div>
+    <alert color="red" v-if="error">{{ error }}</alert>
+    <alert color="green" v-if="testOk">Test is OK !</alert>
+    <div class="p:1 w:1/3">
       <div class="text:white text:3/2">Transmission settings</div>
       <form v-if="settings">
         <input v-model="settings.host" placeholder="Host" />
@@ -10,7 +12,7 @@
         <btn @click="test()">Test</btn>
       </form>
     </div>
-  </card>
+  </div>
 </template>
 
 <script>
@@ -24,7 +26,8 @@ export default {
     return {
       error: null,
       settings: null,
-      isLoading: false
+      isLoading: false,
+      testOk: null
     };
   },
   created() {
@@ -53,6 +56,7 @@ export default {
     },
     message(data) {
       if (data.object === "transmission") {
+        this.error = null;
         switch (data.method) {
           case "getAll":
             if (data.error) {
@@ -66,6 +70,13 @@ export default {
               this.error = data.error;
             } else {
               this.settings = Object.assign({}, data.results);
+            }
+            break;
+          case "test":
+            if (data.error) {
+              this.error = data.error;
+            } else {
+              this.testOk = true;
             }
             break;
           default:
@@ -89,7 +100,12 @@ export default {
       });
     },
     test() {
-      console.log("TODO");
+      this.testOk = null;
+      this.$store.commit("webSocket/send", {
+        object: "transmission",
+        method: "test",
+        params: this.settings
+      });
     }
   }
 };
@@ -99,10 +115,10 @@ export default {
 @import "../../../node_modules/beta-scss/scss/global";
 
 input {
-  height: 44px;
+  height: 36px;
   caret-color: map-get($colors, "blue-dark");
   @extend .w\:full;
-  @extend .text\:2;
+  @extend .text\:1;
   @extend .text\:grey-dark;
   @extend .bg\:transparent;
   @extend .border\:b;
