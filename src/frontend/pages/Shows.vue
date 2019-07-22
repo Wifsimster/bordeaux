@@ -56,7 +56,7 @@
       class="responsive:8"
     >
       <div v-for="show in shows" :key="show.id" class="p:1/2">
-        <div class="relative container-reveal overflow:hidden">
+        <div class="relative container-reveal h:full overflow:hidden">
           <img
             v-if="show.images.poster"
             class="w:full h:full rounded"
@@ -68,7 +68,7 @@
           >{{ show.notes.mean.toFixed(1) }}</span>
 
           <div
-            class="item-reveal absolute b:0 l:0 r:0 text:center p:1/4 bg:orange transition cursor:pointer"
+            class="item-reveal absolute b:0 l:0 r:0 text:center p:1/4 bg:orange transition cursor:pointer rounded:b shadow"
             @click="remove(show)"
           >
             <i class="trash" title="Remove"></i>

@@ -16,7 +16,7 @@ class Download {
         data.results = results
         break
       case "searchLatestEpisode":
-        data.results = await Petrus.getMagnetLink(data.params.title).catch(err => {
+        data.results = await Petrus.getBestEpisode(data.params.title).catch(err => {
           data.error = err
         })
         break

@@ -1,21 +1,19 @@
 <template>
-  <card>
-    <div class="p:1">
-      <alert color="red" v-if="error">{{ error }}</alert>
-      <alert v-if="hasEpisodes">
-        <p>Recent episodes found :</p>
-        <ul class="list-reset pl:1 px:1/2">
-          <li v-for="item in episodes" :key="item.id">{{ item }}</li>
-        </ul>
-      </alert>
-      <alert v-if="hasNoEpisode">
-        <p>No recent episode found :(</p>
-      </alert>
-      <loader v-if="isLoading" :message="loadingMessage"></loader>
-      <btn v-if="!isLoading" @click="search()">Search recent files on {{ from }}/</btn>
-      <btn v-if="hasEpisodes && !isLoading" @click="run()">Search for subtitles</btn>
-    </div>
-  </card>
+  <div class="p:1">
+    <alert color="red" v-if="error">{{ error }}</alert>
+    <alert v-if="hasEpisodes">
+      <p>Recent episodes found :</p>
+      <ul class="list-reset pl:1 px:1/2">
+        <li v-for="item in episodes" :key="item.id">{{ item }}</li>
+      </ul>
+    </alert>
+    <alert v-if="hasNoEpisode">
+      <p>No recent episode found :(</p>
+    </alert>
+    <loader v-if="isLoading" :message="loadingMessage"></loader>
+    <btn v-if="!isLoading" @click="search()">Search recent files on {{ from }}/</btn>
+    <btn v-if="hasEpisodes && !isLoading" @click="run()">Search for subtitles</btn>
+  </div>
 </template>
 
 <script>
