@@ -87,70 +87,23 @@
       name="slide"
       tag="div"
       v-if="!results && shows && shows.length > 0"
-      class="flex flex:wrap mt:1"
+      class="responsive:8"
     >
-      <div v-for="show in shows" :key="show.id" class="w:1/3" @click="remove(show)">
-        <div
-          class="flex border:grey-darkest bg:grey-darkest border hover:bg:grey-darker cursor:pointer rounded m:1/4 overflow:hidden"
-        >
-          <div class="w:3/12 pr:1/2 overflow:hidden">
-            <img v-if="show.images.poster" class="w:full rounded:l" v-lazy="show.images.poster" />
-            <div v-else class="w:full h:full bg:grey-light pr:1/2"></div>
-          </div>
-          <div class="w:7/12 relative">
-            <div class="mt:1/2">
-              <a
-                class="text:white"
-                :href="`https://www.imdb.com/title/${show.imdb_id}`"
-                targetAll="_blank"
-              >{{ show.title }}</a>
-              ({{ show.creation }})
-              <span
-                v-if="show.status === 'Ended'"
-                class="inline-block text:7/8 bg:red-light text:white text:center rounded py:1/2 px:1/4 mx:1/4"
-              >{{ show.status }}</span>
-              <span
-                v-if="show.status === 'Continuing'"
-                class="inline-block text:7/8 bg:green-light text:white text:center rounded py:1/2 px:1/4 mx:1/4"
-              >{{ show.status }}</span>
-            </div>
-            <span
-              v-for="genre in show.genres"
-              :key="genre"
-              class="inline-block text:7/8 bg:grey-light text:grey-darker rounded py:1/2 px:1/4 mr:1/2 mx:1/4"
-            >{{ genre }}</span>
-            <span
-              v-if="show.language"
-              class="inline-block text:7/8 bg:grey-light text:grey-darker rounded py:1/2 px:1/4 mr:1/2 mx:1/4"
-            >{{ show.language }}</span>
-            <span
-              v-if="show.network"
-              class="inline-block text:7/8 bg:grey-light text:grey-darker rounded py:1/2 px:1/4 mr:1/2 mx:1/4"
-            >{{ show.network }}</span>
-            <span
-              v-if="show.rating"
-              class="inline-block text:7/8 bg:grey-light text:grey-darker rounded py:1/2 px:1/4 mr:1/2 mx:1/4"
-            >{{ show.rating }}</span>
-            <span
-              v-if="show.length"
-              class="inline-block text:7/8 bg:grey-light text:grey-darker rounded py:1/2 px:1/4 mr:1/2 mx:1/4"
-            >{{ show.length }} min</span>
-            <span
-              v-if="show.notes"
-              :title="show.notes.total + ' votes'"
-              class="inline-block text:7/8 bg:grey-light text:grey-darker rounded py:1/2 px:1/4 mr:1/2 mx:1/4"
-            >{{ show.notes.mean.toFixed(1) }}/5</span>
-            <span
-              v-if="show.seasons"
-              class="inline-block text:7/8 bg:grey-light text:grey-darker rounded py:1/2 px:1/4 mr:1/2 mx:1/4"
-            >Seasons {{ show.seasons }}</span>
-          </div>
-          <div class="self:center w:2/12 h:full">
+      <div v-for="show in shows" :key="show.id" class="p:1/2">
+        <div class="relative">
+          <img
+            v-if="show.images.poster"
+            class="w:full"
+            v-lazy="{ src: show.images.poster, error: show.images.show }"
+          />
+          <span class="absolute t:0 r:0 p:1/4 text:2/3 bg:orange">{{ show.notes.mean.toFixed(1) }}</span>
+        </div>
+
+        <!-- <div class="self:center w:2/12 h:full">
             <span @click="remove(show)">
               <i class="trash text:grey-darkest" title="Remove"></i>
             </span>
-          </div>
-        </div>
+        </div>-->
       </div>
     </transition-group>
     <div v-if="!results && shows && shows.length === 0" class="text:center">No show added :(</div>
