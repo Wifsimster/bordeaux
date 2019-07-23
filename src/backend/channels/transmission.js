@@ -1,7 +1,7 @@
 const File = require("../utils/file")
 const Petrus = require("petrus")
 
-const TRANSMISSION_FILE = "transmission-config"
+const CONFIG_FILE = "transmission-config"
 
 class Transmission {
   constructor() {}
@@ -9,14 +9,14 @@ class Transmission {
   static response(data) {
     switch (data.method) {
       case "getAll":
-        data.results = File.readFile(TRANSMISSION_FILE)
+        data.results = File.readFile(CONFIG_FILE)
         break
       case "update":
-        File.writeFile(TRANSMISSION_FILE, data.params)
-        data.results = File.readFile(TRANSMISSION_FILE)
+        File.writeFile(CONFIG_FILE, data.params)
+        data.results = File.readFile(CONFIG_FILE)
         break
       case "test":
-        const petrus = new Petrus(TRANSMISSION_FILE)
+        const petrus = new Petrus(CONFIG_FILE)
         petrus.transmission.sessionStats((err, result) => {
           if (err) {
             data.error = err
@@ -26,7 +26,7 @@ class Transmission {
         })
         break
       default:
-        console.log(`[transmission] Unknow method : ${data.method}`)
+        console.log(`[Transmission] Unknow method : ${data.method}`)
     }
     return data
   }

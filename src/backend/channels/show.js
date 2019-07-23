@@ -57,7 +57,7 @@ class Show {
         data.results = File.readFile(SHOWS_FILE)
         break
       default:
-        console.log(`[show] Unknow method : ${data.method}`)
+        console.log(`[Show] Unknow method : ${data.method}`)
     }
     return data
   }

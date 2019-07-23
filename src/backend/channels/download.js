@@ -31,7 +31,7 @@ class Download {
         data.results = results
         break
       default:
-        console.log(`[download] Unknow method : ${data.method}`)
+        console.log(`[Download] Unknow method : ${data.method}`)
     }
     return data
   }

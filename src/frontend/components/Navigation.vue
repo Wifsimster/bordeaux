@@ -21,9 +21,9 @@
       active-class="border:b:1/4 border:orange"
     >Subtitles</router-link>
     <router-link
-      to="/transmission"
+      to="/settings"
       class="no-underline text:white text:3/2 py:1 px:1/2"
       active-class="border:b:1/4 border:orange"
-    >Transmission</router-link>
+    >Settings</router-link>
   </div>
 </template>

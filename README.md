@@ -1,6 +1,6 @@
 # bordeaux
 
-A JavaScript library that can [...].
+Simpliest tv shows mannager ever !
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Wifsimster/bordeaux/blob/master/LICENSE)
 [![npm version](https://badge.fury.io/js/bordeaux.svg)](https://www.npmjs.com/package/bordeaux)
@@ -9,17 +9,12 @@ A JavaScript library that can [...].
 
 **Quick start**
 
-```javascript
-npm install bordeaux
-```
+Download the project or fork it.
 
 ```javascript
-const Bordeaux = require("bordeaux")
+npm install
 
-const PATH_TO_SCAN = `w:`
-const PATH_TO_PUSH = `z:`
-
-Bordeaux.run(PATH_TO_SCAN, PATH_TO_PUSH)
+npm run start
 ```
 
 That's all :)

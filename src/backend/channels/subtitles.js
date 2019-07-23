@@ -1,22 +1,22 @@
-const Yquem = require('yquem')
+const Yquem = require("yquem")
 
 class Subtitles {
   constructor() {}
 
   static async response(data) {
     switch (data.method) {
-      case 'search':
+      case "search":
         var yquem = new Yquem(data.params.from)
         data.results = yquem.getRecentFilesFromDirectory(data.params.from, data.params.fileAge)
         break
-      case 'run':
+      case "run":
         var yquem = new Yquem(data.params.from)
         data.results = await yquem.run().catch(err => {
           data.error = err
         })
         break
       default:
-        console.log(`[subtitles] Unknow method : ${data.method}`)
+        console.log(`[Subtitles] Unknow method : ${data.method}`)
     }
     return data
   }

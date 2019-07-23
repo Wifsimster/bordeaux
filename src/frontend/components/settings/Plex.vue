@@ -2,8 +2,8 @@
   <div>
     <alert color="red" v-if="error">{{ error }}</alert>
     <alert color="green" v-if="testOk">Test is OK !</alert>
-    <div class="p:1 w:1/3">
-      <div class="text:white text:3/2">Transmission settings</div>
+    <div class="p:1">
+      <div class="text:white text:3/2">Plex</div>
       <form v-if="settings">
         <input v-model="settings.host" placeholder="Host" />
         <input type="number" v-model="settings.port" placeholder="Port" />
@@ -55,7 +55,7 @@ export default {
       }
     },
     message(data) {
-      if (data.object === "transmission") {
+      if (data.object === "plex") {
         this.error = null;
         switch (data.method) {
           case "getAll":
@@ -88,13 +88,13 @@ export default {
   methods: {
     getAll() {
       this.$store.commit("webSocket/send", {
-        object: "transmission",
+        object: "plex",
         method: "getAll"
       });
     },
     update() {
       this.$store.commit("webSocket/send", {
-        object: "transmission",
+        object: "plex",
         method: "update",
         params: this.settings
       });
@@ -102,7 +102,7 @@ export default {
     test() {
       this.testOk = null;
       this.$store.commit("webSocket/send", {
-        object: "transmission",
+        object: "plex",
         method: "test",
         params: this.settings
       });
@@ -112,7 +112,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../node_modules/beta-scss/scss/global";
+@import "../../../../node_modules/beta-scss/scss/global";
 
 input {
   height: 36px;
@@ -124,7 +124,6 @@ input {
   @extend .border\:b;
   @extend .border\:grey;
   @extend .placeholder\:grey-light;
-  // @extend .p\:1;
   @extend .mx\:1;
   @extend .block;
 }

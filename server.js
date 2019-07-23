@@ -1,22 +1,24 @@
-const WebSocket = require('ws')
+const WebSocket = require("ws")
 
 const wss = new WebSocket.Server({ port: 8080 })
 
 console.log(`Web Socket server started !`)
 
-const Download = require('./src/backend/channels/download')
-const Transfert = require('./src/backend/channels/transfert')
-const Subtitles = require('./src/backend/channels/subtitles')
-const Transmission = require('./src/backend/channels/transmission')
-const Show = require('./src/backend/channels/show')
+const Download = require("./src/backend/channels/download")
+const Transfert = require("./src/backend/channels/transfert")
+const Subtitles = require("./src/backend/channels/subtitles")
+const Transmission = require("./src/backend/channels/transmission")
+const Plex = require("./src/backend/channels/plex")
+const Show = require("./src/backend/channels/show")
+const Directory = require("./src/backend/channels/directory")
 
-wss.on('connection', function connection(ws, req) {
+wss.on("connection", function connection(ws, req) {
   console.log(`New client connection for ${req.url}`)
 
   // Detect and close broken connections
   ws.isAlive = true
 
-  ws.on('pong', () => {
+  ws.on("pong", () => {
     ws.isAlive = true
   })
 
@@ -30,7 +32,7 @@ wss.on('connection', function connection(ws, req) {
     })
   }, 5000)
 
-  ws.on('message', async data => {
+  ws.on("message", async data => {
     data = JSON.parse(data)
 
     switch (data.object) {
@@ -48,6 +50,12 @@ wss.on('connection', function connection(ws, req) {
         break
       case `show`:
         data = await Show.response(data)
+        break
+      case `plex`:
+        data = await Plex.response(data)
+        break
+      case `directory`:
+        data = await Directory.response(data)
         break
       default:
         console.error(`Unknow object : '${data.object}'`)
