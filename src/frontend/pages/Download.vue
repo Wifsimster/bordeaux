@@ -9,26 +9,41 @@
       </ul>
     </alert>
     <loader v-if="isLoading"></loader>
-    <div>
-      Shows :
-      <div v-for="(show, index) in shows" :key="show.id" class="mx:1">
-        {{ show.title }}
-        <span
-          v-if="!show.episode && !show.isLoading"
-          class="border rounded bg:grey-light text:grey-darker px:1/4 py:1/2 cursor:pointer"
-          @click="searchLatestEpisode(show, index)"
-        >Search latest episode</span>
-        <span
-          v-if="show.isLoading"
-          class="border rounded bg:grey-light text:grey-darker px:1/4 py:1/2"
-        >Loading...</span>
-        <span
-          v-if="show.episode && !show.isLoading"
-          class="border rounded bg:grey-light text:grey-darker px:1/4 py:1/2 cursor:pointer"
-          @click="addToTransmission(show.episode.magnet, index)"
-        >Ajouter à Transmission : {{ show.episode.name }}</span>
-      </div>
-    </div>
+    <table class="w:full">
+      <thead>
+        <tr>
+          <th>Show</th>
+          <th>Creation</th>
+          <th>Status</th>
+          <th>Latest season</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(show, index) in shows" :key="show.id" class="mx:1">
+          <td>{{ show.title }}</td>
+          <td class="text:center">{{ show.creation}}</td>
+          <td class="text:center">{{ show.status }}</td>
+          <td class="text:center">{{ getLatestEpisode(show) }}</td>
+          <td class="text:center">
+            <span
+              v-if="!show.episode && !show.isLoading"
+              class="border rounded bg:grey-light text:grey-darker px:1/4 py:1/2 cursor:pointer"
+              @click="searchLatestEpisode(show, index)"
+            >Search latest episode</span>
+            <span
+              v-if="show.isLoading"
+              class="border rounded bg:grey-light text:grey-darker px:1/4 py:1/2"
+            >Loading...</span>
+            <span
+              v-if="show.episode && !show.isLoading"
+              class="border rounded bg:grey-light text:grey-darker px:1/4 py:1/2 cursor:pointer"
+              @click="addToTransmission(show.episode.magnet, index)"
+            >{{ show.episode.name }}</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
@@ -132,6 +147,18 @@ export default {
     }
   },
   methods: {
+    getLatestEpisode(show) {
+      var currentSeason = show.seasons_details[show.seasons_details.length - 1];
+      return `S${
+        currentSeason.number < 10
+          ? "0" + currentSeason.number
+          : currentSeason.number
+      }E${
+        currentSeason.episodes < 10
+          ? "0" + currentSeason.episodes
+          : currentSeason.episodes
+      }`;
+    },
     getTransmissionSettings() {
       this.$store.commit("webSocket/send", {
         object: "transmission",

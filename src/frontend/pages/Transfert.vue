@@ -13,9 +13,9 @@
         <li v-for="item in episodes" :key="item">{{ item.file }}</li>
       </ul>
     </alert>
-    <alert v-if="hasNoEpisode">No espiode found on {{ from }}/ :(</alert>
+    <alert v-if="hasNoEpisode">No espiode found :(</alert>
     <loader v-if="isLoading" :message="loadingMessage"></loader>
-    <btn v-if="!isLoading" @click="search()">Search new files on {{ from }}/</btn>
+    <btn v-if="!isLoading" @click="search()">Search new files/</btn>
     <btn v-if="hasEpisodes && !isLoading" @click="transfert()">Transfert</btn>
   </div>
 </template>
@@ -36,8 +36,6 @@ export default {
   data() {
     return {
       error: null,
-      from: "w:",
-      to: "z:",
       episodes: null,
       results: null,
       isLoading: false,
@@ -79,8 +77,7 @@ export default {
       this.loadingMessage = `Searching new files on ${this.from}...`;
       this.$store.commit("webSocket/send", {
         object: "transfert",
-        method: "search",
-        params: { from: this.from, to: this.to }
+        method: "search"
       });
     },
     transfert() {
@@ -88,8 +85,7 @@ export default {
       this.loadingMessage = `Transfering files to ${this.to}...`;
       this.$store.commit("webSocket/send", {
         object: "transfert",
-        method: "run",
-        params: { from: this.from, to: this.to }
+        method: "run"
       });
     }
   }

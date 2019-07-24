@@ -1,4 +1,7 @@
 const Medoc = require("medoc")
+const File = require("../utils/file")
+
+const CONFIG_FILE = "directory-config"
 
 class Transfert {
   constructor() {}
@@ -6,13 +9,14 @@ class Transfert {
   static async response(data) {
     switch (data.method) {
       case "search":
-        var medoc = new Medoc(data.params.from, data.params.to)
-        data.results = await medoc.search(data.params.from).catch(err => {
+        var settings = File.readFile(CONFIG_FILE)
+        var medoc = new Medoc(settings.from, settings.to)
+        data.results = await medoc.search(settings.from).catch(err => {
           data.error = err
         })
         break
       case "run":
-        var medoc = new Medoc(data.params.from, data.params.to)
+        var medoc = new Medoc(settings.from, settings.to)
         data.results = await medoc.run().catch(err => {
           data.error = err
         })

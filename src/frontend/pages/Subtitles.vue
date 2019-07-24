@@ -11,7 +11,7 @@
       <p>No recent episode found :(</p>
     </alert>
     <loader v-if="isLoading" :message="loadingMessage"></loader>
-    <btn v-if="!isLoading" @click="search()">Search recent files on {{ from }}/</btn>
+    <btn v-if="!isLoading" @click="search()">Search recent files</btn>
     <btn v-if="hasEpisodes && !isLoading" @click="run()">Search for subtitles</btn>
   </div>
 </template>
@@ -33,7 +33,6 @@ export default {
     return {
       error: null,
       episodes: null,
-      from: "z:",
       results: null,
       isLoading: false,
       loadingMessage: null,
@@ -73,11 +72,11 @@ export default {
     search() {
       this.episodes = null;
       this.isLoading = true;
-      this.loadingMessage = `Searching ${this.from}/ for recent episodes (${this.fileAge} days old)...`;
+      this.loadingMessage = `Searching recent episodes (${this.fileAge} days old)...`;
       this.$store.commit("webSocket/send", {
         object: "subtitles",
         method: "search",
-        params: { from: this.from, fileAge: this.fileAge }
+        params: { fileAge: this.fileAge }
       });
     },
     run() {
@@ -85,8 +84,7 @@ export default {
       this.loadingMessage = `Searching subtitles...`;
       this.$store.commit("webSocket/send", {
         object: "subtitles",
-        method: "run",
-        params: { from: this.from }
+        method: "run"
       });
     }
   }

@@ -1,4 +1,7 @@
 const Yquem = require("yquem")
+const File = require("../utils/file")
+
+const CONFIG_FILE = "directory-config"
 
 class Subtitles {
   constructor() {}
@@ -6,11 +9,13 @@ class Subtitles {
   static async response(data) {
     switch (data.method) {
       case "search":
-        var yquem = new Yquem(data.params.from)
-        data.results = yquem.getRecentFilesFromDirectory(data.params.from, data.params.fileAge)
+        var settings = File.readFile(CONFIG_FILE)
+        var yquem = new Yquem(settings.from, data.params.fileAge)
+        data.results = yquem.getRecentFilesFromDirectory()
         break
       case "run":
-        var yquem = new Yquem(data.params.from)
+        var settings = File.readFile(CONFIG_FILE)
+        var yquem = new Yquem(settings.from)
         data.results = await yquem.run().catch(err => {
           data.error = err
         })
