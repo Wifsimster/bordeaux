@@ -12,6 +12,7 @@ const Transfert = require('./channels/transfert')
 const Subtitles = require('./channels/subtitles')
 const Download = require('./channels/download')
 const Server = require('./channels/server')
+const Trakt = require('./channels/trakt')
 const Plex = require('./channels/plex')
 const Show = require('./channels/show')
 
@@ -65,6 +66,9 @@ wss.on('connection', function connection(ws, req) {
         break
       case `plex`:
         data = await Plex.response(data)
+        break
+      case `trakt`:
+        data = await Trakt.response(data)
         break
       default:
         console.error(`Unknow object : '${data.object}'`)

@@ -1,5 +1,5 @@
 <template>
-  <div class="min-w:xs">
+  <div class="min-w:xs max-w:sm">
     <alert color="red" v-if="error">{{ error }}</alert>
     <alert color="green" v-if="testOk">Test is OK !</alert>
     <div class="p:1">
@@ -119,11 +119,11 @@ input {
   caret-color: map-get($colors, "blue-dark");
   @extend .w\:full;
   @extend .text\:1;
-  @extend .text\:grey-dark;
+  @extend .text\:grey;
   @extend .bg\:transparent;
   @extend .border\:b;
   @extend .border\:grey;
-  @extend .placeholder\:grey-light;
+  @extend .placeholder\:grey-dark;
   @extend .mx\:1;
   @extend .block;
 }

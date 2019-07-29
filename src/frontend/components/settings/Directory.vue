@@ -1,5 +1,5 @@
 <template>
-  <div class="min-w:xs">
+  <div class="min-w:xs max-w:sm">
     <alert color="red" v-if="error">{{ error }}</alert>
     <div class="p:1">
       <div class="text:white text:3/2">Directories</div>
@@ -88,11 +88,11 @@ input {
   caret-color: map-get($colors, "blue-dark");
   @extend .w\:full;
   @extend .text\:1;
-  @extend .text\:grey-dark;
+  @extend .text\:grey;
   @extend .bg\:transparent;
   @extend .border\:b;
   @extend .border\:grey;
-  @extend .placeholder\:grey-light;
+  @extend .placeholder\:grey-dark;
   @extend .mx\:1;
   @extend .block;
 }

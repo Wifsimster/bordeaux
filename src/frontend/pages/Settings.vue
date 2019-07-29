@@ -4,6 +4,7 @@
     <directory class="flex:1"></directory>
     <transmission class="flex:1"></transmission>
     <plex class="flex:1"></plex>
+    <trakt class="flex:1"></trakt>
   </div>
 </template>
 
@@ -12,12 +13,14 @@ import Directory from "components/settings/directory.vue";
 import Transmission from "components/settings/transmission.vue";
 import Plex from "components/settings/plex.vue";
 import Server from "components/settings/server.vue";
+import Trakt from "components/settings/trakt.vue";
 export default {
   components: {
     Directory,
     Transmission,
     Plex,
-    Server
+    Server,
+    Trakt
   }
 };
 </script>
