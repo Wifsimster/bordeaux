@@ -9,7 +9,7 @@
       </ul>
     </alert>
     <loader v-if="isLoading"></loader>
-    <table class="w:full border:collapse">
+    <!-- <table class="w:full border:collapse">
       <thead>
         <tr>
           <th>Show</th>
@@ -43,7 +43,7 @@
           </td>
         </tr>
       </tbody>
-    </table>
+    </table>-->
   </div>
 </template>
 
@@ -58,7 +58,7 @@ export default {
     return {
       error: null,
       results: null,
-      shows: null,
+      // shows: null,
       settings: null,
       isLoading: false,
       latestEpisode: null
@@ -66,8 +66,8 @@ export default {
   },
   created() {
     this.getTransmissionSettings();
+
     this.getShows();
-    this.getLatestEpisode(19596);
   },
   watch: {
     message(data) {
@@ -85,81 +85,93 @@ export default {
         }
       }
 
-      if (data.object === "show") {
+      // if (data.object === "show") {
+      //   switch (data.method) {
+      //     case "getAll":
+      //       if (data.error) {
+      //         this.error = data.error;
+      //       } else {
+      //         if (data.results) {
+      //           let shows = Object.assign([], data.results);
+      //           this.shows = shows.map(item => ({
+      //             ...item,
+      //             isLoading: false,
+      //             episode: null
+      //           }));
+      //         }
+      //       }
+      //       break;
+      //     case "latestEpisode":
+      //       if (data.error) {
+      //         this.error = data.error;
+      //       } else {
+      //         this.latestEpisode = Object.assign({}, data.results);
+      //       }
+      //       break;
+      //     default:
+      //       console.log(`Unknow method : ${data.method}`);
+      //   }
+      // }
+
+      if (data.object === "trakt") {
         switch (data.method) {
-          case "getAll":
+          case "getShows":
             if (data.error) {
               this.error = data.error;
             } else {
-              if (data.results) {
-                let shows = Object.assign([], data.results);
-                this.shows = shows.map(item => ({
-                  ...item,
-                  isLoading: false,
-                  episode: null
-                }));
-              }
+              console.log(data.results);
             }
             break;
-          case "latestEpisode":
-            if (data.error) {
-              this.error = data.error;
-            } else {
-              this.latestEpisode = Object.assign({}, data.results);
-            }
-            break;
-          default:
-            console.log(`Unknow method : ${data.method}`);
         }
       }
 
-      if (data.object === "download") {
-        switch (data.method) {
-          case "addToTransmission":
-            this.isLoading = false;
-            if (data.error) {
-              this.error = data.error;
-            } else {
-              this.shows = this.shows.map((show, index) => {
-                if (show.id === data.params.show.id) {
-                  show = Object.assign(show, {
-                    isLoading: false,
-                    episode: null
-                  });
-                }
-                return show;
-              });
-            }
-            break;
-          case "searchLatestEpisode":
-            if (data.error) {
-              this.error = data.error;
-            } else {
-              this.shows = this.shows.map((show, index) => {
-                if (show.id === data.params.id) {
-                  show.isLoading = false;
-                  if (data.results) {
-                    show.episode = data.results;
-                  } else {
-                    show.episode = null;
-                  }
-                }
-                return show;
-              });
-            }
-            break;
-          case "run":
-            this.isLoading = false;
-            if (data.error) {
-              this.error = data.error;
-            } else {
-              this.results = Object.assign([], data.results);
-            }
-            break;
-          default:
-            console.log(`Unknow method : ${data.method}`);
-        }
-      }
+      // if (data.object === "download") {
+      //   switch (data.method) {
+      //     case "addToTransmission":
+      //       this.isLoading = false;
+      //       if (data.error) {
+      //         this.error = data.error;
+      //       } else {
+      //         this.shows = this.shows.map((show, index) => {
+      //           if (show.id === data.params.show.id) {
+      //             show = Object.assign(show, {
+      //               isLoading: false,
+      //               episode: null
+      //             });
+      //           }
+      //           return show;
+      //         });
+      //       }
+      //       break;
+      //     case "searchLatestEpisode":
+      //       if (data.error) {
+      //         this.error = data.error;
+      //       } else {
+      //         this.shows = this.shows.map((show, index) => {
+      //           if (show.id === data.params.id) {
+      //             show.isLoading = false;
+      //             if (data.results) {
+      //               show.episode = data.results;
+      //             } else {
+      //               show.episode = null;
+      //             }
+      //           }
+      //           return show;
+      //         });
+      //       }
+      //       break;
+      //     case "run":
+      //       this.isLoading = false;
+      //       if (data.error) {
+      //         this.error = data.error;
+      //       } else {
+      //         this.results = Object.assign([], data.results);
+      //       }
+      //       break;
+      //     default:
+      //       console.log(`Unknow method : ${data.method}`);
+      //   }
+      // }
     }
   },
   methods: {
@@ -190,34 +202,41 @@ export default {
         params: { magnetLink, settings: this.settings, show: this.shows[index] }
       });
     },
-    searchLatestEpisode(show, index) {
-      this.shows[index].isLoading = true;
+    // searchLatestEpisode(show, index) {
+    //   this.shows[index].isLoading = true;
 
-      this.$store.commit("webSocket/send", {
-        object: "download",
-        method: "searchLatestEpisode",
-        params: show
-      });
-    },
+    //   this.$store.commit("webSocket/send", {
+    //     object: "download",
+    //     method: "searchLatestEpisode",
+    //     params: show
+    //   });
+    // },
+    // getShows() {
+    //   this.$store.commit("webSocket/send", {
+    //     object: "show",
+    //     method: "getAll"
+    //   });
+    // },
+    // getLatestEpisode(id) {
+    //   this.$store.commit("webSocket/send", {
+    //     object: "show",
+    //     method: "latestEpisode",
+    //     params: { showId: id }
+    //   });
+    // },
+    // run() {
+    //   this.isLoading = true;
+    //   this.$store.commit("webSocket/send", {
+    //     object: "download",
+    //     method: "run",
+    //     params: { shows: this.shows.split(",") }
+    //   });
+    // },
     getShows() {
       this.$store.commit("webSocket/send", {
-        object: "show",
-        method: "getAll"
-      });
-    },
-    getLatestEpisode(id) {
-      this.$store.commit("webSocket/send", {
-        object: "show",
-        method: "latestEpisode",
-        params: { showId: id }
-      });
-    },
-    run() {
-      this.isLoading = true;
-      this.$store.commit("webSocket/send", {
-        object: "download",
-        method: "run",
-        params: { shows: this.shows.split(",") }
+        object: "trakt",
+        method: "getShows",
+        params: { startDate: "2019-07-29", days: "7" }
       });
     }
   }
