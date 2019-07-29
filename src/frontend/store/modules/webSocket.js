@@ -33,18 +33,18 @@ const mutations = {
 
 const actions = {
   ws(payload, data) {
-    payload.commit('ws', data)
+    payload.commit("ws", data)
 
     payload.state.ws.onopen = evt => {
-      payload.commit('isAlive', true)
+      payload.commit("isAlive", true)
 
       state.ws.onmessage = evt => {
-        payload.commit('message', JSON.parse(evt.data))
+        payload.commit("message", JSON.parse(evt.data))
       }
     }
 
     payload.state.ws.onclose = evt => {
-      payload.commit('isAlive', false)
+      payload.commit("isAlive", false)
     }
   }
 }

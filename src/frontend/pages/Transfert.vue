@@ -4,13 +4,13 @@
     <alert v-if="message && message.results && message.results.length > 0">
       <p>Files to transfert :</p>
       <ul class="list-reset py:1 px:1/2">
-        <li v-for="item in results" :key="item">{{ item }}</li>
+        <li v-for="(item, index) in results" :key="index">{{ item }}</li>
       </ul>
     </alert>
     <alert v-if="hasEpisodes">
       <p>Episodes found :</p>
       <ul class="list-reset py:1 px:1/2">
-        <li v-for="item in episodes" :key="item">{{ item.file }}</li>
+        <li v-for="(item, index) in episodes" :key="index">{{ item.file }}</li>
       </ul>
     </alert>
     <alert v-if="hasNoEpisode">No espiode found :(</alert>

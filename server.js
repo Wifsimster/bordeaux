@@ -25,6 +25,7 @@ wss.on("connection", function connection(ws, req) {
   setInterval(function ping() {
     wss.clients.forEach(function each(ws) {
       if (ws.isAlive === false) {
+        console.log("Terminate connection !")
         return ws.terminate()
       }
       ws.isAlive = false

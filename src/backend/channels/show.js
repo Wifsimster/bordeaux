@@ -15,17 +15,23 @@ class Show {
 
   static async response(data) {
     switch (data.method) {
-      case "search":
-        let results = await instance.get(`shows/search?title=${data.params.query}`).catch(err => {
-          console.error(err)
+      case "latestEpisode":
+        let rst = await instance.get(`episodes/latest?id=${data.params.showId}`).catch(err => {
+          data.error = `${err.code} : ${err.message}`
         })
 
-        if (results.status === 200) {
-          data.results = results.data.shows
-        } else {
-          data.error = results.error
+        if (rst && rst.status === 200) {
+          data.results = rst.data
         }
+        break
+      case "search":
+        let results = await instance.get(`shows/search?title=${data.params.query}`).catch(err => {
+          data.error = `${err.code} : ${err.message}`
+        })
 
+        if (results && results.status === 200) {
+          data.results = results.data.shows
+        }
         break
       case "getAll":
         data.results = File.readFile(SHOWS_FILE)

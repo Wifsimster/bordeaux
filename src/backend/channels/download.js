@@ -20,9 +20,6 @@ class Download {
           data.error = err
         })
         break
-      case "getShows":
-        data.results = File.readFile(SHOWS_FILE)
-        break
       case "run":
         var petrus = new Petrus(config)
         var results = await petrus.run(data.params.shows).catch(err => {

@@ -9,7 +9,7 @@
       </ul>
     </alert>
     <loader v-if="isLoading"></loader>
-    <table class="w:full">
+    <table class="w:full border:collapse">
       <thead>
         <tr>
           <th>Show</th>
@@ -20,8 +20,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(show, index) in shows" :key="show.id" class="mx:1">
-          <td>{{ show.title }}</td>
+        <tr v-for="(show, index) in shows" :key="show.id" class="mx:1 hover:bg:orange">
+          <td class="p:1/2">{{ show.title }}</td>
           <td class="text:center">{{ show.creation}}</td>
           <td class="text:center">{{ show.status }}</td>
           <td class="text:center">{{ getLatestEpisode(show) }}</td>
@@ -60,12 +60,14 @@ export default {
       results: null,
       shows: null,
       settings: null,
-      isLoading: false
+      isLoading: false,
+      latestEpisode: null
     };
   },
   created() {
     this.getTransmissionSettings();
     this.getShows();
+    this.getLatestEpisode(19596);
   },
   watch: {
     message(data) {
@@ -76,6 +78,34 @@ export default {
               this.error = data.error;
             } else {
               this.settings = Object.assign({}, data.results);
+            }
+            break;
+          default:
+            console.log(`Unknow method : ${data.method}`);
+        }
+      }
+
+      if (data.object === "show") {
+        switch (data.method) {
+          case "getAll":
+            if (data.error) {
+              this.error = data.error;
+            } else {
+              if (data.results) {
+                let shows = Object.assign([], data.results);
+                this.shows = shows.map(item => ({
+                  ...item,
+                  isLoading: false,
+                  episode: null
+                }));
+              }
+            }
+            break;
+          case "latestEpisode":
+            if (data.error) {
+              this.error = data.error;
+            } else {
+              this.latestEpisode = Object.assign({}, data.results);
             }
             break;
           default:
@@ -118,20 +148,6 @@ export default {
               });
             }
             break;
-          case "getShows":
-            if (data.error) {
-              this.error = data.error;
-            } else {
-              if (data.results) {
-                let shows = Object.assign([], data.results);
-                this.shows = shows.map(item => ({
-                  ...item,
-                  isLoading: false,
-                  episode: null
-                }));
-              }
-            }
-            break;
           case "run":
             this.isLoading = false;
             if (data.error) {
@@ -147,18 +163,18 @@ export default {
     }
   },
   methods: {
-    getLatestEpisode(show) {
-      var currentSeason = show.seasons_details[show.seasons_details.length - 1];
-      return `S${
-        currentSeason.number < 10
-          ? "0" + currentSeason.number
-          : currentSeason.number
-      }E${
-        currentSeason.episodes < 10
-          ? "0" + currentSeason.episodes
-          : currentSeason.episodes
-      }`;
-    },
+    // getLatestEpisode(show) {
+    //   var currentSeason = show.seasons_details[show.seasons_details.length - 1];
+    //   return `S${
+    //     currentSeason.number < 10
+    //       ? "0" + currentSeason.number
+    //       : currentSeason.number
+    //   }E${
+    //     currentSeason.episodes < 10
+    //       ? "0" + currentSeason.episodes
+    //       : currentSeason.episodes
+    //   }`;
+    // },
     getTransmissionSettings() {
       this.$store.commit("webSocket/send", {
         object: "transmission",
@@ -185,8 +201,15 @@ export default {
     },
     getShows() {
       this.$store.commit("webSocket/send", {
-        object: "download",
-        method: "getShows"
+        object: "show",
+        method: "getAll"
+      });
+    },
+    getLatestEpisode(id) {
+      this.$store.commit("webSocket/send", {
+        object: "show",
+        method: "latestEpisode",
+        params: { showId: id }
       });
     },
     run() {

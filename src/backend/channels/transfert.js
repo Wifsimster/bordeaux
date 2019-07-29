@@ -16,6 +16,7 @@ class Transfert {
         })
         break
       case "run":
+        var settings = File.readFile(CONFIG_FILE)
         var medoc = new Medoc(settings.from, settings.to)
         data.results = await medoc.run().catch(err => {
           data.error = err

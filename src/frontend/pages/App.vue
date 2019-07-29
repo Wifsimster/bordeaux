@@ -41,7 +41,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../../../node_modules/beta-scss/scss/global";
+@import "node_modules/beta-scss/scss/global";
 
 * {
   ::-webkit-scrollbar {
