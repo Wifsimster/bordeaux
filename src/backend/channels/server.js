@@ -1,8 +1,8 @@
 const File = require('../utils/file')
 
-const CONFIG_FILE = 'directory-config'
+const CONFIG_FILE = 'server-config'
 
-class Directory {
+class Server {
   constructor() {}
 
   static response(data) {
@@ -15,10 +15,10 @@ class Directory {
         data.results = File.readFile(CONFIG_FILE)
         break
       default:
-        console.log(`[Directory] Unknow method : ${data.method}`)
+        console.log(`[Server] Unknow method : ${data.method}`)
     }
     return data
   }
 }
 
-module.exports = Directory
+module.exports = Server

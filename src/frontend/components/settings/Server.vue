@@ -2,10 +2,10 @@
   <div class="min-w:xs">
     <alert color="red" v-if="error">{{ error }}</alert>
     <div class="p:1">
-      <div class="text:white text:3/2">Directories</div>
+      <div class="text:white text:3/2">Server</div>
       <form v-if="settings">
-        <input type="text" v-model="settings.from" placeholder="Path to scan for new download" />
-        <input type="text" v-model="settings.to" placeholder="Path to scan for existing shows" />
+        <input type="text" v-model="settings.host" placeholder="localhost" />
+        <input type="text" v-model="settings.port" placeholder="8080" />
       </form>
     </div>
   </div>
@@ -28,18 +28,18 @@ export default {
     this.getAll();
   },
   watch: {
-    "settings.from"(newVal, oldVal) {
+    "settings.host"(newVal, oldVal) {
       if (oldVal) {
         this.update();
       }
     },
-    "settings.to"(newVal, oldVal) {
+    "settings.port"(newVal, oldVal) {
       if (oldVal) {
         this.update();
       }
     },
     message(data) {
-      if (data.object === "directory") {
+      if (data.object === "server") {
         this.error = null;
         switch (data.method) {
           case "getAll":
@@ -65,13 +65,13 @@ export default {
   methods: {
     getAll() {
       this.$store.commit("webSocket/send", {
-        object: "directory",
+        object: "server",
         method: "getAll"
       });
     },
     update() {
       this.$store.commit("webSocket/send", {
-        object: "directory",
+        object: "server",
         method: "update",
         params: this.settings
       });

@@ -1,12 +1,16 @@
 const fs = require('fs')
+const path = require('path')
 
 const ENCODING = `utf-8`
 
 class File {
   constructor() {}
 
-  static readFile(path) {
-    var data = fs.readFileSync(`src/backend/data/${path}.json`, { encoding: ENCODING, flag: 'a+' })
+  static readFile(url) {
+    var data = fs.readFileSync(path.resolve(`${__dirname}/../data/${url}.json`), {
+      encoding: ENCODING,
+      flag: 'a+'
+    })
 
     if (data === '') {
       return null
@@ -15,8 +19,11 @@ class File {
     }
   }
 
-  static writeFile(path, data) {
-    fs.writeFileSync(`src/backend/data/${path}.json`, JSON.stringify(data), { encoding: ENCODING, flag: 'w' })
+  static writeFile(url, data) {
+    fs.writeFileSync(path.resolve(`${__dirname}/../data/${url}.json`), JSON.stringify(data), {
+      encoding: ENCODING,
+      flag: 'w'
+    })
   }
 }
 

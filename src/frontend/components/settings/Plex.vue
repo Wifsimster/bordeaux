@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="min-w:xs">
     <alert color="red" v-if="error">{{ error }}</alert>
     <alert color="green" v-if="testOk">Test is OK !</alert>
     <div class="p:1">

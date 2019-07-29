@@ -1,31 +1,34 @@
-const WebSocket = require("ws")
+const WebSocket = require('ws')
+const File = require('./utils/file')
+const settings = File.readFile('server-config')
 
-const wss = new WebSocket.Server({ port: 8080 })
+const wss = new WebSocket.Server({ port: settings.port })
 
-console.log(`Web Socket server started !`)
+console.log(`Web Socket server started at : ws://${settings.host}:${settings.port}`)
 
-const Download = require("./src/backend/channels/download")
-const Transfert = require("./src/backend/channels/transfert")
-const Subtitles = require("./src/backend/channels/subtitles")
-const Transmission = require("./src/backend/channels/transmission")
-const Plex = require("./src/backend/channels/plex")
-const Show = require("./src/backend/channels/show")
-const Directory = require("./src/backend/channels/directory")
+const Transmission = require('./channels/transmission')
+const Directory = require('./channels/directory')
+const Transfert = require('./channels/transfert')
+const Subtitles = require('./channels/subtitles')
+const Download = require('./channels/download')
+const Server = require('./channels/server')
+const Plex = require('./channels/plex')
+const Show = require('./channels/show')
 
-wss.on("connection", function connection(ws, req) {
+wss.on('connection', function connection(ws, req) {
   console.log(`New client connection for ${req.url}`)
 
   // Detect and close broken connections
   ws.isAlive = true
 
-  ws.on("pong", () => {
+  ws.on('pong', () => {
     ws.isAlive = true
   })
 
   setInterval(function ping() {
     wss.clients.forEach(function each(ws) {
       if (ws.isAlive === false) {
-        console.log("Terminate connection !")
+        console.warn('Client dead => Terminate connection !')
         return ws.terminate()
       }
       ws.isAlive = false
@@ -33,7 +36,7 @@ wss.on("connection", function connection(ws, req) {
     })
   }, 5000)
 
-  ws.on("message", async data => {
+  ws.on('message', async data => {
     data = JSON.parse(data)
 
     switch (data.object) {
@@ -46,17 +49,22 @@ wss.on("connection", function connection(ws, req) {
       case `subtitles`:
         data = await Subtitles.response(data)
         break
-      case `transmission`:
-        data = await Transmission.response(data)
-        break
       case `show`:
         data = await Show.response(data)
         break
-      case `plex`:
-        data = await Plex.response(data)
-        break
+
+      // Settings
       case `directory`:
         data = await Directory.response(data)
+        break
+      case `server`:
+        data = await Server.response(data)
+        break
+      case `transmission`:
+        data = await Transmission.response(data)
+        break
+      case `plex`:
+        data = await Plex.response(data)
         break
       default:
         console.error(`Unknow object : '${data.object}'`)

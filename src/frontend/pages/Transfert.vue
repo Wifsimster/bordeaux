@@ -74,7 +74,7 @@ export default {
   methods: {
     search() {
       this.isLoading = true;
-      this.loadingMessage = `Searching new files on ${this.from}...`;
+      this.loadingMessage = `Searching new files...`;
       this.$store.commit("webSocket/send", {
         object: "transfert",
         method: "search"
@@ -82,7 +82,7 @@ export default {
     },
     transfert() {
       this.isLoading = true;
-      this.loadingMessage = `Transfering files to ${this.to}...`;
+      this.loadingMessage = `Transfering files to...`;
       this.$store.commit("webSocket/send", {
         object: "transfert",
         method: "run"
