@@ -21,6 +21,7 @@
               v-for="episode in getEpisodesFrom(day)"
               :key="episode.episode.ids.imdb"
             >
+              <img v-if="episode.images" v-lazy="getImageSrc(episode)" class="max-w:xs" />
               <div>{{ episode.show.title }}</div>
               <div>{{ episode.episode.season }}x{{ episode.episode.number }} {{ episode.episode.title }}</div>
               <div>
@@ -53,13 +54,18 @@ export default {
       settings: null,
       isLoading: false,
       episodes: null,
-      currentDay: startOfWeek(new Date(), { weekStartsOn: 1 }),
+      currentDay: "2019-07-01",
+      currentWeek: null,
       days: []
     };
   },
   created() {
+    this.currentWeek = startOfWeek(new Date(this.currentDay), {
+      weekStartsOn: 1
+    });
+
     for (var index = 0; index < 7; index++) {
-      this.days.push(addDays(this.currentDay, index));
+      this.days.push(addDays(this.currentWeek, index));
     }
 
     this.getTransmissionSettings();
@@ -108,6 +114,11 @@ export default {
     }
   },
   methods: {
+    getImageSrc(episode) {
+      return (
+        "https://image.tmdb.org/t/p/original" + episode.images[0].file_path
+      );
+    },
     getEpisodesFrom(day) {
       if (this.episodes) {
         return this.episodes.filter(episode => {
@@ -144,7 +155,7 @@ export default {
       this.$store.commit("webSocket/send", {
         object: "trakt",
         method: "getEpisodes",
-        params: { startDate: "2019-07-29", days: "7" }
+        params: { startDate: this.currentDay, days: "7" }
       });
     }
   }
