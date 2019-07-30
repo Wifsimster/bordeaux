@@ -1,53 +1,45 @@
 <template>
   <div class="p:1">
-    <div class="text:3/2 text:bold mb:1">Latest episodes available on TPB</div>
     <alert color="red" v-if="error">{{ error }}</alert>
+
     <alert v-if="results">
       <p>Fichiers ajoutés à Transmission :</p>
       <ul class="list-reset pl:1 px:1/2">
         <li v-for="item in message" :key="item.id">{{ item.name }}</li>
       </ul>
     </alert>
+
     <loader v-if="isLoading"></loader>
-    <!-- <table class="w:full border:collapse">
-      <thead>
-        <tr>
-          <th>Show</th>
-          <th>Creation</th>
-          <th>Status</th>
-          <th>Latest season</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(show, index) in shows" :key="show.id" class="mx:1 hover:bg:orange">
-          <td class="p:1/2">{{ show.title }}</td>
-          <td class="text:center">{{ show.creation}}</td>
-          <td class="text:center">{{ show.status }}</td>
-          <td class="text:center">{{ getLatestEpisode(show) }}</td>
-          <td class="text:center">
-            <span
-              v-if="!show.episode && !show.isLoading"
-              class="border rounded bg:grey-light text:grey-darker px:1/4 py:1/2 cursor:pointer"
-              @click="searchLatestEpisode(show, index)"
-            >Search latest episode</span>
-            <span
-              v-if="show.isLoading"
-              class="border rounded bg:grey-light text:grey-darker px:1/4 py:1/2"
-            >Loading...</span>
-            <span
-              v-if="show.episode && !show.isLoading"
-              class="border rounded bg:grey-light text:grey-darker px:1/4 py:1/2 cursor:pointer"
-              @click="addToTransmission(show.episode.magnet, index)"
-            >{{ show.episode.name }}</span>
-          </td>
-        </tr>
-      </tbody>
-    </table>-->
+
+    <transition name="opacity">
+      <div class="calendar" v-if="episodes && episodes.length > 0">
+        <div class="w:full" v-for="(day, index) in days" :key="index">
+          <div class="text:orange p:1/4 bg:grey-darkest">{{ format(day) }}</div>
+          <div class="flex flex:wrap">
+            <div
+              class="p:1/4 min-w:xs"
+              v-for="episode in getEpisodesFrom(day)"
+              :key="episode.episode.ids.imdb"
+            >
+              <div>{{ episode.show.title }}</div>
+              <div>{{ episode.episode.season }}x{{ episode.episode.number }} {{ episode.episode.title }}</div>
+              <div>
+                <btn @click="searchEpisode(episode)" size="sm">Search</btn>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
 <script>
+import format from "date-fns/format";
+import addDays from "date-fns/addDays";
+import isSameDay from "date-fns/isSameDay";
+import startOfWeek from "date-fns/startOfWeek";
+
 export default {
   computed: {
     message() {
@@ -58,16 +50,21 @@ export default {
     return {
       error: null,
       results: null,
-      // shows: null,
       settings: null,
       isLoading: false,
-      latestEpisode: null
+      episodes: null,
+      currentDay: startOfWeek(new Date(), { weekStartsOn: 1 }),
+      days: []
     };
   },
   created() {
+    for (var index = 0; index < 7; index++) {
+      this.days.push(addDays(this.currentDay, index));
+    }
+
     this.getTransmissionSettings();
 
-    this.getShows();
+    this.getEpisodes();
   },
   watch: {
     message(data) {
@@ -85,37 +82,21 @@ export default {
         }
       }
 
-      // if (data.object === "show") {
-      //   switch (data.method) {
-      //     case "getAll":
-      //       if (data.error) {
-      //         this.error = data.error;
-      //       } else {
-      //         if (data.results) {
-      //           let shows = Object.assign([], data.results);
-      //           this.shows = shows.map(item => ({
-      //             ...item,
-      //             isLoading: false,
-      //             episode: null
-      //           }));
-      //         }
-      //       }
-      //       break;
-      //     case "latestEpisode":
-      //       if (data.error) {
-      //         this.error = data.error;
-      //       } else {
-      //         this.latestEpisode = Object.assign({}, data.results);
-      //       }
-      //       break;
-      //     default:
-      //       console.log(`Unknow method : ${data.method}`);
-      //   }
-      // }
-
       if (data.object === "trakt") {
         switch (data.method) {
-          case "getShows":
+          case "getEpisodes":
+            if (data.error) {
+              this.error = data.error;
+            } else {
+              this.episodes = data.results;
+            }
+            break;
+        }
+      }
+
+      if (data.object === "download") {
+        switch (data.method) {
+          case "searchEpisode":
             if (data.error) {
               this.error = data.error;
             } else {
@@ -124,73 +105,30 @@ export default {
             break;
         }
       }
-
-      // if (data.object === "download") {
-      //   switch (data.method) {
-      //     case "addToTransmission":
-      //       this.isLoading = false;
-      //       if (data.error) {
-      //         this.error = data.error;
-      //       } else {
-      //         this.shows = this.shows.map((show, index) => {
-      //           if (show.id === data.params.show.id) {
-      //             show = Object.assign(show, {
-      //               isLoading: false,
-      //               episode: null
-      //             });
-      //           }
-      //           return show;
-      //         });
-      //       }
-      //       break;
-      //     case "searchLatestEpisode":
-      //       if (data.error) {
-      //         this.error = data.error;
-      //       } else {
-      //         this.shows = this.shows.map((show, index) => {
-      //           if (show.id === data.params.id) {
-      //             show.isLoading = false;
-      //             if (data.results) {
-      //               show.episode = data.results;
-      //             } else {
-      //               show.episode = null;
-      //             }
-      //           }
-      //           return show;
-      //         });
-      //       }
-      //       break;
-      //     case "run":
-      //       this.isLoading = false;
-      //       if (data.error) {
-      //         this.error = data.error;
-      //       } else {
-      //         this.results = Object.assign([], data.results);
-      //       }
-      //       break;
-      //     default:
-      //       console.log(`Unknow method : ${data.method}`);
-      //   }
-      // }
     }
   },
   methods: {
-    // getLatestEpisode(show) {
-    //   var currentSeason = show.seasons_details[show.seasons_details.length - 1];
-    //   return `S${
-    //     currentSeason.number < 10
-    //       ? "0" + currentSeason.number
-    //       : currentSeason.number
-    //   }E${
-    //     currentSeason.episodes < 10
-    //       ? "0" + currentSeason.episodes
-    //       : currentSeason.episodes
-    //   }`;
-    // },
+    getEpisodesFrom(day) {
+      if (this.episodes) {
+        return this.episodes.filter(episode => {
+          return isSameDay(new Date(episode.first_aired), day);
+        });
+      }
+    },
+    format(value) {
+      return format(value, "dd / MM / yyyy");
+    },
     getTransmissionSettings() {
       this.$store.commit("webSocket/send", {
         object: "transmission",
         method: "getAll"
+      });
+    },
+    searchEpisode(episode) {
+      this.$store.commit("webSocket/send", {
+        object: "download",
+        method: "searchLatestEpisode",
+        params: { title: episode.show.title }
       });
     },
     addToTransmission(magnetLink, index) {
@@ -202,40 +140,10 @@ export default {
         params: { magnetLink, settings: this.settings, show: this.shows[index] }
       });
     },
-    // searchLatestEpisode(show, index) {
-    //   this.shows[index].isLoading = true;
-
-    //   this.$store.commit("webSocket/send", {
-    //     object: "download",
-    //     method: "searchLatestEpisode",
-    //     params: show
-    //   });
-    // },
-    // getShows() {
-    //   this.$store.commit("webSocket/send", {
-    //     object: "show",
-    //     method: "getAll"
-    //   });
-    // },
-    // getLatestEpisode(id) {
-    //   this.$store.commit("webSocket/send", {
-    //     object: "show",
-    //     method: "latestEpisode",
-    //     params: { showId: id }
-    //   });
-    // },
-    // run() {
-    //   this.isLoading = true;
-    //   this.$store.commit("webSocket/send", {
-    //     object: "download",
-    //     method: "run",
-    //     params: { shows: this.shows.split(",") }
-    //   });
-    // },
-    getShows() {
+    getEpisodes() {
       this.$store.commit("webSocket/send", {
         object: "trakt",
-        method: "getShows",
+        method: "getEpisodes",
         params: { startDate: "2019-07-29", days: "7" }
       });
     }

@@ -75,11 +75,21 @@ class Trakt {
             data.error = err.message
           })
         break
-      case 'getShows':
+      case 'getEpisodes':
         var trakt = new Trakt()
-
-        data.result = await trakt.instance
+        data.results = await trakt.instance
           .get(`calendars/my/shows/${data.params.startDate}/${data.params.days}`)
+          .then(response => {
+            return response.data
+          })
+          .catch(err => {
+            data.error = err.message
+          })
+        break
+      case 'getEpisode':
+        var trakt = new Trakt()
+        data.results = await trakt.instance
+          .get(`shows/${data.params.showId}/seasons/${data.params.season}/episodes/${data.params.episode}`)
           .then(response => {
             return response.data
           })
