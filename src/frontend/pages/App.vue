@@ -17,7 +17,9 @@
 <script>
 const Navigation = () => import("components/Navigation.vue");
 const Logo = () => import("components/Logo.vue");
+
 import "beta-scss";
+
 export default {
   components: {
     Navigation,

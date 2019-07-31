@@ -11,7 +11,7 @@
 
     <loader v-if="isLoading"></loader>
 
-    <div class="flex justify:center content:center">
+    <div class="flex justify:center">
       <div class="flex:1">
         <btn @click="previous()" size="sm">Previous</btn>
       </div>
@@ -23,36 +23,45 @@
       </div>
     </div>
 
-    <transition name="opacity">
-      <div class="mx:1" v-if="episodes && episodes.length > 0">
-        <transition-group name="slide">
-          <div class="w:full" v-for="day in days" :key="format(day)">
-            <div class="text:orange p:1/4 bg:grey-darkest">{{ format(day) }}</div>
-            <div class="flex flex:wrap">
-              <template v-if="getEpisodesFrom(day).length > 0">
-                <div
-                  class="max-w:xs relative cursor:pointer"
-                  v-for="episode in getEpisodesFrom(day)"
-                  :key="episode.episode.ids.imdb"
-                  @click="open(episode)"
-                >
-                  <img
-                    v-if="episode.images"
-                    v-lazy="getImageSrc(episode)"
-                    class="min-h:full w:full align:middle"
-                  />
-                  <div class="absolute b:3 l:1">{{ episode.show.title }}</div>
+    <div class="mx:1" v-if="episodes && episodes.length > 0">
+      <transition-group name="slide">
+        <div class="w:full" v-for="day in days" :key="format(day)">
+          <div class="text:orange p:1/4 bg:grey-darkest">{{ format(day) }}</div>
+          <div class="responsive:6">
+            <template v-if="getEpisodesFrom(day).length > 0">
+              <div
+                class="cursor:pointer"
+                v-for="episode in getEpisodesFrom(day)"
+                :key="episode.episode.ids.imdb"
+                @click="open(episode)"
+              >
+                <img
+                  v-if="episode.images"
+                  v-lazy="getImageSrc(episode)"
+                  class="min-h:full w:full align:middle"
+                />
+                <div class="absolute t:0 flex w:full justify:end">
                   <div
-                    class="absolute b:1 l:1 text:bold truncate max-w:11/12"
-                  >{{ episode.episode.season }}x{{ episode.episode.number }} {{ episode.episode.title }}</div>
+                    class="shadow bg:orange px:1/2 py:1/2 text:7/8 my:1/4"
+                    v-if="hasBeenWatched(episode)"
+                  ></div>
+                  <div
+                    class="shadow bg:green px:1/2 py:1/2 text:7/8 my:1/4"
+                    v-if="hasBeenCollected(episode)"
+                  ></div>
                 </div>
-              </template>
-              <template v-else>Nothing this day</template>
-            </div>
+                <div class="absolute b:3 l:1">{{ episode.show.title }}</div>
+                <div
+                  class="absolute b:1 l:1 text:bold truncate max-w:11/12"
+                >{{ episode.episode.season }}x{{ episode.episode.number }} {{ episode.episode.title }}</div>
+              </div>
+            </template>
+            <template v-else>Nothing this day</template>
           </div>
-        </transition-group>
-      </div>
-    </transition>
+        </div>
+      </transition-group>
+    </div>
+
     <episode-detail
       v-if="selectedEpisode"
       :episode="selectedEpisode"
@@ -96,6 +105,9 @@ export default {
     this.getTransmissionSettings();
 
     this.currentDay = subDays(new Date(), 6);
+
+    this.getWatched();
+    this.getCollected();
   },
   watch: {
     currentDay() {
@@ -131,6 +143,20 @@ export default {
               this.episodes = data.results;
             }
             break;
+          case "getWatched":
+            if (data.error) {
+              this.error = data.error;
+            } else {
+              this.$store.set("trakt/watched", data.results);
+            }
+            break;
+          case "getCollected":
+            if (data.error) {
+              this.error = data.error;
+            } else {
+              this.$store.set("trakt/collected", data.results);
+            }
+            break;
         }
       }
 
@@ -148,6 +174,36 @@ export default {
     }
   },
   methods: {
+    hasBeenWatched(episode) {
+      var watched = this.$store.get("trakt/watched");
+
+      var showWatch = watched.filter(
+        watch => watch.show.ids.trakt === episode.show.ids.trakt
+      )[0];
+
+      return (
+        showWatch &&
+        showWatch.seasons[episode.episode.season - 1] &&
+        showWatch.seasons[episode.episode.season - 1].episodes[
+          episode.episode.number - 1
+        ]
+      );
+    },
+    hasBeenCollected(episode) {
+      var collected = this.$store.get("trakt/collected");
+
+      var showCollected = collected.filter(
+        item => item.show.ids.trakt === episode.show.ids.trakt
+      )[0];
+
+      return (
+        showCollected &&
+        showCollected.seasons[episode.episode.season - 1] &&
+        showCollected.seasons[episode.episode.season - 1].episodes[
+          episode.episode.number - 1
+        ]
+      );
+    },
     open(episode) {
       this.selectedEpisode = episode;
     },
@@ -206,6 +262,18 @@ export default {
         object: "download",
         method: "addToTransmission",
         params: { magnetLink, settings: this.settings, show: this.shows[index] }
+      });
+    },
+    getWatched() {
+      this.$store.commit("webSocket/send", {
+        object: "trakt",
+        method: "getWatched"
+      });
+    },
+    getCollected() {
+      this.$store.commit("webSocket/send", {
+        object: "trakt",
+        method: "getCollected"
       });
     }
   }
