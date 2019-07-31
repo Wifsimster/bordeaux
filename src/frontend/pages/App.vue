@@ -45,7 +45,7 @@ export default {
 
 * {
   ::-webkit-scrollbar {
-    width: 2px;
+    width: 4px;
   }
   ::-webkit-scrollbar-track {
     background: map-get($colors, "grey-darkest");

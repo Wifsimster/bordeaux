@@ -179,16 +179,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "../../../node_modules/beta-scss/scss/global";
-
-img {
-  transition: filter 0.5s;
-}
-img[lazy="loading"] {
-  filter: blur(20px);
-}
-img[lazy="loaded"] {
-  filter: blur(0);
-}
+@import "../scss/global";
 
 .trash {
   display: inline-block;
@@ -242,16 +233,6 @@ img[lazy="loaded"] {
     box-shadow: inset 0 0 0 32px;
     transform: translate(-50%, -50%);
   }
-}
-
-.list-enter-active,
-.list-leave-active {
-  transition: all 1s;
-}
-.list-enter,
-.list-leave-to {
-  opacity: 0;
-  transform: translateY(30px);
 }
 
 input {

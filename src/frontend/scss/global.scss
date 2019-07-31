@@ -1,0 +1,37 @@
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// Lazy laoding
+img {
+  transition: filter 0.5s;
+}
+img[lazy='loading'] {
+  filter: blur(20px);
+}
+img[lazy='loaded'] {
+  filter: blur(0);
+}
+
+// Transitions
+.list-enter-active,
+.list-leave-active {
+  transition: all 1s;
+}
+.list-enter,
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 1s;
+}
+.slide-enter,
+.slide-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}

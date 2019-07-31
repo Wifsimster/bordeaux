@@ -11,37 +11,69 @@
 
     <loader v-if="isLoading"></loader>
 
+    <div class="flex justify:center content:center">
+      <div class="flex:1">
+        <btn @click="previous()" size="sm">Previous</btn>
+      </div>
+      <div class="flex:1 text:center">
+        <btn @click="today()" size="sm">Today</btn>
+      </div>
+      <div class="flex:1 text:right">
+        <btn @click="next()" size="sm">Next</btn>
+      </div>
+    </div>
+
     <transition name="opacity">
-      <div class="calendar" v-if="episodes && episodes.length > 0">
-        <div class="w:full" v-for="(day, index) in days" :key="index">
-          <div class="text:orange p:1/4 bg:grey-darkest">{{ format(day) }}</div>
-          <div class="flex flex:wrap">
-            <div
-              class="p:1/4 min-w:xs"
-              v-for="episode in getEpisodesFrom(day)"
-              :key="episode.episode.ids.imdb"
-            >
-              <img v-if="episode.images" v-lazy="getImageSrc(episode)" class="max-w:xs" />
-              <div>{{ episode.show.title }}</div>
-              <div>{{ episode.episode.season }}x{{ episode.episode.number }} {{ episode.episode.title }}</div>
-              <div>
-                <btn @click="searchEpisode(episode)" size="sm">Search</btn>
-              </div>
+      <div class="mx:1" v-if="episodes && episodes.length > 0">
+        <transition-group name="slide">
+          <div class="w:full" v-for="day in days" :key="format(day)">
+            <div class="text:orange p:1/4 bg:grey-darkest">{{ format(day) }}</div>
+            <div class="flex flex:wrap">
+              <template v-if="getEpisodesFrom(day).length > 0">
+                <div
+                  class="max-w:xs relative cursor:pointer"
+                  v-for="episode in getEpisodesFrom(day)"
+                  :key="episode.episode.ids.imdb"
+                  @click="open(episode)"
+                >
+                  <img
+                    v-if="episode.images"
+                    v-lazy="getImageSrc(episode)"
+                    class="min-h:full w:full align:middle"
+                  />
+                  <div class="absolute b:3 l:1">{{ episode.show.title }}</div>
+                  <div
+                    class="absolute b:1 l:1 text:bold truncate max-w:11/12"
+                  >{{ episode.episode.season }}x{{ episode.episode.number }} {{ episode.episode.title }}</div>
+                </div>
+              </template>
+              <template v-else>Nothing this day</template>
             </div>
           </div>
-        </div>
+        </transition-group>
       </div>
     </transition>
+    <episode-detail
+      v-if="selectedEpisode"
+      :episode="selectedEpisode"
+      @close="selectedEpisode = null"
+    ></episode-detail>
   </div>
 </template>
 
 <script>
 import format from "date-fns/format";
 import addDays from "date-fns/addDays";
+import subDays from "date-fns/subDays";
 import isSameDay from "date-fns/isSameDay";
 import startOfWeek from "date-fns/startOfWeek";
 
+import EpisodeDetail from "components/EpisodeDetail.vue";
+
 export default {
+  components: {
+    EpisodeDetail
+  },
   computed: {
     message() {
       return this.$store.getters["webSocket/message"];
@@ -54,25 +86,27 @@ export default {
       settings: null,
       isLoading: false,
       episodes: null,
-      currentDay: "2019-07-01",
+      currentDay: null,
       currentWeek: null,
-      days: []
+      days: [],
+      selectedEpisode: null
     };
   },
   created() {
-    this.currentWeek = startOfWeek(new Date(this.currentDay), {
-      weekStartsOn: 1
-    });
-
-    for (var index = 0; index < 7; index++) {
-      this.days.push(addDays(this.currentWeek, index));
-    }
-
     this.getTransmissionSettings();
 
-    this.getEpisodes();
+    this.currentDay = subDays(new Date(), 6);
   },
   watch: {
+    currentDay() {
+      this.days = [];
+
+      for (var index = 0; index < 7; index++) {
+        this.days.push(addDays(this.currentDay, index));
+      }
+
+      this.getEpisodes();
+    },
     message(data) {
       if (data.object === "transmission") {
         switch (data.method) {
@@ -114,10 +148,33 @@ export default {
     }
   },
   methods: {
+    open(episode) {
+      this.selectedEpisode = episode;
+    },
+    previous() {
+      this.currentDay = subDays(this.currentDay, 7);
+    },
+    today() {
+      this.currentDay = subDays(new Date(), 6);
+    },
+    next() {
+      this.currentDay = addDays(this.currentDay, 7);
+    },
+    getEpisodes() {
+      this.$store.commit("webSocket/send", {
+        object: "trakt",
+        method: "getEpisodes",
+        params: { startDate: format(this.currentDay, "yyyy-MM-dd"), days: "7" }
+      });
+    },
     getImageSrc(episode) {
-      return (
-        "https://image.tmdb.org/t/p/original" + episode.images[0].file_path
-      );
+      if (episode.images) {
+        return {
+          src: `https://image.tmdb.org/t/p/original${episode.images[0].file_path}`,
+          loading: `https://trakt.tv/assets/placeholders/thumb/fanart-96d5b92c25602cd5f5f8bc3d7fe1a249.png`,
+          error: `https://trakt.tv/assets/placeholders/thumb/fanart-96d5b92c25602cd5f5f8bc3d7fe1a249.png`
+        };
+      }
     },
     getEpisodesFrom(day) {
       if (this.episodes) {
@@ -150,14 +207,11 @@ export default {
         method: "addToTransmission",
         params: { magnetLink, settings: this.settings, show: this.shows[index] }
       });
-    },
-    getEpisodes() {
-      this.$store.commit("webSocket/send", {
-        object: "trakt",
-        method: "getEpisodes",
-        params: { startDate: this.currentDay, days: "7" }
-      });
     }
   }
 };
 </script>
+
+<style lang="scss" scoped>
+@import "../scss/global";
+</style>
