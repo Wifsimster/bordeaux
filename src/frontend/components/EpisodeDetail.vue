@@ -33,7 +33,25 @@
             <div class="p:1">Votes : {{ detail.votes }}</div>
           </div>
           <div class="p:1">{{ detail.overview }}</div>
-          <btn @click="search()">Search</btn>
+          <div class="flex justify:center w:full mx:1/2">
+            <btn @click="search()">Search</btn>
+          </div>
+          <div>
+            <table v-if="tpbList">
+              <tr
+                v-for="item in tpbList"
+                :key="item.name"
+                class="hover:bg:grey-dark"
+                @click="addToTransmission(item.magnet)"
+              >
+                <td>{{ item.name }}</td>
+                <td>{{ item.quality }}</td>
+                <td>{{ item.seeder }}</td>
+                <td>{{ item.size }}</td>
+                <td>{{ item.uploaded }}</td>
+              </tr>
+            </table>
+          </div>
         </div>
       </transition>
     </template>
@@ -60,7 +78,8 @@ export default {
   },
   data() {
     return {
-      detail: null
+      detail: null,
+      tpbList: null
     };
   },
   created() {
@@ -75,6 +94,24 @@ export default {
               this.error = data.error;
             } else {
               this.detail = data.results;
+            }
+            break;
+        }
+      }
+      if (data.object === "download") {
+        switch (data.method) {
+          case "searchEpisode":
+            if (data.error) {
+              this.error = data.error;
+            } else {
+              this.tpbList = [data.results];
+            }
+            break;
+          case "addToTransmission":
+            if (data.error) {
+              this.error = data.error;
+            } else {
+              console.log(data.results);
             }
             break;
         }
@@ -132,6 +169,36 @@ export default {
           showId: this.episode.show.ids.trakt,
           season: this.episode.episode.season,
           episode: this.episode.episode.number
+        }
+      });
+    },
+    buildEpisodeName() {
+      var season =
+        this.episode.episode.season < 10
+          ? `0${this.episode.episode.season}`
+          : this.episode.episode.season;
+      var number =
+        this.episode.episode.number < 10
+          ? `0${this.episode.episode.number}`
+          : this.episode.episode.number;
+
+      return `${this.episode.show.title} S${season}E${number}`;
+    },
+    search() {
+      this.$store.commit("webSocket/send", {
+        object: "download",
+        method: "searchEpisode",
+        params: {
+          title: this.buildEpisodeName()
+        }
+      });
+    },
+    addToTransmission(magnetLink) {
+      this.$store.commit("webSocket/send", {
+        object: "download",
+        method: "addToTransmission",
+        params: {
+          magnetLink: magnetLink
         }
       });
     }
