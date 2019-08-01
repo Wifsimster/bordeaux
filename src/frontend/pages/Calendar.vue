@@ -62,11 +62,7 @@
       </transition-group>
     </div>
 
-    <episode-detail
-      v-if="selectedEpisode"
-      :episode="selectedEpisode"
-      @close="selectedEpisode = null"
-    ></episode-detail>
+    <episode-detail :show="hasSelectedEpisode" :episode="selectedEpisode" @close="onClose"></episode-detail>
   </div>
 </template>
 
@@ -98,6 +94,7 @@ export default {
       currentDay: null,
       currentWeek: null,
       days: [],
+      hasSelectedEpisode: false,
       selectedEpisode: null
     };
   },
@@ -174,41 +171,70 @@ export default {
     }
   },
   methods: {
+    onClose() {
+      this.hasSelectedEpisode = false;
+      this.selectedEpisode = null;
+    },
     hasBeenWatched(episode) {
       if (episode) {
         var watched = this.$store.get("trakt/watched");
 
-        var showWatch = watched.filter(
-          watch => watch.show.ids.trakt === episode.show.ids.trakt
-        )[0];
+        if (watched) {
+          var showWatch = watched.filter(
+            watch => watch.show.ids.trakt === episode.show.ids.trakt
+          )[0];
 
-        return (
-          showWatch &&
-          showWatch.seasons[episode.episode.season - 1] &&
-          showWatch.seasons[episode.episode.season - 1].episodes[
-            episode.episode.number - 1
-          ]
-        );
+          if (showWatch) {
+            var season = showWatch.seasons.filter(
+              season => season.number === episode.episode.season
+            )[0];
+
+            if (season) {
+              var number = season.episodes.filter(
+                item => item.number === episode.episode.number
+              )[0];
+
+              if (number) {
+                return true;
+              }
+            }
+          }
+        }
+
+        return false;
       }
     },
     hasBeenCollected(episode) {
       if (episode) {
         var collected = this.$store.get("trakt/collected");
 
-        var showCollected = collected.filter(
-          item => item.show.ids.trakt === episode.show.ids.trakt
-        )[0];
+        if (collected) {
+          var showWatch = collected.filter(
+            watch => watch.show.ids.trakt === episode.show.ids.trakt
+          )[0];
 
-        return (
-          showCollected &&
-          showCollected.seasons[episode.episode.season - 1] &&
-          showCollected.seasons[episode.episode.season - 1].episodes[
-            episode.episode.number - 1
-          ]
-        );
+          if (showWatch) {
+            var season = showWatch.seasons.filter(
+              season => season.number === episode.episode.season
+            )[0];
+
+            if (season) {
+              var number = season.episodes.filter(
+                item => item.number === episode.episode.number
+              )[0];
+
+              if (number) {
+                return true;
+              }
+            }
+          }
+        }
+
+        return false;
       }
     },
     open(episode) {
+      this.hasSelectedEpisode = true;
       this.selectedEpisode = episode;
     },
     previous() {
