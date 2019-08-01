@@ -1,35 +1,35 @@
-const WebSocket = require('ws')
-const File = require('./utils/file')
-const settings = File.readFile('server-config')
+const WebSocket = require("ws")
+const File = require("./utils/file")
+const settings = File.readFile("server-config")
 
 const wss = new WebSocket.Server({ port: settings.port })
 
 console.log(`Web Socket server started at : ws://${settings.host}:${settings.port}`)
 
-const Transmission = require('./channels/transmission')
-const Directory = require('./channels/directory')
-const Transfert = require('./channels/transfert')
-const Subtitles = require('./channels/subtitles')
-const Download = require('./channels/download')
-const Server = require('./channels/server')
-const Trakt = require('./channels/trakt')
-const Plex = require('./channels/plex')
-const Fanart = require('./channels/fanart')
+const Transmission = require("./channels/transmission")
+const Directory = require("./channels/directory")
+const Transfert = require("./channels/transfert")
+const Subtitles = require("./channels/subtitles")
+const Download = require("./channels/download")
+const Server = require("./channels/server")
+const Trakt = require("./channels/trakt")
+const Plex = require("./channels/plex")
+const Fanart = require("./channels/fanart")
 
-wss.on('connection', function connection(ws, req) {
+wss.on("connection", function connection(ws, req) {
   console.log(`New client connection for ${req.url}`)
 
   // Detect and close broken connections
   ws.isAlive = true
 
-  ws.on('pong', () => {
+  ws.on("pong", () => {
     ws.isAlive = true
   })
 
   setInterval(function ping() {
     wss.clients.forEach(function each(ws) {
       if (ws.isAlive === false) {
-        console.warn('Client dead => Terminate connection !')
+        console.warn("Client dead => Terminate connection !")
         return ws.terminate()
       }
       ws.isAlive = false
@@ -37,7 +37,7 @@ wss.on('connection', function connection(ws, req) {
     })
   }, 5000)
 
-  ws.on('message', async data => {
+  ws.on("message", async data => {
     data = JSON.parse(data)
 
     switch (data.object) {
@@ -53,8 +53,6 @@ wss.on('connection', function connection(ws, req) {
       case `fanart`:
         data = await Fanart.response(data)
         break
-
-      // Settings
       case `directory`:
         data = await Directory.response(data)
         break

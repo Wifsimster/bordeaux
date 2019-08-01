@@ -1,5 +1,5 @@
 <template>
-  <modal size="max-w:lg" :show="show" @close="$emit('close')">
+  <modal size="max-w:xl" :show="show" @close="$emit('close')">
     <template #content>
       <div class="relative w:full" v-if="detail" v-lazy-container="getLazyContainer()">
         <img class="min-h:full w:full align:middle rounded:t" :data-src="getImageSrc()" />
@@ -29,11 +29,19 @@
           <div class="p:1">Votes : {{ detail.votes }}</div>
         </div>
         <div class="p:1">{{ detail.overview }}</div>
-        <div class="flex justify:center w:full mx:1/2">
+
+        <div class="flex justify:center w:full mx:1/2" v-if="!isLoading">
           <btn @click="search()">Search</btn>
         </div>
+
+        <loader v-if="isLoading" :message="loadingMessage"></loader>
+
+        <alert color="red" v-if="error">{{ error }}</alert>
+
+        <alert color="green" v-if="addedMessage">{{ addedMessage }}</alert>
+
         <div>
-          <table class="border:collapse overflow:auto max-h:xs" v-if="tpbList">
+          <table class="border:collapse max-h:xs mx:1 table:fixed w:full" v-if="tpbList">
             <thead>
               <tr>
                 <th>Name</th>
@@ -50,11 +58,11 @@
                 class="hover:bg:grey-darker cursor:pointer"
                 @click="addToTransmission(item.magnet)"
               >
-                <td>{{ item.name }}</td>
-                <td>{{ item.quality }}</td>
-                <td>{{ item.seeder }}</td>
-                <td>{{ item.size }}</td>
-                <td>{{ item.uploaded }}</td>
+                <td class="inline-block truncate" style="width:225px">{{ item.name }}</td>
+                <td class="text:center">{{ item.quality }}</td>
+                <td class="text:center">{{ item.seeder }}</td>
+                <td class="text:center">{{ item.size }}</td>
+                <td class="text:center">{{ item.uploaded }}</td>
               </tr>
             </tbody>
           </table>
@@ -88,8 +96,12 @@ export default {
   },
   data() {
     return {
+      error: null,
       detail: null,
-      tpbList: null
+      tpbList: null,
+      isLoading: false,
+      loadingMessage: null,
+      addedMessage: null
     };
   },
   watch: {
@@ -97,6 +109,7 @@ export default {
       this.detail = null;
       if (val) {
         this.getEpisode();
+        this.addedMessage = null;
       }
     },
     message(data) {
@@ -111,20 +124,29 @@ export default {
             break;
         }
       }
+
       if (data.object === "download") {
         switch (data.method) {
           case "searchEpisode":
+            this.isLoading = false;
             if (data.error) {
               this.error = data.error;
             } else {
               this.tpbList = data.results.filter(item => item.seeder > 0);
             }
             break;
-          case "addToTransmission":
+        }
+      }
+
+      if (data.object === "transmission") {
+        switch (data.method) {
+          case "add":
+            this.isLoading = false;
             if (data.error) {
               this.error = data.error;
             } else {
-              console.log(data.results);
+              this.addedMessage = `${data.results.name} added to Transmission ;)`;
+              this.tpbList = null;
             }
             break;
         }
@@ -135,41 +157,55 @@ export default {
     hasBeenWatched() {
       var watched = this.$store.get("trakt/watched");
 
-      var showWatch = watched.filter(
-        watch => watch.show.ids.trakt === this.episode.show.ids.trakt
-      )[0];
+      if (watched) {
+        var showWatch = watched.filter(
+          watch => watch.show.ids.trakt === this.episode.show.ids.trakt
+        )[0];
 
-      var season = showWatch.seasons.filter(
-        season => season.number === this.episode.episode.season
-      )[0];
+        if (showWatch) {
+          var season = showWatch.seasons.filter(
+            season => season.number === this.episode.episode.season
+          )[0];
 
-      var number = season.episodes.filter(
-        episode => episode.number === this.episode.episode.number
-      )[0];
+          if (season) {
+            var number = season.episodes.filter(
+              episode => episode.number === this.episode.episode.number
+            )[0];
 
-      if (number) {
-        return true;
+            if (number) {
+              return true;
+            }
+          }
+        }
       }
+
       return false;
     },
     hasBeenCollected() {
       var collected = this.$store.get("trakt/collected");
 
-      var showWatch = collected.filter(
-        watch => watch.show.ids.trakt === this.episode.show.ids.trakt
-      )[0];
+      if (collected) {
+        var showWatch = collected.filter(
+          watch => watch.show.ids.trakt === this.episode.show.ids.trakt
+        )[0];
 
-      var season = showWatch.seasons.filter(
-        season => season.number === this.episode.episode.season
-      )[0];
+        if (showWatch) {
+          var season = showWatch.seasons.filter(
+            season => season.number === this.episode.episode.season
+          )[0];
 
-      var number = season.episodes.filter(
-        episode => episode.number === this.episode.episode.number
-      )[0];
+          if (season) {
+            var number = season.episodes.filter(
+              episode => episode.number === this.episode.episode.number
+            )[0];
 
-      if (number) {
-        return true;
+            if (number) {
+              return true;
+            }
+          }
+        }
       }
+
       return false;
     },
     getDate(value) {
@@ -213,6 +249,9 @@ export default {
       return `${this.episode.show.title} S${season}E${number}`;
     },
     search() {
+      this.isLoading = true;
+      this.loadingMessage = "Searchig trackers...";
+      this.addedMessage = null;
       this.$store.commit("webSocket/send", {
         object: "download",
         method: "searchEpisode",
@@ -222,9 +261,11 @@ export default {
       });
     },
     addToTransmission(magnetLink) {
+      this.isLoading = true;
+      this.loadingMessage = "Adding to Transmission...";
       this.$store.commit("webSocket/send", {
-        object: "download",
-        method: "addToTransmission",
+        object: "transmission",
+        method: "add",
         params: {
           magnetLink: magnetLink
         }

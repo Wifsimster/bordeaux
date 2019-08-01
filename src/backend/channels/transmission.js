@@ -1,39 +1,40 @@
-const File = require('../utils/file')
+const File = require("../utils/file")
 
-const TransmissionManager = require('transmission')
+const TransmissionManager = require("transmission")
 
-const CONFIG_FILE = 'transmission-config'
+const CONFIG_FILE = "transmission-config"
 
 class Transmission {
   constructor() {
-    this.instance = new TransmissionManager(CONFIG_FILE)
+    const settings = File.readFile(CONFIG_FILE)
+    this.instance = new TransmissionManager(settings)
   }
 
   static async response(data) {
     const transmission = new Transmission()
 
     switch (data.method) {
-      case 'getAll':
+      case "getAll":
         data.results = File.readFile(CONFIG_FILE)
         break
-      case 'update':
+      case "update":
         File.writeFile(CONFIG_FILE, data.params)
         data.results = File.readFile(CONFIG_FILE)
         break
-      case 'add':
+      case "add":
         data.results = await new Promise((resolve, reject) => {
-          transmission.instance.addUrl(magnetLink, (err, arg) => {
+          transmission.instance.addUrl(data.params.magnetLink, (err, arg) => {
             if (err) {
-              data.error = err
+              reject(err)
             } else {
-              data.results = arg
+              resolve(arg)
             }
           })
         }).catch(err => {
           data.error = err
         })
         break
-      case 'sessionStats':
+      case "sessionStats":
         data.results = await new Promise((resolve, reject) => {
           transmission.instance.sessionStats((err, arg) => {
             if (err) {

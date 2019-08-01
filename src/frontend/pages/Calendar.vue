@@ -126,8 +126,6 @@ export default {
               this.settings = Object.assign({}, data.results);
             }
             break;
-          default:
-            console.log(`Unknow method : ${data.method}`);
         }
       }
 

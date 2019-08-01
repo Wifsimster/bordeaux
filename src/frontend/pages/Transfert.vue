@@ -5,28 +5,30 @@
     <loader v-if="isLoading" :message="loadingMessage"></loader>
 
     <div v-if="!isLoading">
-      <alert v-if="results">
-        <p>Files transfert :</p>
-        <ul class="list-reset py:1 px:1/2">
-          <li v-for="(item, index) in results" :key="index">{{ item }}</li>
-        </ul>
+      <alert v-if="success" color="green">
+        <p>Files transfert with success :)</p>
       </alert>
 
       <div v-if="hasEpisodes">
-        <p>New episodes found :</p>
-        <table class="border:collapse">
+        <table class="border:collapse w:full">
+          <thead>
+            <tr>
+              <th>Episode found</th>
+              <th>Episode destination</th>
+            </tr>
+          </thead>
           <tbody>
             <tr v-for="episode in episodes" :key="episode.directory" class="hover:bg:grey-darker">
               <td>{{ episode.directory }}</td>
-              <td>{{ episode.name }} {{ episode.season }}x{{ episode.episode }}</td>
+              <td>{{ episode.name }} / Season {{ episode.season}} / {{ episode.name }} - {{ episode.season }}x{{ episode.episode }}</td>
             </tr>
           </tbody>
         </table>
       </div>
-      <div v-else>No espiode found :(</div>
+      <div v-else class="text:center">No espiode found :(</div>
     </div>
 
-    <div class="flex w:full justify:center" v-if="!isLoading">
+    <div class="flex w:full justify:center mt:1" v-if="!isLoading">
       <btn class="mr:1" @click="search()">Scan</btn>
       <btn v-if="hasEpisodes" @click="transfert()">Transfert</btn>
     </div>
@@ -50,7 +52,7 @@ export default {
     return {
       error: null,
       episodes: null,
-      results: null,
+      success: null,
       isLoading: false,
       loadingMessage: null
     };
@@ -74,9 +76,11 @@ export default {
             this.isLoading = false;
             if (data.error) {
               this.error = data.error;
+              this.success = false;
             } else {
-              this.results = Object.assign([], data.results);
+              this.success = true;
             }
+            this.search();
             break;
           default:
             console.log(`Unknow method : ${data.method}`);
@@ -95,7 +99,7 @@ export default {
     },
     transfert() {
       this.isLoading = true;
-      this.loadingMessage = `Transfering files to...`;
+      this.loadingMessage = `Transfering files...`;
       this.$store.commit("webSocket/send", {
         object: "transfert",
         method: "run"
