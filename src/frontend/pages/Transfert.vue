@@ -1,22 +1,35 @@
 <template>
   <div class="p:1">
     <alert color="red" v-if="error">{{ error }}</alert>
-    <alert v-if="message && message.results && message.results.length > 0">
-      <p>Files to transfert :</p>
-      <ul class="list-reset py:1 px:1/2">
-        <li v-for="(item, index) in results" :key="index">{{ item }}</li>
-      </ul>
-    </alert>
-    <alert v-if="hasEpisodes">
-      <p>Episodes found :</p>
-      <ul class="list-reset py:1 px:1/2">
-        <li v-for="(item, index) in episodes" :key="index">{{ item.file }}</li>
-      </ul>
-    </alert>
-    <alert v-if="hasNoEpisode">No espiode found :(</alert>
+
     <loader v-if="isLoading" :message="loadingMessage"></loader>
-    <btn v-if="!isLoading" @click="search()">Search new files/</btn>
-    <btn v-if="hasEpisodes && !isLoading" @click="transfert()">Transfert</btn>
+
+    <div v-if="!isLoading">
+      <alert v-if="results">
+        <p>Files transfert :</p>
+        <ul class="list-reset py:1 px:1/2">
+          <li v-for="(item, index) in results" :key="index">{{ item }}</li>
+        </ul>
+      </alert>
+
+      <div v-if="hasEpisodes">
+        <p>New episodes found :</p>
+        <table class="border:collapse">
+          <tbody>
+            <tr v-for="episode in episodes" :key="episode.directory" class="hover:bg:grey-darker">
+              <td>{{ episode.directory }}</td>
+              <td>{{ episode.name }} {{ episode.season }}x{{ episode.episode }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div v-else>No espiode found :(</div>
+    </div>
+
+    <div class="flex w:full justify:center" v-if="!isLoading">
+      <btn class="mr:1" @click="search()">Scan</btn>
+      <btn v-if="hasEpisodes" @click="transfert()">Transfert</btn>
+    </div>
   </div>
 </template>
 
