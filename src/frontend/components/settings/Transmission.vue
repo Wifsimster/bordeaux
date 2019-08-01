@@ -72,7 +72,7 @@ export default {
               this.settings = Object.assign({}, data.results);
             }
             break;
-          case "test":
+          case "sessionStats":
             if (data.error) {
               this.error = data.error;
             } else {
@@ -103,7 +103,7 @@ export default {
       this.testOk = null;
       this.$store.commit("webSocket/send", {
         object: "transmission",
-        method: "test",
+        method: "sessionStats",
         params: this.settings
       });
     }

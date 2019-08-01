@@ -14,7 +14,6 @@ const Download = require('./channels/download')
 const Server = require('./channels/server')
 const Trakt = require('./channels/trakt')
 const Plex = require('./channels/plex')
-const Show = require('./channels/show')
 const Fanart = require('./channels/fanart')
 
 wss.on('connection', function connection(ws, req) {
@@ -50,9 +49,6 @@ wss.on('connection', function connection(ws, req) {
         break
       case `subtitles`:
         data = await Subtitles.response(data)
-        break
-      case `show`:
-        data = await Show.response(data)
         break
       case `fanart`:
         data = await Fanart.response(data)

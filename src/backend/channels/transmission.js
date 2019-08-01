@@ -1,28 +1,49 @@
-const File = require("../utils/file")
-const Petrus = require("petrus")
+const File = require('../utils/file')
 
-const CONFIG_FILE = "transmission-config"
+const TransmissionManager = require('transmission')
+
+const CONFIG_FILE = 'transmission-config'
 
 class Transmission {
-  constructor() {}
+  constructor() {
+    this.instance = new TransmissionManager(CONFIG_FILE)
+  }
 
-  static response(data) {
+  static async response(data) {
+    const transmission = new Transmission()
+
     switch (data.method) {
-      case "getAll":
+      case 'getAll':
         data.results = File.readFile(CONFIG_FILE)
         break
-      case "update":
+      case 'update':
         File.writeFile(CONFIG_FILE, data.params)
         data.results = File.readFile(CONFIG_FILE)
         break
-      case "test":
-        const petrus = new Petrus(CONFIG_FILE)
-        petrus.transmission.sessionStats((err, result) => {
-          if (err) {
-            data.error = err
-          } else {
-            data.results = result
-          }
+      case 'add':
+        data.results = await new Promise((resolve, reject) => {
+          transmission.instance.addUrl(magnetLink, (err, arg) => {
+            if (err) {
+              data.error = err
+            } else {
+              data.results = arg
+            }
+          })
+        }).catch(err => {
+          data.error = err
+        })
+        break
+      case 'sessionStats':
+        data.results = await new Promise((resolve, reject) => {
+          transmission.instance.sessionStats((err, arg) => {
+            if (err) {
+              reject(err)
+            } else {
+              resolve(arg)
+            }
+          })
+        }).catch(err => {
+          data.error = err
         })
         break
       default:
