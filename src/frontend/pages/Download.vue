@@ -175,34 +175,38 @@ export default {
   },
   methods: {
     hasBeenWatched(episode) {
-      var watched = this.$store.get("trakt/watched");
+      if (episode) {
+        var watched = this.$store.get("trakt/watched");
 
-      var showWatch = watched.filter(
-        watch => watch.show.ids.trakt === episode.show.ids.trakt
-      )[0];
+        var showWatch = watched.filter(
+          watch => watch.show.ids.trakt === episode.show.ids.trakt
+        )[0];
 
-      return (
-        showWatch &&
-        showWatch.seasons[episode.episode.season - 1] &&
-        showWatch.seasons[episode.episode.season - 1].episodes[
-          episode.episode.number - 1
-        ]
-      );
+        return (
+          showWatch &&
+          showWatch.seasons[episode.episode.season - 1] &&
+          showWatch.seasons[episode.episode.season - 1].episodes[
+            episode.episode.number - 1
+          ]
+        );
+      }
     },
     hasBeenCollected(episode) {
-      var collected = this.$store.get("trakt/collected");
+      if (episode) {
+        var collected = this.$store.get("trakt/collected");
 
-      var showCollected = collected.filter(
-        item => item.show.ids.trakt === episode.show.ids.trakt
-      )[0];
+        var showCollected = collected.filter(
+          item => item.show.ids.trakt === episode.show.ids.trakt
+        )[0];
 
-      return (
-        showCollected &&
-        showCollected.seasons[episode.episode.season - 1] &&
-        showCollected.seasons[episode.episode.season - 1].episodes[
-          episode.episode.number - 1
-        ]
-      );
+        return (
+          showCollected &&
+          showCollected.seasons[episode.episode.season - 1] &&
+          showCollected.seasons[episode.episode.season - 1].episodes[
+            episode.episode.number - 1
+          ]
+        );
+      }
     },
     open(episode) {
       this.selectedEpisode = episode;

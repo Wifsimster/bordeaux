@@ -1,5 +1,5 @@
 <template>
-  <modal size="max-w:md" :dismissible="true" @close="$emit('close')">
+  <modal size="max-w:lg" :dismissible="true" @close="$emit('close')">
     <template #content>
       <div class="relative w:full">
         <img class="min-h:full w:full align:middle rounded:t" v-lazy="getImageSrc()" />
@@ -37,19 +37,30 @@
             <btn @click="search()">Search</btn>
           </div>
           <div>
-            <table v-if="tpbList">
-              <tr
-                v-for="item in tpbList"
-                :key="item.name"
-                class="hover:bg:grey-dark"
-                @click="addToTransmission(item.magnet)"
-              >
-                <td>{{ item.name }}</td>
-                <td>{{ item.quality }}</td>
-                <td>{{ item.seeder }}</td>
-                <td>{{ item.size }}</td>
-                <td>{{ item.uploaded }}</td>
-              </tr>
+            <table class="border:collapse overflow:auto max-h:xs" v-if="tpbList">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Quality</th>
+                  <th>Seeder</th>
+                  <th>Size</th>
+                  <th>Uploaded</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="item in tpbList"
+                  :key="item.name"
+                  class="hover:bg:grey-darker cursor:pointer"
+                  @click="addToTransmission(item.magnet)"
+                >
+                  <td>{{ item.name }}</td>
+                  <td>{{ item.quality }}</td>
+                  <td>{{ item.seeder }}</td>
+                  <td>{{ item.size }}</td>
+                  <td>{{ item.uploaded }}</td>
+                </tr>
+              </tbody>
             </table>
           </div>
         </div>
@@ -104,7 +115,7 @@ export default {
             if (data.error) {
               this.error = data.error;
             } else {
-              this.tpbList = [data.results];
+              this.tpbList = data.results.filter(item => item.seeder > 0);
             }
             break;
           case "addToTransmission":

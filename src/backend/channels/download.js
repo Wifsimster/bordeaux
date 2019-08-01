@@ -1,28 +1,28 @@
 const Petrus = require("petrus")
 
+const CONFIG_FILE = "transmission-config"
+
 class Download {
   constructor() {}
 
   static async response(data) {
     switch (data.method) {
       case "addToTransmission":
-        var petrus = new Petrus(data.params.settings)
-        var results = await petrus.addMagnetLink(data.params.magnetLink).catch(err => {
-          data.error = err
-        })
-        data.results = results
+        const petrus = new Petrus(CONFIG_FILE)
+
+        if (data.params.magnetLink) {
+          data.results = await petrus.addMagnetLink(data.params.magnetLink).catch(err => {
+            data.error = err
+          })
+        } else {
+          data.error = `No magnet link found !`
+        }
+
         break
       case "searchEpisode":
-        data.results = await Petrus.getBestEpisode(data.params.title).catch(err => {
+        data.results = await Petrus.search(data.params.title).catch(err => {
           data.error = err
         })
-        break
-      case "run":
-        var petrus = new Petrus(config)
-        var results = await petrus.run(data.params.shows).catch(err => {
-          data.error = err
-        })
-        data.results = results
         break
       default:
         console.log(`[Download] Unknow method : ${data.method}`)
