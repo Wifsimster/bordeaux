@@ -19,8 +19,8 @@
           </thead>
           <tbody>
             <tr v-for="episode in episodes" :key="episode.directory" class="hover:bg:grey-darker">
-              <td>{{ episode.directory }}</td>
-              <td>{{ episode.name }} / Season {{ episode.season}} / {{ episode.name }} - {{ episode.season }}x{{ episode.episode }}</td>
+              <td>{{ episode.origin.file }}</td>
+              <td>{{ episode.destination.path }}</td>
             </tr>
           </tbody>
         </table>

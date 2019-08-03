@@ -11,8 +11,8 @@
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
     "@babel/runtime": "^7.5.5",
-    "beta-scss": "^1.2.1",
-    "medoc": "^1.1.1",
+    "beta-scss": "^1.2.2",
+    "medoc": "^1.2.5",
     "os": "^0.1.1",
     "petrus": "^1.0.9",
     "transmission": "^0.4.9",
@@ -41,7 +41,7 @@
     "url-loader": "^1.1.2",
     "vue-loader": "^15.7.1",
     "vue-template-compiler": "^2.6.10",
-    "webpack": "^4.39.0",
+    "webpack": "^4.39.1",
     "webpack-cli": "^3.3.6",
     "webpack-dev-server": "^3.7.2"
   },

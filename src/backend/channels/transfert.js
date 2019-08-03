@@ -11,7 +11,7 @@ class Transfert {
       case "search":
         var settings = File.readFile(CONFIG_FILE)
         var medoc = new Medoc(settings.from, settings.to)
-        data.results = await medoc.search(settings.from).catch(err => {
+        data.results = await medoc.search().catch(err => {
           data.error = err
         })
         break
