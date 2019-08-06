@@ -105,6 +105,9 @@ export default {
     };
   },
   watch: {
+    show() {
+      this.tpbList = null;
+    },
     episode(val) {
       this.detail = null;
       if (val) {
