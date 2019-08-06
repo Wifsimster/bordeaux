@@ -12,7 +12,7 @@
     "@babel/polyfill": "^7.4.4",
     "@babel/runtime": "^7.5.5",
     "axios": "^0.19.0",
-    "beta-scss": "^1.2.2",
+    "beta-scss": "^1.2.3",
     "medoc": "^1.2.5",
     "os": "^0.1.1",
     "petrus": "^1.0.9",

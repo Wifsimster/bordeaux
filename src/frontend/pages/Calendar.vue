@@ -154,18 +154,6 @@ export default {
             break;
         }
       }
-
-      if (data.object === "download") {
-        switch (data.method) {
-          case "searchEpisode":
-            if (data.error) {
-              this.error = data.error;
-            } else {
-              console.log(data.results);
-            }
-            break;
-        }
-      }
     }
   },
   methods: {
