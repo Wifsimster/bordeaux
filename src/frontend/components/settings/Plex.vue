@@ -9,7 +9,7 @@
         <input type="number" v-model="settings.port" placeholder="Port" />
         <input v-model="settings.username" placeholder="Username" />
         <input type="password" v-model="settings.password" placeholder="Password" />
-        <btn @click="test()">Test</btn>
+        <btn @click="signin()">Test</btn>
       </form>
     </div>
   </div>
@@ -72,7 +72,7 @@ export default {
               this.settings = Object.assign({}, data.results);
             }
             break;
-          case "getEpisodes":
+          case "signin":
             if (data.error) {
               this.error = data.error;
             } else {
@@ -99,7 +99,7 @@ export default {
         params: this.settings
       });
     },
-    test() {
+    signin() {
       this.testOk = null;
       this.$store.commit("webSocket/send", {
         object: "plex",
