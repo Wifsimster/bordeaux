@@ -4,20 +4,9 @@ const querystring = require("querystring")
 
 module.exports = class {
   constructor(settings) {
-    this.hostname = settings.host
-    this.port = settings.port
     this.username = settings.username
     this.password = settings.password
-
     this.clientId = uuid.v4()
-
-    // this.instance = axios.create({
-    //   baseURL: `https://192-168-0-21.c16f0f0d771c445eb189341b266e8db0.plex.direct:${this.port}`,
-    //   headers: {
-    //     "X-Plex-Client-Identifier": this.clientId,
-    //     "X-Plex-Token": this.getToken()
-    //   }
-    // })
   }
 
   getToken() {
@@ -43,18 +32,39 @@ module.exports = class {
       }
     )
 
-    if (response) {
+    if (response.status < 400) {
       this.user = response.data
+
+      const resources = await this.getResources()
+      const resource = resources.filter(res => res.name === `Plex Server`)[0]
+      const connection = resource.connections.filter(con => con.local)[0]
+
+      this.instance = axios.create({
+        baseURL: `${connection.protocol}://${connection.address}:${connection.port}`,
+        headers: {
+          "X-Plex-Client-Identifier": this.clientId,
+          "X-Plex-Token": this.getToken()
+        }
+      })
     }
   }
 
   /**
    * Online API
    * Get the list of resources with connection settings
-   * Conection : [protocol, address, port, uri, local, relay, IPv6]
+   * Conection : [name, protocol, address, port, uri, local, relay, IPv6]
    */
   async getResources() {
-    return await axios.get(`https://plex.tv/api/v1/resources`)
+    const response = await axios.get(`https://plex.tv/api/v2/resources`, {
+      headers: {
+        "X-Plex-Client-Identifier": this.clientId,
+        "X-Plex-Token": this.getToken()
+      }
+    })
+
+    if (response.status < 400) {
+      return response.data
+    }
   }
 
   /**
@@ -73,7 +83,7 @@ module.exports = class {
       }
     )
 
-    if (response.status === 200) {
+    if (response.status < 400) {
       return response.data
     }
   }

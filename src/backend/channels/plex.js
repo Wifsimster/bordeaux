@@ -21,32 +21,6 @@ class Plex {
         await plexApi.signin()
         data.results = await plexApi.getUser()
         break
-      case "getShows":
-        var plex = new Plex()
-
-        data.results = await plex
-          .getShows()
-          .then(results => {
-            return results.data.MediaContainer
-          })
-          .catch(err => {
-            data.error = `${err.code} : ${err.message}`
-          })
-
-        break
-      case "getEpisodes":
-        var plex = new Plex()
-
-        data.results = await plex
-          .getEpisodes()
-          .then(results => {
-            return results.data.MediaContainer
-          })
-          .catch(err => {
-            data.error = `${err.code} : ${err.message}`
-          })
-
-        break
       default:
         console.log(`[Plex] Unknow method : ${data.method}`)
     }

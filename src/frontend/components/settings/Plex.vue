@@ -5,8 +5,6 @@
     <div class="p:1">
       <div class="text:white text:3/2">Plex</div>
       <form v-if="settings">
-        <input v-model="settings.host" placeholder="Host" />
-        <input type="number" v-model="settings.port" placeholder="Port" />
         <input v-model="settings.username" placeholder="Username" />
         <input type="password" v-model="settings.password" placeholder="Password" />
         <btn @click="signin()">Test</btn>
@@ -34,16 +32,6 @@ export default {
     this.getAll();
   },
   watch: {
-    "settings.host"(newVal, oldVal) {
-      if (oldVal) {
-        this.update();
-      }
-    },
-    "settings.port"(newVal, oldVal) {
-      if (oldVal) {
-        this.update();
-      }
-    },
     "settings.username"(newVal, oldVal) {
       if (oldVal) {
         this.update();
