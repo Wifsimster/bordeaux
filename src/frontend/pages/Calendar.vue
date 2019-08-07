@@ -31,6 +31,7 @@
             <template v-if="getEpisodesFrom(day).length > 0">
               <div
                 class="cursor:pointer"
+                style="min-height: 75px"
                 v-for="episode in getEpisodesFrom(day)"
                 :key="episode.episode.ids.imdb"
                 @click="open(episode)"

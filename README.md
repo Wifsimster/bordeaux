@@ -1,6 +1,6 @@
 # bordeaux
 
-Simple TV Shows manager with Transmission, Trakt and Plex integration.
+Simple TV Shows manager with Transmission, Trakt and Plex integration over WebSockets.
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Wifsimster/bordeaux/blob/master/LICENSE)
 
