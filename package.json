@@ -1,7 +1,7 @@
 {
   "name": "bordeaux",
   "version": "1.0.1",
-  "description": "",
+  "description": "Simple TV Shows manager with Transmission, Trakt and Plex integration",
   "main": "server.js",
   "scripts": {
     "dev": "webpack --config webpack.dev.js",
