@@ -4,6 +4,10 @@ Simple TV Shows manager with Transmission, Trakt and Plex integration over WebSo
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Wifsimster/bordeaux/blob/master/LICENSE)
 
+## Alpha version
+
+> Work in progress...
+
 ## Features
 
 - Calendar of your Trakt tv shows

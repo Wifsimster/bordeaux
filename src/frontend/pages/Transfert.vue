@@ -62,29 +62,40 @@ export default {
   },
   watch: {
     message(data) {
-      if (data.object === "transfert") {
-        switch (data.method) {
-          case "search":
-            this.isLoading = false;
-            if (data.error) {
-              this.error = data.error;
-            } else {
-              this.episodes = Object.assign([], data.results);
-            }
-            break;
-          case "run":
-            this.isLoading = false;
-            if (data.error) {
-              this.error = data.error;
-              this.success = false;
-            } else {
-              this.success = true;
-            }
-            this.search();
-            break;
-          default:
-            console.log(`Unknow method : ${data.method}`);
-        }
+      switch (data.object) {
+        case "transfert":
+          switch (data.method) {
+            case "search":
+              this.isLoading = false;
+              if (data.error) {
+                this.error = data.error;
+              } else {
+                this.episodes = Object.assign([], data.results);
+              }
+              break;
+            case "run":
+              this.isLoading = false;
+              if (data.error) {
+                this.error = data.error;
+                this.success = false;
+              } else {
+                this.success = true;
+              }
+              this.search();
+              break;
+          }
+          break;
+        case "plex":
+          switch (data.method) {
+            case "refresh":
+              if (data.error) {
+                this.error = data.error;
+              } else {
+                console.log(`[Plex] Refresh Tv Shows...`);
+              }
+              break;
+          }
+          break;
       }
     }
   },
@@ -103,6 +114,12 @@ export default {
       this.$store.commit("webSocket/send", {
         object: "transfert",
         method: "run"
+      });
+    },
+    refresh() {
+      this.$store.commit("webSocket/send", {
+        object: "plex",
+        method: "refresh"
       });
     }
   }
