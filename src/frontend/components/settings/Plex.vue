@@ -103,8 +103,7 @@ export default {
       this.testOk = null;
       this.$store.commit("webSocket/send", {
         object: "plex",
-        method: "getEpisodes",
-        params: this.settings
+        method: "signin"
       });
     }
   }

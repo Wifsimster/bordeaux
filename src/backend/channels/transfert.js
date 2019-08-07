@@ -10,10 +10,7 @@ class Transfert {
     switch (data.method) {
       case "search":
         var settings = File.readFile(CONFIG_FILE)
-        var medoc = new Medoc(settings.from, settings.to)
-        data.results = await medoc.search().catch(err => {
-          data.error = err
-        })
+        data.results = Medoc.search(settings.from, settings.to)
         break
       case "run":
         var settings = File.readFile(CONFIG_FILE)
