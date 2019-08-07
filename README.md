@@ -27,3 +27,4 @@ $ npm run start
 That's all :)
 
 ![screen](https://github.com/Wifsimster/bordeaux/blob/master/unamed_01.png)
+![screen](https://github.com/Wifsimster/bordeaux/blob/master/unamed_02.png)
