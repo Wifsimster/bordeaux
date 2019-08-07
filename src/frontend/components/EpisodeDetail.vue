@@ -101,7 +101,8 @@ export default {
       tpbList: null,
       isLoading: false,
       loadingMessage: null,
-      addedMessage: null
+      addedMessage: null,
+      removedMessage: null
     };
   },
   watch: {
@@ -112,47 +113,66 @@ export default {
       this.detail = null;
       if (val) {
         this.getEpisode();
+        this.getTorrents();
         this.addedMessage = null;
       }
     },
     message(data) {
-      if (data.object === "trakt") {
-        switch (data.method) {
-          case "getEpisode":
-            if (data.error) {
-              this.error = data.error;
-            } else {
-              this.detail = data.results;
-            }
-            break;
-        }
-      }
+      switch (data.object) {
+        case "trakt":
+          switch (data.method) {
+            case "getEpisode":
+              if (data.error) {
+                this.error = data.error;
+              } else {
+                this.detail = data.results;
+              }
+              break;
+          }
+          break;
 
-      if (data.object === "download") {
-        switch (data.method) {
-          case "searchEpisode":
-            this.isLoading = false;
-            if (data.error) {
-              this.error = data.error;
-            } else {
-              this.tpbList = data.results.filter(item => item.seeder > 0);
-            }
-            break;
-        }
-      }
+        case "download":
+          switch (data.method) {
+            case "searchEpisode":
+              this.isLoading = false;
+              if (data.error) {
+                this.error = data.error;
+              } else {
+                this.tpbList = data.results.filter(item => item.seeder > 0);
+              }
+              break;
+          }
+          break;
 
-      if (data.object === "transmission") {
-        switch (data.method) {
-          case "add":
-            this.isLoading = false;
-            if (data.error) {
-              this.error = data.error;
-            } else {
-              this.addedMessage = `${data.results.name} added to Transmission ;)`;
-              this.tpbList = null;
-            }
-            break;
-        }
+        case "transmission":
+          switch (data.method) {
+            case "add":
+              this.isLoading = false;
+              if (data.error) {
+                this.error = data.error;
+              } else {
+                this.addedMessage = `${data.results.name} added to Transmission ;)`;
+                this.tpbList = null;
+              }
+              break;
+            case "remove":
+              this.isLoading = false;
+              if (data.error) {
+                this.error = data.error;
+              } else {
+                this.removedMessage = `${data.results.name} remove to Transmission ;)`;
+                this.tpbList = null;
+              }
+              break;
+            case "active":
+              if (data.error) {
+                this.error = data.error;
+              } else {
+                console.log(`TODO : ${data.results}`);
+              }
+              break;
+          }
+          break;
       }
     }
   },
@@ -272,6 +292,23 @@ export default {
         params: {
           magnetLink: magnetLink
         }
+      });
+    },
+    removeToTransmission(id) {
+      this.isLoading = true;
+      this.loadingMessage = "Removing to Transmission...";
+      this.$store.commit("webSocket/send", {
+        object: "transmission",
+        method: "remove",
+        params: {
+          id: id
+        }
+      });
+    },
+    getTorrents() {
+      this.$store.commit("webSocket/send", {
+        object: "transmission",
+        method: "active"
       });
     }
   }

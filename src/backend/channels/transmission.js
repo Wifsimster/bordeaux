@@ -34,6 +34,32 @@ class Transmission {
           data.error = err
         })
         break
+      case "remove":
+        data.results = await new Promise((resolve, reject) => {
+          transmission.instance.remove(data.params.id, true, (err, arg) => {
+            if (err) {
+              reject(err)
+            } else {
+              resolve(arg)
+            }
+          })
+        }).catch(err => {
+          data.error = err
+        })
+        break
+      case "active":
+        data.results = await new Promise((resolve, reject) => {
+          transmission.instance.active((err, arg) => {
+            if (err) {
+              reject(err)
+            } else {
+              resolve(arg)
+            }
+          })
+        }).catch(err => {
+          data.error = err
+        })
+        break
       case "sessionStats":
         data.results = await new Promise((resolve, reject) => {
           transmission.instance.sessionStats((err, arg) => {
