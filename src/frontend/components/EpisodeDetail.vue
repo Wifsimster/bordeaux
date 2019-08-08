@@ -169,6 +169,10 @@ export default {
                 this.error = data.error;
               } else {
                 console.log(`TODO : ${data.results}`);
+                // data.results[0].id
+                // data.results[0].magnetLink
+                // data.results[0].name
+                // data.results[0].status = 4
               }
               break;
           }

@@ -82,6 +82,7 @@ export default {
                 this.success = true;
               }
               this.search();
+              this.refresh();
               break;
           }
           break;
