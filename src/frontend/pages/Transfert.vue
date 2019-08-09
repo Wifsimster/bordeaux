@@ -75,14 +75,16 @@ export default {
               break;
             case "run":
               this.isLoading = false;
+
               if (data.error) {
                 this.error = data.error;
                 this.success = false;
               } else {
                 this.success = true;
+                this.error = null;
+                this.search();
+                this.refreshPlex();
               }
-              this.search();
-              this.refresh();
               break;
           }
           break;
@@ -117,7 +119,7 @@ export default {
         method: "run"
       });
     },
-    refresh() {
+    refreshPlex() {
       this.$store.commit("webSocket/send", {
         object: "plex",
         method: "refresh"
