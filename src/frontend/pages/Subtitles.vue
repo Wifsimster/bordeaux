@@ -86,7 +86,7 @@ export default {
     },
     run() {
       this.isLoading = true;
-      this.loadingMessage = `Searching subtitles...`;
+      this.loadingMessage = `Searching subtitles online...`;
       this.$store.commit("webSocket/send", {
         object: "subtitles",
         method: "run"
