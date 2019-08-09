@@ -10,7 +10,8 @@ class Subtitles {
     switch (data.method) {
       case "search":
         var settings = File.readFile(CONFIG_FILE)
-        data.results = Yquem.getRecentFilesFromDirectory(settings.from, data.params.fileAge)
+        var results = Yquem.getRecentFilesFromDirectory(settings.to, data.params.fileAge)
+        data.results = results
         break
       case "run":
         var settings = File.readFile(CONFIG_FILE)
