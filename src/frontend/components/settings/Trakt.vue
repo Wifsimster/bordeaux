@@ -1,17 +1,32 @@
 <template>
-  <div class="min-w:xs max-w:sm">
+  <div>
     <alert color="red" v-if="error">{{ error }}</alert>
-    <div class="p:1">
-      <div class="text:white text:3/2">Trakt</div>
-      <form v-if="settings">
-        <input type="text" v-model="settings.code" placeholder="code" readonly />
-        <input type="text" v-model="settings.accessToken" placeholder="accessToken" readonly />
-        <input type="text" v-model="settings.refreshToken" placeholder="refreshToken" readonly />
-        <btn @click="generateDeviceTokenShow = true">Generate</btn>
-      </form>
+    <div class="px:1">
+      <div class="text:white text:3/2">
+        Trakt
+        <span
+          v-if="this.settings.accessToken && this.settings.refreshToken"
+          class="inline-block rounded:full bg:green ml:1/4 p:1/3 align:middle"
+        ></span>
+        <span v-else class="inline-block rounded:full bg:red ml:1/4 p:1/3 align:middle"></span>
+      </div>
+      <div class="flex flex:wrap justify:center">
+        <btn @click="generateDeviceTokenShow = true">Generate an access code</btn>
+      </div>
     </div>
-    <generate-device-token v-if="generateDeviceTokenShow" @request="onRequest" @close="onClose"></generate-device-token>
-    <check-device-token v-if="checkDeviceTokenShow" :request="request" @token="onToken"></check-device-token>
+
+    <generate-device-token
+      v-if="generateDeviceTokenShow"
+      @request="onRequest"
+      @close="generateDeviceTokenShow = false"
+    ></generate-device-token>
+
+    <check-device-token
+      v-if="checkDeviceTokenShow"
+      :request="request"
+      @token="onToken"
+      @close="checkDeviceTokenShow = false"
+    ></check-device-token>
   </div>
 </template>
 
@@ -19,6 +34,7 @@
 import GenerateDeviceToken from "components/settings/GenerateDeviceToken.vue";
 import CheckDeviceToken from "components/settings/CheckDeviceToken.vue";
 export default {
+  name: "Trakt",
   computed: {
     message() {
       return this.$store.getters["webSocket/message"];
@@ -50,6 +66,7 @@ export default {
               this.error = data.error;
             } else {
               this.settings = Object.assign({}, data.results);
+              this.isValid();
             }
             break;
           case "update":
@@ -57,6 +74,7 @@ export default {
               this.error = data.error;
             } else {
               this.settings = Object.assign({}, data.results);
+              this.isValid();
             }
             break;
           default:
@@ -75,14 +93,12 @@ export default {
       this.settings.code = request.device_code;
       this.update();
     },
-    onClose() {
-      this.generateDeviceTokenShow = false;
-    },
     onToken(request) {
       this.checkDeviceTokenShow = false;
 
       this.settings.accessToken = request.access_token;
       this.settings.refreshToken = request.refresh_token;
+
       this.update();
     },
     getAll() {
@@ -97,25 +113,15 @@ export default {
         method: "update",
         params: this.settings
       });
+    },
+    isValid() {
+      this.$emit(
+        "is-valid",
+        this.settings.code &&
+          this.settings.accessToken &&
+          this.settings.refreshToken
+      );
     }
   }
 };
 </script>
-
-<style lang="scss" scoped>
-@import "../../../../node_modules/beta-scss/scss/global";
-
-input {
-  height: 36px;
-  caret-color: map-get($colors, "blue-dark");
-  @extend .w\:full;
-  @extend .text\:1;
-  @extend .text\:grey;
-  @extend .bg\:transparent;
-  @extend .border\:b;
-  @extend .border\:grey;
-  @extend .placeholder\:grey-dark;
-  @extend .mx\:1;
-  @extend .block;
-}
-</style>

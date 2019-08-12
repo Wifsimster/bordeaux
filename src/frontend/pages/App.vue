@@ -1,11 +1,11 @@
 <template>
   <div class="bg:black text:white h:screen w:screen overflow:hidden">
     <div class="flex flex:col h:screen">
-      <nav class="h:1/12 w:screen flex">
-        <logo class="w:3/12"></logo>
-        <navigation class="w:9/12"></navigation>
+      <nav class="flex flex:wrap w:screen">
+        <logo></logo>
+        <navigation></navigation>
       </nav>
-      <main class="h:11/12 p:1 overflow-y:auto">
+      <main class="h:11/12 p:1 overflow-y:auto overflow-x:hidden">
         <transition name="opacity" mode="out-in">
           <router-view></router-view>
         </transition>
@@ -43,6 +43,7 @@ export default {
 </script>
 
 <style lang="scss">
+@import "../scss/global";
 @import "node_modules/beta-scss/scss/global";
 
 * {

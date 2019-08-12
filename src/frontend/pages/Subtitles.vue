@@ -4,25 +4,27 @@
 
     <loader v-if="isLoading" :message="loadingMessage"></loader>
 
-    <div v-if="!isLoading">
-      <alert v-if="hasEpisodes">
-        <p>Recent episodes found :</p>
-        <ul class="list-reset pl:1 px:1/2">
-          <li v-for="item in episodes" :key="item.id">{{ item }}</li>
-        </ul>
-      </alert>
-      <div v-else class="text:center">No recent episode found :(</div>
+    <div v-if="!isLoading && hasEpisodes" class="flex flex:col">
+      <file :item="item" v-for="item in episodes" :key="item.file"></file>
+      <transition name="opacity">
+        <div v-if="!hasEpisodes" class="text:center">No recent episode found :(</div>
+      </transition>
     </div>
 
     <div class="flex w:full justify:center mt:1" v-if="!isLoading">
-      <btn class="mr:1" @click="search()">Scan</btn>
-      <btn v-if="hasEpisodes" @click="run()">Search for subtitles</btn>
+      <btn class="mr:1" @click="search()">Scan new files</btn>
+      <btn v-if="hasEpisodes" @click="run()">Download subtitles</btn>
     </div>
   </div>
 </template>
 
 <script>
+import File from "components/subtitles/File.vue";
 export default {
+  name: "subtitles",
+  components: {
+    File
+  },
   computed: {
     hasEpisodes() {
       return this.episodes && this.episodes.length > 0;
@@ -40,8 +42,7 @@ export default {
       episodes: null,
       results: null,
       isLoading: false,
-      loadingMessage: null,
-      fileAge: 2
+      loadingMessage: null
     };
   },
   created() {
@@ -56,19 +57,11 @@ export default {
             if (data.error) {
               this.error = data.error;
             } else {
-              this.episodes = Object.assign([], data.results);
+              this.episodes = data.results.map(file => {
+                return { file: file, subtitle: {} };
+              });
             }
             break;
-          case "run":
-            this.isLoading = false;
-            if (data.error) {
-              this.error = data.error;
-            } else {
-              this.results = Object.assign([], data.results);
-            }
-            break;
-          default:
-            console.log(`Unknow method : ${data.method}`);
         }
       }
     }
@@ -77,20 +70,26 @@ export default {
     search() {
       this.episodes = null;
       this.isLoading = true;
-      this.loadingMessage = `Searching recent episodes (${this.fileAge} days old)...`;
+      this.loadingMessage = `Searching recent episodes...`;
       this.$store.commit("webSocket/send", {
         object: "subtitles",
         method: "search",
-        params: { fileAge: this.fileAge }
+        params: { fileAge: 2 }
+      });
+    },
+    getSubtitle(file) {
+      this.$store.commit("webSocket/send", {
+        object: "subtitles",
+        method: "getSubtitle",
+        params: { file: file }
       });
     },
     run() {
-      this.isLoading = true;
-      this.loadingMessage = `Searching subtitles online...`;
-      this.$store.commit("webSocket/send", {
-        object: "subtitles",
-        method: "run"
-      });
+      if (this.episodes) {
+        this.episodes.map(episode => {
+          this.getSubtitle(episode.file);
+        });
+      }
     }
   }
 };

@@ -1,8 +1,8 @@
 <template>
-  <div class="min-w:xs max-w:sm">
+  <div>
     <alert color="red" v-if="error">{{ error }}</alert>
-    <div class="p:1">
-      <div class="text:white text:3/2">Directories</div>
+    <div class="px:1">
+      <div class="text:3/2">Directories</div>
       <form v-if="settings">
         <input type="text" v-model="settings.from" placeholder="Path to scan for new download" />
         <input type="text" v-model="settings.to" placeholder="Path to scan for existing shows" />
@@ -13,6 +13,7 @@
 
 <script>
 export default {
+  name: "directory",
   computed: {
     message() {
       return this.$store.getters["webSocket/message"];
@@ -47,6 +48,7 @@ export default {
               this.error = data.error;
             } else {
               this.settings = Object.assign({}, data.results);
+              this.isValid();
             }
             break;
           case "update":
@@ -54,6 +56,7 @@ export default {
               this.error = data.error;
             } else {
               this.settings = Object.assign({}, data.results);
+              this.isValid();
             }
             break;
           default:
@@ -75,25 +78,10 @@ export default {
         method: "update",
         params: this.settings
       });
+    },
+    isValid() {
+      this.$emit("is-valid", this.settings.from && this.settings.to);
     }
   }
 };
 </script>
-
-<style lang="scss" scoped>
-@import "../../../../node_modules/beta-scss/scss/global";
-
-input {
-  height: 36px;
-  caret-color: map-get($colors, "blue-dark");
-  @extend .w\:full;
-  @extend .text\:1;
-  @extend .text\:grey;
-  @extend .bg\:transparent;
-  @extend .border\:b;
-  @extend .border\:grey;
-  @extend .placeholder\:grey-dark;
-  @extend .mx\:1;
-  @extend .block;
-}
-</style>

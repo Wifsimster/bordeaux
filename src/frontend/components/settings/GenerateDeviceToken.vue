@@ -1,20 +1,25 @@
 <template>
-  <modal>
-    <template #header>Authentification code</template>
-    <template #content v-if="results">
-      <alert color="red" v-if="error">{{ error }}</alert>
-      <div class="text:3/2 text:bold text:center">{{ results.user_code }}</div>
-      <div class="text:center">
-        Enter your code :
-        <a
-          :href="results.verification_url"
-          target="_blank"
-          class="text:white"
-        >Verification URL</a>
-      </div>
-      <div class="text:center mt:2">
-        <btn @click="$emit('request', results)" class="mr:1">It's done</btn>
-        <a @click="$emit('close')" href class="text:white">Cancel</a>
+  <modal :show="true">
+    <template #content>
+      <div class="p:1">
+        <div class="text:3/2 text:center">Authentification code</div>
+        <alert color="red" v-if="error">{{ error }}</alert>
+        <div v-if="results">
+          <div class="px:1 text:2 text:bold text:center">{{ results.user_code }}</div>
+          <div class="text:center">
+            1. Enter your code here :
+            <a
+              :href="results.verification_url"
+              target="_blank"
+              class="text:white"
+            >Verification</a>
+          </div>
+          <div class="text:center">2. Click "It's done"</div>
+          <div class="flex flex:wrap justify:end items:baseline mt:2">
+            <a @click="$emit('close')" class="cursor:pointer">Cancel</a>
+            <btn @click="$emit('request', results)" class="ml:1">It's done</btn>
+          </div>
+        </div>
       </div>
     </template>
   </modal>

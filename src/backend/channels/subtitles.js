@@ -12,10 +12,13 @@ class Subtitles {
         var settings = File.readFile(CONFIG_FILE)
         data.results = Yquem.getRecentFilesFromDirectory(settings.to, data.params.fileAge)
         break
-      case "run":
-        var settings = File.readFile(CONFIG_FILE)
-        var yquem = new Yquem(settings.to)
-        data.results = await yquem.run().catch(err => {
+      case "getSubtitle":
+        data.results = await Yquem.getSubtitle(data.params.file).catch(err => {
+          data.error = err
+        })
+        break
+      case "hasSubtitle":
+        data.results = Yquem.hasSubtitle(data.params.file).catch(err => {
           data.error = err
         })
         break

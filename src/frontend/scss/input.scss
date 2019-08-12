@@ -1,0 +1,15 @@
+@import "../../../node_modules/beta-scss/scss/global";
+
+input {
+  height: 36px;
+  caret-color: map-get($colors, "blue-dark");
+  @extend .w\:full;
+  @extend .text\:1;
+  @extend .text\:grey;
+  @extend .bg\:transparent;
+  @extend .border\:b;
+  @extend .border\:grey;
+  @extend .placeholder\:grey-dark;
+  @extend .mx\:1;
+  @extend .block;
+}

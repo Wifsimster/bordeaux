@@ -1,6 +1,6 @@
 <template>
   <button
-    class="bg:grey hover:bg:grey-dark text:white text:bold rounded shadow cursor:pointer"
+    class="bg:grey-dark hover:bg:grey-darker text:white text:bold rounded shadow cursor:pointer"
     :class="{'opacity:50 cursor:not-allowed':disabled, 'px:1 py:2': size === 'md', 'px:1/4 py:1/2': size === 'sm'}"
     @click="$emit('click')"
   >

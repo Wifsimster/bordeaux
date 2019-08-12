@@ -1,13 +1,17 @@
 <template>
-  <div class="min-w:xs max-w:sm">
-    <alert color="red" v-if="error">{{ error }}</alert>
-    <alert color="green" v-if="testOk">Test is OK !</alert>
-    <div class="p:1">
-      <div class="text:white text:3/2">Plex</div>
+  <div>
+    <div class="px:1">
+      <div class="text:white text:3/2">
+        Plex
+        <span
+          v-if="testOk"
+          class="inline-block rounded:full bg:green ml:1/4 p:1/3 align:middle"
+        ></span>
+        <span v-else class="inline-block rounded:full bg:red ml:1/4 p:1/3 align:middle"></span>
+      </div>
       <form v-if="settings">
         <input v-model="settings.username" placeholder="Username" />
         <input type="password" v-model="settings.password" placeholder="Password" />
-        <btn @click="signin()">Test</btn>
       </form>
     </div>
   </div>
@@ -15,6 +19,7 @@
 
 <script>
 export default {
+  name: "Plex",
   computed: {
     message() {
       return this.$store.getters["webSocket/message"];
@@ -24,22 +29,24 @@ export default {
     return {
       error: null,
       settings: null,
-      isLoading: false,
       testOk: null
     };
   },
   created() {
     this.getAll();
+    this.test();
   },
   watch: {
     "settings.username"(newVal, oldVal) {
       if (oldVal) {
         this.update();
+        this.test();
       }
     },
     "settings.password"(newVal, oldVal) {
       if (oldVal) {
         this.update();
+        this.test();
       }
     },
     message(data) {
@@ -63,8 +70,10 @@ export default {
           case "signin":
             if (data.error) {
               this.error = data.error;
+              this.$emit("is-valid", false);
             } else {
               this.testOk = true;
+              this.$emit("is-valid", true);
             }
             break;
           default:
@@ -87,7 +96,7 @@ export default {
         params: this.settings
       });
     },
-    signin() {
+    test() {
       this.testOk = null;
       this.$store.commit("webSocket/send", {
         object: "plex",
@@ -97,21 +106,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" scoped>
-@import "../../../../node_modules/beta-scss/scss/global";
-
-input {
-  height: 36px;
-  caret-color: map-get($colors, "blue-dark");
-  @extend .w\:full;
-  @extend .text\:1;
-  @extend .text\:grey;
-  @extend .bg\:transparent;
-  @extend .border\:b;
-  @extend .border\:grey;
-  @extend .placeholder\:grey-dark;
-  @extend .mx\:1;
-  @extend .block;
-}
-</style>

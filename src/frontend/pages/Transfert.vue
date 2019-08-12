@@ -73,6 +73,13 @@ export default {
                 this.episodes = Object.assign([], data.results);
               }
               break;
+            case "move":
+              if (data.error) {
+                console.error(error);
+              } else {
+                console.log(data.results);
+              }
+              break;
             case "run":
               this.isLoading = false;
 
@@ -112,11 +119,17 @@ export default {
       });
     },
     transfert() {
-      this.isLoading = true;
-      this.loadingMessage = `Transfering files...`;
+      if (this.episodes) {
+        this.episodes.map(episode => {
+          this.move(episode);
+        });
+      }
+    },
+    move(episode) {
       this.$store.commit("webSocket/send", {
         object: "transfert",
-        method: "run"
+        method: "run",
+        params: { episode: episode }
       });
     },
     refreshPlex() {

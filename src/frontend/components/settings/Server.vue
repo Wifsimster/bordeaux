@@ -1,7 +1,7 @@
 <template>
-  <div class="min-w:xs max-w:sm">
+  <div>
     <alert color="red" v-if="error">{{ error }}</alert>
-    <div class="p:1">
+    <div class="px:1">
       <div class="text:white text:3/2">Server</div>
       <form v-if="settings">
         <input type="text" v-model="settings.host" placeholder="localhost" />
@@ -79,21 +79,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" scoped>
-@import "../../../../node_modules/beta-scss/scss/global";
-
-input {
-  height: 36px;
-  caret-color: map-get($colors, "blue-dark");
-  @extend .w\:full;
-  @extend .text\:1;
-  @extend .text\:grey;
-  @extend .bg\:transparent;
-  @extend .border\:b;
-  @extend .border\:grey;
-  @extend .placeholder\:grey-dark;
-  @extend .mx\:1;
-  @extend .block;
-}
-</style>

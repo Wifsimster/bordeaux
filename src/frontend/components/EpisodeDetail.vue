@@ -4,6 +4,7 @@
       <div class="relative w:full" v-if="detail" v-lazy-container="getLazyContainer()">
         <img class="min-h:full w:full align:middle rounded:t" :data-src="getImageSrc()" />
         <div class="absolute t:0 flex w:full justify:end">
+          <div class="shadow bg:purple px:1/2 py:1/4 text:7/8 my:1/2" v-if="subtitle">Subtitle</div>
           <div
             class="shadow bg:green px:1/2 py:1/4 text:7/8 my:1/2"
             v-if="hasBeenCollected(episode)"
@@ -31,7 +32,7 @@
         <div class="p:1">{{ detail.overview }}</div>
 
         <div class="flex justify:center w:full mx:1/2" v-if="!isLoading">
-          <btn @click="search()">Search</btn>
+          <btn @click="searchTorrents()">Search torrents</btn>
         </div>
 
         <loader v-if="isLoading" :message="loadingMessage"></loader>
@@ -56,7 +57,7 @@
                 v-for="item in tpbList"
                 :key="item.name"
                 class="hover:bg:grey-darker cursor:pointer"
-                @click="addToTransmission(item.magnet)"
+                @click="addTorentToTransmission(item.magnet)"
               >
                 <td class="inline-block truncate" style="width:225px">{{ item.name }}</td>
                 <td class="text:center">{{ item.quality }}</td>
@@ -102,7 +103,8 @@ export default {
       isLoading: false,
       loadingMessage: null,
       addedMessage: null,
-      removedMessage: null
+      removedMessage: null,
+      subtitle: false
     };
   },
   watch: {
@@ -113,7 +115,7 @@ export default {
       this.detail = null;
       if (val) {
         this.getEpisode();
-        this.getTorrents();
+        this.getActiveTorrents();
         this.addedMessage = null;
       }
     },
@@ -275,7 +277,7 @@ export default {
 
       return `${this.episode.show.title} S${season}E${number}`;
     },
-    search() {
+    searchTorrents() {
       this.isLoading = true;
       this.loadingMessage = "Searchig trackers...";
       this.addedMessage = null;
@@ -287,7 +289,7 @@ export default {
         }
       });
     },
-    addToTransmission(magnetLink) {
+    addTorentToTransmission(magnetLink) {
       this.isLoading = true;
       this.loadingMessage = "Adding to Transmission...";
       this.$store.commit("webSocket/send", {
@@ -298,7 +300,7 @@ export default {
         }
       });
     },
-    removeToTransmission(id) {
+    removeTorrentToTransmission(id) {
       this.isLoading = true;
       this.loadingMessage = "Removing to Transmission...";
       this.$store.commit("webSocket/send", {
@@ -309,10 +311,17 @@ export default {
         }
       });
     },
-    getTorrents() {
+    getActiveTorrents() {
       this.$store.commit("webSocket/send", {
         object: "transmission",
         method: "active"
+      });
+    },
+    hasSubtitle(file) {
+      this.$store.commit("webSocket/send", {
+        object: "subtitle",
+        method: "hasSubtitle",
+        params: { file: file }
       });
     }
   }
