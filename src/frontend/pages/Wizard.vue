@@ -88,6 +88,7 @@ export default {
   watch: {
     isTraktValid(val) {
       if (val) {
+        localStorage.setItem("token", "bordeaux");
         this.$router.push("/");
       }
     }

@@ -60,10 +60,18 @@
                 @click="addTorentToTransmission(item.magnet)"
               >
                 <td class="inline-block truncate" style="width:225px">{{ item.name }}</td>
-                <td class="text:center">{{ item.quality }}</td>
-                <td class="text:center">{{ item.seeder }}</td>
-                <td class="text:center">{{ item.size }}</td>
-                <td class="text:center">{{ item.uploaded }}</td>
+                <td class="text:center">
+                  <span v-if="item.quality">{{ item.quality }}</span>
+                </td>
+                <td class="text:center">
+                  <span v-if="item.seeder">{{ item.seeder }}</span>
+                </td>
+                <td class="text:center">
+                  <span v-if="item.size">{{ item.size }}</span>
+                </td>
+                <td class="text:center">
+                  <span v-if="item.uploaded">{{ item.uploaded }}</span>
+                </td>
               </tr>
             </tbody>
           </table>

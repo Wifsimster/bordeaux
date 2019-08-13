@@ -9,16 +9,31 @@ const Subtitles = () => import("../pages/Subtitles.vue")
 const Settings = () => import("../pages/Settings.vue")
 Vue.use(Router)
 
-let router = new Router({
+const router = new Router({
   scrollBehavior: () => ({ y: 0 }),
   routes: [
-    { path: "/", component: Dashboard },
     { path: "/wizard", component: Wizard },
-    { path: "/calendar", component: Calendar },
-    { path: "/transfert", component: Transfert },
-    { path: "/subtitles", component: Subtitles },
-    { path: "/settings", component: Settings }
+    { path: "/", component: Dashboard, meta: { requiresAuth: true } },
+    { path: "/calendar", component: Calendar, meta: { requiresAuth: true } },
+    { path: "/transfert", component: Transfert, meta: { requiresAuth: true } },
+    { path: "/subtitles", component: Subtitles, meta: { requiresAuth: true } },
+    { path: "/settings", component: Settings, meta: { requiresAuth: true } }
   ]
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!localStorage.getItem("token")) {
+      next({
+        path: "/wizard",
+        query: { redirect: to.fullPath }
+      })
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
 })
 
 export default router
