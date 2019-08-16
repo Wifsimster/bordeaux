@@ -16,7 +16,7 @@
     "medoc": "^1.2.8",
     "os": "^0.1.1",
     "pavie": "^1.0.4",
-    "petrus": "^1.0.9",
+    "petrus": "^1.1.0",
     "transmission": "^0.4.9",
     "uuid": "^3.3.2",
     "vue": "^2.6.10",
@@ -43,7 +43,7 @@
     "url-loader": "^1.1.2",
     "vue-loader": "^15.7.1",
     "vue-template-compiler": "^2.6.10",
-    "webpack": "^4.39.1",
+    "webpack": "^4.39.2",
     "webpack-cli": "^3.3.6",
     "webpack-dev-server": "^3.8.0"
   },

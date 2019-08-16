@@ -31,23 +31,22 @@
         </div>
         <div class="p:1">{{ detail.overview }}</div>
 
-        <div class="flex justify:center w:full mx:1/2" v-if="!isLoading">
-          <btn @click="searchTorrents()">Search torrents</btn>
-        </div>
-
         <loader v-if="isLoading" :message="loadingMessage"></loader>
 
         <alert color="red" v-if="error">{{ error }}</alert>
 
         <alert color="green" v-if="addedMessage">{{ addedMessage }}</alert>
 
-        <div>
-          <table class="border:collapse max-h:xs mx:1 table:fixed w:full" v-if="tpbList">
+        <div class="m:1">
+          <table class="border:collapse max-h:xs table:fixed" v-if="tpbList">
             <thead>
               <tr>
                 <th>Name</th>
                 <th>Quality</th>
-                <th>Seeder</th>
+                <th style="min-width: 100px">
+                  <i class="arrow p:1/5 mr:1/4 border:white inline-block"></i>
+                  <span class="inline-block">Seeder</span>
+                </th>
                 <th>Size</th>
                 <th>Uploaded</th>
               </tr>
@@ -57,19 +56,19 @@
                 v-for="item in tpbList"
                 :key="item.name"
                 class="hover:bg:grey-darker cursor:pointer"
-                @click="addTorentToTransmission(item.magnet)"
+                @click="addTorentToTransmission(item.magnetLink)"
               >
-                <td class="inline-block truncate" style="width:225px">{{ item.name }}</td>
-                <td class="text:center">
+                <td class="inline-block truncate p:1/4" style="max-width:450px">{{ item.name }}</td>
+                <td class="w:full text:center p:1/4" style="min-width:50px">
                   <span v-if="item.quality">{{ item.quality }}</span>
                 </td>
-                <td class="text:center">
+                <td class="w:full text:center p:1/4" style="min-width:50px">
                   <span v-if="item.seeder">{{ item.seeder }}</span>
                 </td>
-                <td class="text:center">
+                <td class="w:full text:center p:1/4" style="min-width:125px">
                   <span v-if="item.size">{{ item.size }}</span>
                 </td>
-                <td class="text:center">
+                <td class="w:full text:center p:1/4" style="min-width:100px">
                   <span v-if="item.uploaded">{{ item.uploaded }}</span>
                 </td>
               </tr>
@@ -124,6 +123,7 @@ export default {
       if (val) {
         this.getEpisode();
         this.getActiveTorrents();
+        this.searchTorrents();
         this.addedMessage = null;
       }
     },
@@ -274,21 +274,24 @@ export default {
       });
     },
     buildEpisodeName() {
-      var season =
-        this.episode.episode.season < 10
-          ? `0${this.episode.episode.season}`
-          : this.episode.episode.season;
-      var number =
-        this.episode.episode.number < 10
-          ? `0${this.episode.episode.number}`
-          : this.episode.episode.number;
+      if (this.episode) {
+        var season =
+          this.episode.episode.season < 10
+            ? `0${this.episode.episode.season}`
+            : this.episode.episode.season;
+        var number =
+          this.episode.episode.number < 10
+            ? `0${this.episode.episode.number}`
+            : this.episode.episode.number;
 
-      return `${this.episode.show.title} S${season}E${number}`;
+        return `${this.episode.show.title} S${season}E${number}`;
+      }
     },
     searchTorrents() {
       this.isLoading = true;
       this.loadingMessage = "Searchig trackers...";
       this.addedMessage = null;
+
       this.$store.commit("webSocket/send", {
         object: "download",
         method: "searchEpisode",
@@ -338,4 +341,9 @@ export default {
 
 <style lang="scss" scoped>
 @import "../scss/global";
+
+.arrow {
+  border-width: 0 2px 2px 0;
+  transform: rotate(-135deg);
+}
 </style>
