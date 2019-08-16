@@ -9,6 +9,7 @@
         ></span>
         <span v-else class="inline-block rounded:full bg:red ml:1/4 p:1/3 align:middle"></span>
       </div>
+      <div>Needed to add magnetlink from The Pirate Bay.</div>
       <form v-if="settings">
         <input v-model="settings.host" placeholder="Host" />
         <input type="number" v-model="settings.port" placeholder="Port" />

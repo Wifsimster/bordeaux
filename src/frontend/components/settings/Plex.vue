@@ -9,6 +9,7 @@
         ></span>
         <span v-else class="inline-block rounded:full bg:red ml:1/4 p:1/3 align:middle"></span>
       </div>
+      <div>Used to get your collected and watched episodes.</div>
       <form v-if="settings">
         <input v-model="settings.username" placeholder="Username" />
         <input type="password" v-model="settings.password" placeholder="Password" />
