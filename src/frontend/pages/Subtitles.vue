@@ -5,7 +5,13 @@
     <loader v-if="isLoading" :message="loadingMessage"></loader>
 
     <div v-if="!isLoading && hasEpisodes" class="flex flex:col">
-      <file :item="item" v-for="item in episodes" :key="item.file"></file>
+      <div v-for="item in episodes" :key="item.file" class="flex flex:wrap">
+        <div class="flex:1">{{ item.file }}</div>
+        <div class="flex:1">
+          <loader v-if="item.loading"></loader>
+          <div v-if="item.subtitle && item.subtitle.file">{{ item.subtitle.file }}</div>
+        </div>
+      </div>
       <transition name="opacity">
         <div v-if="!hasEpisodes" class="text:center">No recent episode found :(</div>
       </transition>
@@ -19,12 +25,8 @@
 </template>
 
 <script>
-import File from "components/subtitles/File.vue";
 export default {
   name: "subtitles",
-  components: {
-    File
-  },
   computed: {
     hasEpisodes() {
       return this.episodes && this.episodes.length > 0;
@@ -62,6 +64,24 @@ export default {
               });
             }
             break;
+          case "getSubtitle":
+            if (data.error) {
+              this.error = data.error;
+            } else {
+              this.episodes.map((episode, index) => {
+                if (data.params.file === episode.file) {
+                  this.$set(
+                    this.episodes,
+                    index,
+                    Object.assign(episode, {
+                      loading: false,
+                      subtitle: data.results.subtitle
+                    })
+                  );
+                }
+              });
+            }
+            break;
         }
       }
     }
@@ -77,17 +97,23 @@ export default {
         params: { fileAge: 2 }
       });
     },
-    getSubtitle(file) {
+    getSubtitle(episode, index) {
+      this.$set(
+        this.episodes,
+        index,
+        Object.assign(episode, { loading: true, subtitle: null })
+      );
+
       this.$store.commit("webSocket/send", {
         object: "subtitles",
         method: "getSubtitle",
-        params: { file: file }
+        params: { file: episode.file }
       });
     },
     run() {
       if (this.episodes) {
-        this.episodes.map(episode => {
-          this.getSubtitle(episode.file);
+        this.episodes.map((episode, index) => {
+          this.getSubtitle(episode, index);
         });
       }
     }
