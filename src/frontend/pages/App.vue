@@ -6,6 +6,7 @@
         <navigation></navigation>
       </nav>
       <main class="h:11/12 p:1 overflow-y:auto overflow-x:hidden">
+        <notification></notification>
         <transition name="opacity" mode="out-in">
           <router-view></router-view>
         </transition>
@@ -15,15 +16,17 @@
 </template>
 
 <script>
-const Navigation = () => import("components/Navigation.vue");
-const Logo = () => import("components/Logo.vue");
+const Navigation = () => import("components/navigation.vue");
+const Logo = () => import("components/logo.vue");
+const Notification = () => import("components/notification.vue");
 
 import "beta-scss";
 
 export default {
   components: {
     Navigation,
-    Logo
+    Logo,
+    Notification
   },
   data() {
     return {};

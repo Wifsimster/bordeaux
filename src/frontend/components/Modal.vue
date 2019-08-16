@@ -1,7 +1,7 @@
 <template>
   <transition name="fade">
     <div
-      class="fixed t:0 r:0 b:0 l:0 overflow:auto bg:smoke flex z:50"
+      class="fixed t:0 r:0 b:0 l:0 overflow:auto bg:smoke flex z:40"
       ref="container"
       v-if="show"
       @keyup.esc="$emit('close')"

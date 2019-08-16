@@ -173,8 +173,10 @@ export default {
               if (data.error) {
                 this.error = data.error;
               } else {
-                this.addedMessage = `${data.results.name} added to Transmission ;)`;
-                this.tpbList = null;
+                this.$store.dispatch("notification/add", {
+                  message: `${data.results.name} added to Transmission ;)`,
+                  type: "success"
+                });
               }
               break;
             case "remove":
@@ -213,7 +215,6 @@ export default {
     }
   },
   methods: {
-    getTrackerPercentage() {},
     hasBeenWatched() {
       var watched = this.$store.get("trakt/watched");
 
