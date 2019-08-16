@@ -49,14 +49,15 @@
                 </th>
                 <th>Size</th>
                 <th>Uploaded</th>
+                <th>Download</th>
               </tr>
             </thead>
             <tbody>
               <tr
                 v-for="item in tpbList"
                 :key="item.name"
-                class="hover:bg:grey-darker cursor:pointer"
                 @click="addTorentToTransmission(item.magnetLink)"
+                :class="{ 'bg:orange':item.progress, 'hover:bg:grey-darker cursor:pointer':!item.progress }"
               >
                 <td class="inline-block truncate p:1/4" style="max-width:450px">{{ item.name }}</td>
                 <td class="w:full text:center p:1/4" style="min-width:50px">
@@ -70,6 +71,9 @@
                 </td>
                 <td class="w:full text:center p:1/4" style="min-width:100px">
                   <span v-if="item.uploaded">{{ item.uploaded }}</span>
+                </td>
+                <td>
+                  <span v-if="item.progress">{{ item.progress }} %</span>
                 </td>
               </tr>
             </tbody>
@@ -106,7 +110,7 @@ export default {
     return {
       error: null,
       detail: null,
-      tpbList: null,
+      tpbList: [],
       isLoading: false,
       loadingMessage: null,
       addedMessage: null,
@@ -116,13 +120,13 @@ export default {
   },
   watch: {
     show() {
+      this.error = null;
       this.tpbList = null;
     },
     episode(val) {
       this.detail = null;
       if (val) {
         this.getEpisode();
-        this.getActiveTorrents();
         this.searchTorrents();
         this.addedMessage = null;
       }
@@ -153,6 +157,10 @@ export default {
                 }
               } else {
                 this.tpbList = data.results.filter(item => item.seeder > 0);
+
+                if (this.tpbList.length > 0) {
+                  this.getActiveTorrents();
+                }
               }
               break;
           }
@@ -182,11 +190,21 @@ export default {
               if (data.error) {
                 this.error = data.error;
               } else {
-                console.log(`TODO : ${data.results}`);
-                // data.results[0].id
-                // data.results[0].magnetLink
-                // data.results[0].name
-                // data.results[0].status = 4
+                const torrents = data.results.torrents;
+
+                this.tpbList.map((tracker, index) => {
+                  torrents.map(torrent => {
+                    if (tracker.magnetLink.startsWith(torrent.magnetLink)) {
+                      this.$set(
+                        this.tpbList,
+                        index,
+                        Object.assign(tracker, {
+                          progress: parseInt(torrent.percentDone * 100)
+                        })
+                      );
+                    }
+                  });
+                });
               }
               break;
           }
@@ -195,6 +213,7 @@ export default {
     }
   },
   methods: {
+    getTrackerPercentage() {},
     hasBeenWatched() {
       var watched = this.$store.get("trakt/watched");
 
