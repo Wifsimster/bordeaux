@@ -5,7 +5,7 @@
         v-for="item in list"
         :key="item.id"
         class="rounded shadow p:1"
-        :class="{ 'bg:green': item.type === 'success'}"
+        :class="{ 'bg:green': item.type === 'success', 'bg:red': item.type === 'error'}"
       >{{ item.message }}</div>
     </transition-group>
   </div>

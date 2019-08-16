@@ -15,12 +15,17 @@
             <tr>
               <th>Episode found</th>
               <th>Episode destination</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="episode in episodes" :key="episode.directory" class="hover:bg:grey-darker">
               <td>{{ episode.origin.file }}</td>
               <td>{{ episode.destination.path }}</td>
+              <td class="text:center">
+                <loader v-if="episode.loading"></loader>
+                <span v-if="episode.transfered" class="text:green">Done</span>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -37,6 +42,7 @@
 
 <script>
 export default {
+  name: "Transfert",
   computed: {
     hasEpisodes() {
       return this.episodes && this.episodes.length > 0;
@@ -77,20 +83,20 @@ export default {
               if (data.error) {
                 console.error(error);
               } else {
-                console.log(data.results);
-              }
-              break;
-            case "run":
-              this.isLoading = false;
-
-              if (data.error) {
-                this.error = data.error;
-                this.success = false;
-              } else {
-                this.success = true;
-                this.error = null;
-                this.search();
                 this.refreshPlex();
+
+                this.episodes.map((episode, index) => {
+                  if (data.params.episode.origin.path === episode.origin.path) {
+                    this.$set(
+                      this.episodes,
+                      index,
+                      Object.assign(episode, {
+                        loading: false,
+                        transfered: true
+                      })
+                    );
+                  }
+                });
               }
               break;
           }
@@ -120,15 +126,20 @@ export default {
     },
     transfert() {
       if (this.episodes) {
-        this.episodes.map(episode => {
-          this.move(episode);
+        this.episodes.map((episode, index) => {
+          this.move(episode, index);
         });
       }
     },
-    move(episode) {
+    move(episode, index) {
+      this.$set(
+        this.episodes,
+        index,
+        Object.assign(episode, { loading: true })
+      );
       this.$store.commit("webSocket/send", {
         object: "transfert",
-        method: "run",
+        method: "move",
         params: { episode: episode }
       });
     },

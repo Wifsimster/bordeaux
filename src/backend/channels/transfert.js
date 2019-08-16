@@ -13,14 +13,7 @@ class Transfert {
         data.results = Medoc.search(settings.from, settings.to)
         break
       case "move":
-        data.results = Medoc.move(data.params.episode)
-        break
-      case "run":
-        var settings = File.readFile(CONFIG_FILE)
-        var medoc = new Medoc(settings.from, settings.to)
-        data.results = await medoc.run().catch(err => {
-          data.error = err
-        })
+        data.results = await Medoc.move(data.params.episode)
         break
       default:
         console.log(`[Transfert] Unknow method : ${data.method}`)
