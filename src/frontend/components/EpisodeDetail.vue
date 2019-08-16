@@ -146,7 +146,11 @@ export default {
             case "searchEpisode":
               this.isLoading = false;
               if (data.error) {
-                this.error = data.error;
+                if (data.error.code === 502) {
+                  this.error = "The Pirate Bay is down !";
+                } else {
+                  this.error = data.error;
+                }
               } else {
                 this.tpbList = data.results.filter(item => item.seeder > 0);
               }
