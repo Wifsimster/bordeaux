@@ -25,12 +25,12 @@ export default {
 <style lang="scss" scoped>
 .loader {
   div {
-    height: 64px;
+    height: 26px;
     width: 64px;
     div {
-      top: 27px;
-      width: 11px;
-      height: 11px;
+      top: 12px;
+      width: 8px;
+      height: 8px;
       animation-timing-function: cubic-bezier(0, 1, 1, 0);
     }
     div:nth-child(1) {

@@ -6,7 +6,10 @@
         :key="item.id"
         class="rounded shadow p:1"
         :class="{ 'bg:green': item.type === 'success', 'bg:red': item.type === 'error'}"
-      >{{ item.message }}</div>
+      >
+        {{ item.message }}
+        <span class="text:right cursor:pointer p:1/4" @click="close(item.id)">x</span>
+      </div>
     </transition-group>
   </div>
 </template>
@@ -16,6 +19,11 @@ import { get } from "vuex-pathify";
 export default {
   computed: {
     list: get("notification/list")
+  },
+  methods: {
+    close(id) {
+      this.$store.dispatch("notification/remove", id);
+    }
   }
 };
 </script>
