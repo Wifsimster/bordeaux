@@ -19,7 +19,9 @@ Download the project or fork it.
 ```
 $ npm install
 
-$ npm run start
+$ npm run server
+
+$ npm run server
 ```
 
 That's all :)

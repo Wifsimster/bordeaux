@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "webpack --config webpack.dev.js",
     "start": "webpack-dev-server --config webpack.dev.js",
+    "prod": "webpack --config webpack.prod.js",
     "server": "node src/backend/server.js"
   },
   "dependencies": {
