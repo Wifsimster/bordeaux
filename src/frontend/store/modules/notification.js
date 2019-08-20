@@ -1,5 +1,8 @@
+import Vue from "vue"
 import { make } from "vuex-pathify"
-import uuid from "uuid"
+
+const BOUND_TIMER = 100
+const TIMER = 3000
 
 const state = {
   list: []
@@ -7,26 +10,82 @@ const state = {
 
 const getters = make.getters(state)
 
+// Mutations mutate the state
+// Mutations hanler must be synchronous
 const mutations = {
-  add(state, data) {
-    data.id = uuid.v4()
-    state.list.push(data)
+  add(state, item) {
+    state.list.push(item)
   },
-  remove(state, id) {
-    state.list.map((notification, index) => {
-      if (notification.id === id) {
-        state.list.splice(index, 1)
+
+  timer(state, item) {
+    state.list.map((e, index) => {
+      if (e.id === item.id) {
+        state.list[index].remain = item.remain - 1 * BOUND_TIMER
+        state.list[index].width = Math.ceil((state.list[index].remain / item.timeout) * 100)
       }
     })
+  },
+
+  remove(state, index) {
+    if (index !== undefined && index !== null) {
+      state.list.splice(index, 1)
+    } else {
+      state.list = []
+    }
   }
 }
 
+// Actions commit mutations
+// Actions can contain asynchronous operations
 const actions = {
-  add(payload, data) {
-    payload.commit("add", data)
+  add({ commit, state }, item) {
+    item.id = Vue.getID()
+
+    switch (item.type) {
+      case "success":
+        item.color = "green"
+        item.timeout = TIMER
+        item.remain = item.timeout
+        item.width = 100
+        break
+      case "warning":
+        item.color = "orange"
+        break
+      case "error":
+        item.color = "red"
+        break
+      default:
+        item.color = "teal"
+        item.timeout = TIMER
+        item.remain = item.timeout
+        item.width = 100
+    }
+
+    commit("add", item)
+
+    if (item.timeout) {
+      setTimeout(
+        () =>
+          state.list.map((e, index) => {
+            if (e.id === item.id) {
+              commit("remove", index)
+            }
+          }),
+        item.timeout
+      )
+
+      const timer = setInterval(() => {
+        if (item.remain > BOUND_TIMER) {
+          commit("timer", item)
+        } else {
+          clearInterval(timer)
+        }
+      }, BOUND_TIMER)
+    }
   },
-  remove(payload, data) {
-    payload.commit("remove", data)
+
+  remove({ commit, state }, index) {
+    commit("remove", index)
   }
 }
 

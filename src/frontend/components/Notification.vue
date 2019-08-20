@@ -1,14 +1,27 @@
 <template>
-  <div class="absolute b:1 r:1 p:1 z:50">
-    <transition-group name="list">
+  <div class="fixed z:20 r:1 b:0">
+    <transition-group name="flip" appear>
       <div
-        v-for="item in list"
+        v-for="(item, index) in list"
         :key="item.id"
-        class="rounded shadow p:1"
-        :class="{ 'bg:green': item.type === 'success', 'bg:red': item.type === 'error'}"
+        class="m:1/2 rounded shadow:large z:20 relative"
+        :class="'bg:' + item.color"
+        :id="item.id"
       >
-        {{ item.message }}
-        <span class="text:right cursor:pointer p:1/4" @click="close(item.id)">x</span>
+        <div class="flex items:baseline">
+          <div class="text:white px:1 pl:1/2 pr:1/4">{{ item.message }}</div>
+          <i
+            class="float:right text:white text:3/4 mr:1/2 p:1/4 rounded cursor:pointer"
+            :class="'hover:bg:' + item.color + '-light'"
+            @click="close(index)"
+          >x</i>
+        </div>
+        <div
+          v-if="item.timeout"
+          class="rounded:b m:0 p:0"
+          :class="'bg:' + item.color + '-dark'"
+          :style="'height: 4px; width:calc(' + item.width + '% - 0.25rem);'"
+        ></div>
       </div>
     </transition-group>
   </div>
@@ -16,14 +29,19 @@
 
 <script>
 import { get } from "vuex-pathify";
+
 export default {
   computed: {
     list: get("notification/list")
   },
   methods: {
-    close(id) {
-      this.$store.dispatch("notification/remove", id);
+    close(index) {
+      this.$store.dispatch("notification/remove", index);
     }
   }
 };
 </script>
+
+<style lang="scss" scoped>
+@import "~beta-scss/scss/global";
+</style>

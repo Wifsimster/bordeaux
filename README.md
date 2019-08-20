@@ -18,10 +18,18 @@ Download the project or fork it.
 
 ```
 $ npm install
+```
 
-$ npm run server
+## Run backend
 
-$ npm run server
+```
+$ npm run backend
+```
+
+## Run frontend
+
+```
+$ npm run frontend
 ```
 
 That's all :)

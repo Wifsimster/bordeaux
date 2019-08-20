@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[7],{364:function(e,n,t){"use strict";t.r(n);var r=function(){var e=this.$createElement;return(this._self._c||e)("div")};r._withStripped=!0;var s={},i=t(14),a=Object(i.a)(s,r,[],!1,null,null,null);a.options.__file="src/frontend/pages/Dashboard.vue";n.default=a.exports}}]);
