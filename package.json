@@ -53,7 +53,7 @@
     "type": "git",
     "url": "git+https://github.com/Wifsimster/bordeaux.git"
   },
-  "author": "",
+  "author": "Damien BATTISTELLA <battistella@protonmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Wifsimster/bordeaux/issues"
