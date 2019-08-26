@@ -22,7 +22,7 @@ $ npm install
 
 ## Run backend
 
-First, start the Web Socket server.
+First, start the WebSockets server.
 
 ```
 $ npm run backend
