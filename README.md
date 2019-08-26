@@ -22,11 +22,15 @@ $ npm install
 
 ## Run backend
 
+First, start the Web Socket server.
+
 ```
 $ npm run backend
 ```
 
 ## Run frontend
+
+Then, start the web application. Default url : `http://localhost:8082/`
 
 ```
 $ npm run frontend

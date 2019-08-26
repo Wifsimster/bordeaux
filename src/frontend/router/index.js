@@ -10,6 +10,7 @@ const Settings = () => import("../pages/Settings.vue")
 Vue.use(Router)
 
 const router = new Router({
+  mode: "history",
   scrollBehavior: () => ({ y: 0 }),
   routes: [
     { path: "/wizard", component: Wizard },
