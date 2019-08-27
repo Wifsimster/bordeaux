@@ -18,15 +18,15 @@ You need to install Node.js (> 10.16.0 recommended), see [here](https://nodejs.o
 
 ## Install
 
-Download the project or fork it.
+Download the project or fork it, then install all dependencies.
 
 ```
-$ npm install
+$ npm install --production
 ```
 
 ## Start the backend
 
-First, start the WebSockets server.
+First, start the WebSockets server. Default URL: `ws://localhost:8080`
 
 ```
 $ npm run backend
@@ -34,7 +34,7 @@ $ npm run backend
 
 ## Start the frontend
 
-Then, start the web application. Default URL : `http://localhost:8082/`
+Then, start the web application. Default URL : `http://localhost:8082`
 
 ```
 $ npm run frontend
