@@ -35,7 +35,7 @@ wss.on("connection", function connection(ws, req) {
       ws.isAlive = false
       ws.ping(() => {})
     })
-  }, 5000)
+  }, 30000)
 
   ws.on("message", async data => {
     data = JSON.parse(data)
