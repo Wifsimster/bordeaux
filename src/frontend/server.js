@@ -1,7 +1,8 @@
 const http = require("http")
 const fs = require("fs")
-const httpPort = 80
 const path = require("path")
+
+const PORT = 8082
 
 http
   .createServer((req, res) => {
@@ -32,6 +33,6 @@ http
       })
     }
   })
-  .listen(httpPort, () => {
-    console.log("Server listening on: http://localhost:%s", httpPort)
+  .listen(PORT, () => {
+    console.log("Server listening on: http://localhost:%s", PORT)
   })
