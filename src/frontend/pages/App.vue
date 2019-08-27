@@ -38,7 +38,7 @@ export default {
     connect() {
       this.$store.dispatch(
         "webSocket/ws",
-        new WebSocket("ws://localhost:8080")
+        new WebSocket(`ws://${location.host}:8080`)
       );
     }
   }
@@ -49,7 +49,15 @@ export default {
 @import "../scss/global";
 @import "node_modules/beta-scss/scss/global";
 
+@font-face {
+  font-family: "Felona";
+  src: url("~fonts/Felona.woff2") format("woff2");
+  font-variation-settings: "wght" 200;
+}
+
 * {
+  font-family: "Felona";
+
   ::-webkit-scrollbar {
     width: 4px;
   }

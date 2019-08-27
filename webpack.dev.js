@@ -25,6 +25,7 @@ module.exports = {
     modules: [path.join(__dirname, "src"), "node_modules"],
     alias: {
       components: path.resolve(__dirname, "src/frontend/components/"),
+      fonts: path.resolve(__dirname, "src/frontend/fonts/"),
       pages: path.resolve(__dirname, "src/frontend/pages/"),
       store: path.resolve(__dirname, "src/frontend/store/"),
       scss: path.resolve(__dirname, "src/frontend/scss/")
@@ -40,14 +41,7 @@ module.exports = {
         test: /\.scss$/,
         use: ["vue-style-loader", "css-loader", "sass-loader"]
       },
-      {
-        test: /\.(png|jpg|gif|svg)$/,
-        loader: "url-loader?limit=100000&name=../img/[name].[ext]"
-      },
-      {
-        test: /\.(woff(2)?|eot|otf|ttf|svg)(\?[a-z0-9=\.]+)?$/,
-        loader: "file-loader?name=../fonts/[name].[ext]"
-      }
+      { test: /\.(woff|woff2)$/, loader: "url-loader" }
     ]
   }
 }

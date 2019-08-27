@@ -16,6 +16,7 @@
     "axios": "^0.19.0",
     "beta-scss": "^1.2.12",
     "connect": "^3.7.0",
+    "connect-history-api-fallback": "^1.6.0",
     "medoc": "^1.2.8",
     "os": "^0.1.1",
     "pavie": "^1.0.4",
