@@ -5,8 +5,14 @@
       <div class="text:white text:3/2">Server</div>
       <div>Restart needed at any change.</div>
       <form v-if="settings">
-        <input type="text" v-model="settings.host" placeholder="localhost" />
-        <input type="text" v-model="settings.port" placeholder="8080" />
+        <div class="relative mx:2">
+          <input id="host" type="text" v-model="settings.host" placeholder="localhost" />
+          <label for="host">Host</label>
+        </div>
+        <div class="relative mx:2">
+          <input id="port" type="text" v-model="settings.port" placeholder="8080" />
+          <label for="port">Port</label>
+        </div>
       </form>
     </div>
   </div>

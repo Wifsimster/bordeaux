@@ -1,5 +1,19 @@
 @import "../../../node_modules/beta-scss/scss/global";
 
+label,
+input {
+  @extend .transition;
+}
+
+label {
+  height: 32px;
+  @extend .absolute;
+  @extend .t\:0;
+  @extend .b\:0;
+  @extend .l\:0;
+  @extend .w\:full;
+}
+
 input {
   height: 36px;
   caret-color: map-get($colors, "blue-dark");
@@ -10,6 +24,36 @@ input {
   @extend .border\:b;
   @extend .border\:grey;
   @extend .placeholder\:grey-dark;
-  @extend .mx\:1;
+  // @extend .mx\:2;
   @extend .block;
+
+  &:focus {
+    outline: 0;
+    @extend .border\:orange;
+  }
+
+  &:placeholder-shown + label {
+    @extend .max-w\:3\/4;
+    @extend .whitespace\:no-wrap;
+    @extend .overflow\:hidden;
+    text-overflow: ellipsis;
+    cursor: text;
+    transform-origin: left bottom;
+    transform: translate(0, 0.25rem) scale(1);
+  }
+
+  &:not(:placeholder-shown) + label,
+  &:focus + label {
+    transform: translate(0, -1.25rem) scale(1);
+    @extend .cursor\:pointer;
+  }
+
+  &:focus::-webkit-input-placeholder {
+    opacity: 1;
+  }
+}
+
+::-webkit-input-placeholder {
+  opacity: 0;
+  transition: inherit;
 }

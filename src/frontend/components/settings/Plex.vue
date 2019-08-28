@@ -11,8 +11,19 @@
       </div>
       <div>Used to get your collected and watched episodes.</div>
       <form v-if="settings">
-        <input v-model="settings.username" placeholder="Username" />
-        <input type="password" v-model="encryptedPassword" placeholder="Password" />
+        <div class="relative mx:2">
+          <input id="plex_username" v-model="settings.username" placeholder="Eliot" />
+          <label for="plex_username">Username</label>
+        </div>
+        <div class="relative mx:2">
+          <input
+            id="plex_password"
+            type="password"
+            v-model="encryptedPassword"
+            placeholder="M3gA_Pa22w0rD!"
+          />
+          <label for="plex_password">Password</label>
+        </div>
       </form>
     </div>
   </div>

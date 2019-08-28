@@ -11,10 +11,27 @@
       </div>
       <div>Needed to add magnetlink from The Pirate Bay.</div>
       <form v-if="settings">
-        <input v-model="settings.host" placeholder="Host" />
-        <input type="number" v-model="settings.port" placeholder="Port" />
-        <input v-model="settings.username" placeholder="Username" />
-        <input type="password" v-model="encryptedPassword" placeholder="Password" />
+        <div class="relative mx:2">
+          <input id="transmission_host" v-model="settings.host" placeholder="localhost" />
+          <label for="transmission_host">Host</label>
+        </div>
+        <div class="relative mx:2">
+          <input id="transmission_port" type="number" v-model="settings.port" placeholder="9091" />
+          <label for="transmission_port">Port</label>
+        </div>
+        <div class="relative mx:2">
+          <input id="transmission_username" v-model="settings.username" placeholder="Eliot" />
+          <label for="transmission_username">Username</label>
+        </div>
+        <div class="relative mx:2">
+          <input
+            id="transmission_password"
+            type="password"
+            v-model="encryptedPassword"
+            placeholder="M3gA_Pa22w0rD!"
+          />
+          <label for="transmission_password">Password</label>
+        </div>
       </form>
     </div>
   </div>
