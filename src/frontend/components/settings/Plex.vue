@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import CryptoJS from "crypto-js";
 export default {
   name: "Plex",
   computed: {
@@ -58,7 +59,16 @@ export default {
             if (data.error) {
               this.error = data.error;
             } else {
-              this.settings = Object.assign({}, data.results);
+              var bytes = CryptoJS.AES.decrypt(data.results, UUID);
+
+              console.log(bytes);
+
+              var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+
+              console.log(decryptedData);
+
+              // JSON.parse(bytes.toString(CryptoJS.enc.Utf8))
+              // this.settings = Object.assign({}, data.results);
             }
             break;
           case "update":
@@ -94,7 +104,10 @@ export default {
       this.$store.commit("webSocket/send", {
         object: "plex",
         method: "update",
-        params: this.settings
+        params: CryptoJS.AES.encrypt(
+          JSON.stringify(this.settings),
+          UUID
+        ).toString()
       });
     },
     test() {

@@ -1,6 +1,8 @@
 const path = require("path")
+const webpack = require("webpack")
 const CleanWebpackPlugin = require("clean-webpack-plugin")
 const VueLoaderPlugin = require("vue-loader/lib/plugin")
+const uuid = require("uuid")
 
 module.exports = {
   mode: "development",
@@ -31,7 +33,14 @@ module.exports = {
       scss: path.resolve(__dirname, "src/frontend/scss/")
     }
   },
-  plugins: [new CleanWebpackPlugin(), new VueLoaderPlugin()],
+  plugins: [
+    new CleanWebpackPlugin(),
+    new VueLoaderPlugin(),
+    new webpack.DefinePlugin({
+      "process.env.NODE_ENV": JSON.stringify("development"),
+      UUID: JSON.stringify(uuid.v4())
+    })
+  ],
   module: {
     rules: [
       { test: /\.vue$/, loader: "vue-loader" },
