@@ -1,10 +1,18 @@
 const WebSocket = require("ws")
 const File = require("./utils/file")
-const settings = File.readFile("server-config")
+
+var settings = File.readFile("server-config")
+
+if (!settings) {
+  File.writeFile("server-config", { host: "localhost", port: "8080" })
+  settings = File.readFile("server-config")
+}
 
 const wss = new WebSocket.Server({ port: settings.port })
 
-console.log(`Web Socket server started at : ws://${settings.host}:${settings.port}`)
+console.log(
+  `Web Socket server started at : ws://${settings.host}:${settings.port}`
+)
 
 const Transmission = require("./channels/transmission")
 const Directory = require("./channels/directory")

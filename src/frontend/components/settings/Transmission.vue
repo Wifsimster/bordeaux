@@ -14,17 +14,33 @@
         <input v-model="settings.host" placeholder="Host" />
         <input type="number" v-model="settings.port" placeholder="Port" />
         <input v-model="settings.username" placeholder="Username" />
-        <input type="password" v-model="settings.password" placeholder="Password" />
+        <input type="password" v-model="encryptedPassword" placeholder="Password" />
       </form>
     </div>
   </div>
 </template>
 
 <script>
+import CryptoJS from "crypto-js";
 export default {
   computed: {
     message() {
       return this.$store.getters["webSocket/message"];
+    },
+    encryptedPassword: {
+      get() {
+        if (this.settings.password) {
+          const bytes = CryptoJS.AES.decrypt(this.settings.password, UUID);
+          return bytes.toString(CryptoJS.enc.Utf8);
+        }
+      },
+      set(val) {
+        this.$set(
+          this.settings,
+          "password",
+          CryptoJS.AES.encrypt(val, UUID).toString()
+        );
+      }
     }
   },
   data() {
@@ -39,29 +55,21 @@ export default {
     this.test();
   },
   watch: {
-    "settings.host"(newVal, oldVal) {
-      if (oldVal) {
-        this.update();
-        this.test();
-      }
+    "settings.host"() {
+      this.update();
+      this.test();
     },
-    "settings.port"(newVal, oldVal) {
-      if (oldVal) {
-        this.update();
-        this.test();
-      }
+    "settings.port"() {
+      this.update();
+      this.test();
     },
-    "settings.username"(newVal, oldVal) {
-      if (oldVal) {
-        this.update();
-        this.test();
-      }
+    "settings.username"() {
+      this.update();
+      this.test();
     },
-    "settings.password"(newVal, oldVal) {
-      if (oldVal) {
-        this.update();
-        this.test();
-      }
+    "settings.password"() {
+      this.update();
+      this.test();
     },
     message(data) {
       if (data.object === "transmission") {

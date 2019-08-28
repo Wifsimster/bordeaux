@@ -18,10 +18,10 @@ module.exports = {
     historyApiFallback: true,
     publicPath: "/dist",
     compress: true,
-    port: 9001,
+    port: 8082,
     open: true,
     hot: true,
-    host: "192.168.0.20"
+    host: "localhost"
   },
   resolve: {
     modules: [path.join(__dirname, "src"), "node_modules"],

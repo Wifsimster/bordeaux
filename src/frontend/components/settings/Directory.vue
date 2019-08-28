@@ -29,15 +29,11 @@ export default {
     this.getAll();
   },
   watch: {
-    "settings.from"(newVal, oldVal) {
-      if (oldVal) {
-        this.update();
-      }
+    "settings.from"() {
+      this.update();
     },
-    "settings.to"(newVal, oldVal) {
-      if (oldVal) {
-        this.update();
-      }
+    "settings.to"() {
+      this.update();
     },
     message(data) {
       if (data.object === "directory") {

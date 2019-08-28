@@ -12,7 +12,7 @@
       <div>Used to get your collected and watched episodes.</div>
       <form v-if="settings">
         <input v-model="settings.username" placeholder="Username" />
-        <input type="password" v-model="settings.password" placeholder="Password" />
+        <input type="password" v-model="encryptedPassword" placeholder="Password" />
       </form>
     </div>
   </div>
@@ -25,6 +25,21 @@ export default {
   computed: {
     message() {
       return this.$store.getters["webSocket/message"];
+    },
+    encryptedPassword: {
+      get() {
+        if (this.settings.password) {
+          const bytes = CryptoJS.AES.decrypt(this.settings.password, UUID);
+          return bytes.toString(CryptoJS.enc.Utf8);
+        }
+      },
+      set(val) {
+        this.$set(
+          this.settings,
+          "password",
+          CryptoJS.AES.encrypt(val, UUID).toString()
+        );
+      }
     }
   },
   data() {
@@ -39,17 +54,13 @@ export default {
     this.test();
   },
   watch: {
-    "settings.username"(newVal, oldVal) {
-      if (oldVal) {
-        this.update();
-        this.test();
-      }
+    "settings.username"() {
+      this.update();
+      this.test();
     },
-    "settings.password"(newVal, oldVal) {
-      if (oldVal) {
-        this.update();
-        this.test();
-      }
+    "settings.password"() {
+      this.update();
+      this.test();
     },
     message(data) {
       if (data.object === "plex") {
@@ -59,16 +70,7 @@ export default {
             if (data.error) {
               this.error = data.error;
             } else {
-              var bytes = CryptoJS.AES.decrypt(data.results, UUID);
-
-              console.log(bytes);
-
-              var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-
-              console.log(decryptedData);
-
-              // JSON.parse(bytes.toString(CryptoJS.enc.Utf8))
-              // this.settings = Object.assign({}, data.results);
+              this.settings = Object.assign({}, data.results);
             }
             break;
           case "update":
@@ -104,10 +106,7 @@ export default {
       this.$store.commit("webSocket/send", {
         object: "plex",
         method: "update",
-        params: CryptoJS.AES.encrypt(
-          JSON.stringify(this.settings),
-          UUID
-        ).toString()
+        params: this.settings
       });
     },
     test() {

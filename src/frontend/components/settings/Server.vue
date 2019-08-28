@@ -3,6 +3,7 @@
     <alert color="red" v-if="error">{{ error }}</alert>
     <div class="px:1">
       <div class="text:white text:3/2">Server</div>
+      <div>Restart needed at any change.</div>
       <form v-if="settings">
         <input type="text" v-model="settings.host" placeholder="localhost" />
         <input type="text" v-model="settings.port" placeholder="8080" />
@@ -29,14 +30,10 @@ export default {
   },
   watch: {
     "settings.host"(newVal, oldVal) {
-      if (oldVal) {
-        this.update();
-      }
+      this.update();
     },
     "settings.port"(newVal, oldVal) {
-      if (oldVal) {
-        this.update();
-      }
+      this.update();
     },
     message(data) {
       if (data.object === "server") {
