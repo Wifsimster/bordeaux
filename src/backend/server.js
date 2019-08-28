@@ -23,6 +23,7 @@ const Server = require("./channels/server")
 const Trakt = require("./channels/trakt")
 const Plex = require("./channels/plex")
 const Fanart = require("./channels/fanart")
+const Explorer = require("./channels/explorer")
 
 wss.on("connection", function connection(ws, req) {
   console.log(`New client connection for ${req.url}`)
@@ -75,6 +76,9 @@ wss.on("connection", function connection(ws, req) {
         break
       case `trakt`:
         data = await Trakt.response(data)
+        break
+      case `explorer`:
+        data = await Explorer.response(data)
         break
       default:
         console.error(`Unknow object : '${data.object}'`)

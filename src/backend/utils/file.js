@@ -32,6 +32,25 @@ class File {
       }
     )
   }
+
+  static getRoot() {
+    const rootPath = path.dirname(
+      require.main.filename || process.mainModule.filename
+    )
+    const disk = rootPath.split("\\")[0]
+    return `${disk}/`
+  }
+
+  static getDirectories(root) {
+    try {
+      return fs
+        .readdirSync(root, { withFileTypes: true })
+        .filter(dirent => dirent.isDirectory())
+        .map(dirent => dirent.name)
+    } catch (err) {
+      console.error(err)
+    }
+  }
 }
 
 module.exports = File

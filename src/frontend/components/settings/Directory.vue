@@ -4,16 +4,34 @@
     <div class="px:1">
       <div class="text:3/2">Directories</div>
       <form v-if="settings">
-        <input type="text" v-model="settings.from" placeholder="Path to scan for new download" />
-        <input type="text" v-model="settings.to" placeholder="Path to scan for existing shows" />
+        <input
+          type="text"
+          v-model="settings.from"
+          @click="openExplorerFrom = true"
+          readonly
+          placeholder="Path to scan for new download"
+        />
+        <input
+          type="text"
+          v-model="settings.to"
+          @click="openExplorerTo = true"
+          readonly
+          placeholder="Path to scan for existing shows"
+        />
       </form>
+      <explorer v-if="openExplorerFrom" @close="openExplorerFrom = false" @selected="fromSelected"></explorer>
+      <explorer v-if="openExplorerTo" @close="openExplorerTo = false" @selected="toSelected"></explorer>
     </div>
   </div>
 </template>
 
 <script>
+import Explorer from "components/Explorer.vue";
 export default {
   name: "directory",
+  components: {
+    Explorer
+  },
   computed: {
     message() {
       return this.$store.getters["webSocket/message"];
@@ -22,7 +40,9 @@ export default {
   data() {
     return {
       error: null,
-      settings: null
+      settings: null,
+      openExplorerFrom: false,
+      openExplorerTo: false
     };
   },
   created() {
@@ -55,13 +75,19 @@ export default {
               this.isValid();
             }
             break;
-          default:
-            console.log(`Unknow method : ${data.method}`);
         }
       }
     }
   },
   methods: {
+    fromSelected(val) {
+      this.settings.from = val;
+      this.openExplorerFrom = false;
+    },
+    toSelected(val) {
+      this.settings.to = val;
+      this.openExplorerTo = false;
+    },
     getAll() {
       this.$store.commit("webSocket/send", {
         object: "directory",
