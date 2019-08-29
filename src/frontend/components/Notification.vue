@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed z:20 r:1 b:0">
+  <div class="fixed z:50 r:1 b:0">
     <transition-group name="flip" appear>
       <div
         v-for="(item, index) in list"

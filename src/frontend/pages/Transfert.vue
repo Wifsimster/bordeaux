@@ -146,7 +146,8 @@ export default {
     refreshPlex() {
       this.$store.commit("webSocket/send", {
         object: "plex",
-        method: "refresh"
+        method: "refresh",
+        params: { uuid: UUID }
       });
     }
   }
