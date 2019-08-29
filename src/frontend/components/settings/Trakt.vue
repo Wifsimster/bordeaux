@@ -10,7 +10,7 @@
         ></span>
         <span v-else class="inline-block rounded:full bg:red ml:1/4 p:1/3 align:middle"></span>
       </div>
-      <div>Used to build the calendar.</div>
+      <div class="text:grey-dark">Used to build the calendar.</div>
       <div class="flex flex:wrap justify:center">
         <btn @click="generateDeviceTokenShow = true">Generate an access code</btn>
       </div>

@@ -1,13 +1,26 @@
 const File = require("../utils/file")
 
-const CONFIG_FILE = "plex-config"
-
 const Pavie = require("pavie")
+const CryptoJS = require("crypto-js")
+
+const CONFIG_FILE = "plex-config"
 
 class Plex {
   constructor() {}
 
+  static getSettings(uuid) {
+    const settings = File.readFile(CONFIG_FILE)
+    if (settings) {
+      const bytes = CryptoJS.AES.decrypt(settings.password, uuid)
+      settings.password = bytes.toString(CryptoJS.enc.Utf8)
+    }
+    return settings
+  }
+
   static async response(data) {
+    var pavie = null
+    var settings = null
+
     switch (data.method) {
       case "getAll":
         data.results = File.readFile(CONFIG_FILE)
@@ -17,12 +30,14 @@ class Plex {
         data.results = File.readFile(CONFIG_FILE)
         break
       case "signin":
-        var pavie = new Pavie(File.readFile(CONFIG_FILE))
+        settings = this.getSettings(data.params.uuid)
+        pavie = new Pavie(settings)
         await pavie.signin()
         data.results = await pavie.getUser()
         break
       case "refresh":
-        var pavie = new Pavie(File.readFile(CONFIG_FILE))
+        settings = this.getSettings(data.params.uuid)
+        pavie = new Pavie(settings)
         await pavie.signin()
         data.results = await pavie.refresh()
         break

@@ -3,7 +3,7 @@
     <alert color="red" v-if="error">{{ error }}</alert>
     <div class="px:1">
       <div class="text:3/2">Directories</div>
-      <div>Directories scan.</div>
+      <div class="text:grey-dark">Directories scan.</div>
       <form v-if="settings">
         <div class="relative mx:2">
           <input

@@ -1,17 +1,24 @@
 const File = require("../utils/file")
 
 const TransmissionManager = require("transmission")
+const CryptoJS = require("crypto-js")
 
 const CONFIG_FILE = "transmission-config"
 
 class Transmission {
-  constructor() {
+  constructor() {}
+
+  static getSettings(uuid) {
     const settings = File.readFile(CONFIG_FILE)
-    this.instance = new TransmissionManager(settings)
+    if (settings) {
+      const bytes = CryptoJS.AES.decrypt(settings.password, uuid)
+      settings.password = bytes.toString(CryptoJS.enc.Utf8)
+    }
+    return settings
   }
 
   static async response(data) {
-    const transmission = new Transmission()
+    var settings = null
 
     switch (data.method) {
       case "getAll":
@@ -22,8 +29,10 @@ class Transmission {
         data.results = File.readFile(CONFIG_FILE)
         break
       case "add":
+        settings = this.getSettings(data.params.uuid)
+
         data.results = await new Promise((resolve, reject) => {
-          transmission.instance.addUrl(data.params.magnetLink, (err, arg) => {
+          new TransmissionManager(settings).addUrl(data.params.magnetLink, (err, arg) => {
             if (err) {
               reject(err)
             } else {
@@ -35,8 +44,10 @@ class Transmission {
         })
         break
       case "remove":
+        settings = this.getSettings(data.params.uuid)
+
         data.results = await new Promise((resolve, reject) => {
-          transmission.instance.remove(data.params.id, true, (err, arg) => {
+          new TransmissionManager(settings).remove(data.params.id, true, (err, arg) => {
             if (err) {
               reject(err)
             } else {
@@ -48,8 +59,10 @@ class Transmission {
         })
         break
       case "active":
+        settings = this.getSettings(data.params.uuid)
+
         data.results = await new Promise((resolve, reject) => {
-          transmission.instance.active((err, arg) => {
+          new TransmissionManager(settings).active((err, arg) => {
             if (err) {
               reject(err)
             } else {
@@ -61,8 +74,10 @@ class Transmission {
         })
         break
       case "sessionStats":
+        settings = this.getSettings(data.params.uuid)
+
         data.results = await new Promise((resolve, reject) => {
-          transmission.instance.sessionStats((err, arg) => {
+          new TransmissionManager(settings).sessionStats((err, arg) => {
             if (err) {
               reject(err)
             } else {

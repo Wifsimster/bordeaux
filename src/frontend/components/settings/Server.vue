@@ -3,7 +3,7 @@
     <alert color="red" v-if="error">{{ error }}</alert>
     <div class="px:1">
       <div class="text:white text:3/2">Server</div>
-      <div>Restart needed at any change.</div>
+      <div class="text:grey-dark">Restart needed at any change.</div>
       <form v-if="settings">
         <div class="relative mx:2">
           <input id="host" type="text" v-model="settings.host" placeholder="localhost" />

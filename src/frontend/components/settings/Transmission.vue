@@ -9,7 +9,7 @@
         ></span>
         <span v-else class="inline-block rounded:full bg:red ml:1/4 p:1/3 align:middle"></span>
       </div>
-      <div>Needed to add magnetlink from The Pirate Bay.</div>
+      <div class="text:grey-dark">Needed to add magnetlink from The Pirate Bay.</div>
       <form v-if="settings">
         <div class="relative mx:2">
           <input id="transmission_host" v-model="settings.host" placeholder="localhost" />
@@ -140,7 +140,7 @@ export default {
       this.$store.commit("webSocket/send", {
         object: "transmission",
         method: "sessionStats",
-        params: this.settings
+        params: { uuid: UUID }
       });
     }
   }

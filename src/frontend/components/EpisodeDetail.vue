@@ -330,9 +330,7 @@ export default {
       this.$store.commit("webSocket/send", {
         object: "transmission",
         method: "add",
-        params: {
-          magnetLink: magnetLink
-        }
+        params: { uuid: UUID, magnetLink: magnetLink }
       });
     },
     removeTorrentToTransmission(id) {
@@ -341,15 +339,14 @@ export default {
       this.$store.commit("webSocket/send", {
         object: "transmission",
         method: "remove",
-        params: {
-          id: id
-        }
+        params: { uuid: UUID, id: id }
       });
     },
     getActiveTorrents() {
       this.$store.commit("webSocket/send", {
         object: "transmission",
-        method: "active"
+        method: "active",
+        params: { uuid: UUID }
       });
     },
     hasSubtitle(file) {

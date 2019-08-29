@@ -9,7 +9,7 @@
         ></span>
         <span v-else class="inline-block rounded:full bg:red ml:1/4 p:1/3 align:middle"></span>
       </div>
-      <div>Used to get your collected and watched episodes.</div>
+      <div class="text:grey-dark">Used to get your collected and watched episodes.</div>
       <form v-if="settings">
         <div class="relative mx:2">
           <input id="plex_username" v-model="settings.username" placeholder="Eliot" />
@@ -67,11 +67,9 @@ export default {
   watch: {
     "settings.username"() {
       this.update();
-      this.test();
     },
     "settings.password"() {
       this.update();
-      this.test();
     },
     message(data) {
       if (data.object === "plex") {
@@ -89,6 +87,7 @@ export default {
               this.error = data.error;
             } else {
               this.settings = Object.assign({}, data.results);
+              this.test();
             }
             break;
           case "signin":
@@ -114,18 +113,23 @@ export default {
       });
     },
     update() {
-      this.$store.commit("webSocket/send", {
-        object: "plex",
-        method: "update",
-        params: this.settings
-      });
+      if (this.settings) {
+        this.$store.commit("webSocket/send", {
+          object: "plex",
+          method: "update",
+          params: this.settings
+        });
+      }
     },
     test() {
-      this.testOk = null;
-      this.$store.commit("webSocket/send", {
-        object: "plex",
-        method: "signin"
-      });
+      if (this.settings) {
+        this.testOk = null;
+        this.$store.commit("webSocket/send", {
+          object: "plex",
+          method: "signin",
+          params: { uuid: UUID }
+        });
+      }
     }
   }
 };
