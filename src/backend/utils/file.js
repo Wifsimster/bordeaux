@@ -7,11 +7,18 @@ class File {
   constructor() {}
 
   static readFile(url) {
-    // TODO : Check if 'data/' exist before
-    var data = fs.readFileSync(path.resolve(`${__dirname}/../data/${url}.json`), {
-      encoding: ENCODING,
-      flag: "a+"
-    })
+    // Create data/ if doesn't exist
+    if (!fs.existsSync(`${__dirname}/../data/`)) {
+      fs.mkdirSync(`${__dirname}/../data/`)
+    }
+
+    var data = fs.readFileSync(
+      path.resolve(`${__dirname}/../data/${url}.json`),
+      {
+        encoding: ENCODING,
+        flag: "a+"
+      }
+    )
 
     if (data === "") {
       return null
@@ -21,14 +28,20 @@ class File {
   }
 
   static writeFile(url, data) {
-    fs.writeFileSync(path.resolve(`${__dirname}/../data/${url}.json`), JSON.stringify(data), {
-      encoding: ENCODING,
-      flag: "w"
-    })
+    fs.writeFileSync(
+      path.resolve(`${__dirname}/../data/${url}.json`),
+      JSON.stringify(data),
+      {
+        encoding: ENCODING,
+        flag: "w"
+      }
+    )
   }
 
   static getRoot() {
-    const rootPath = path.dirname(require.main.filename || process.mainModule.filename)
+    const rootPath = path.dirname(
+      require.main.filename || process.mainModule.filename
+    )
     const disk = rootPath.split("\\")[0]
     return `${disk}/`
   }
