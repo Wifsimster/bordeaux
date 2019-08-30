@@ -38,46 +38,49 @@
         <alert color="green" v-if="addedMessage">{{ addedMessage }}</alert>
 
         <div class="m:1">
-          <table class="border:collapse max-h:xs table:fixed" v-if="tpbList">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Quality</th>
-                <th style="min-width: 100px">
-                  <i class="arrow p:1/5 mr:1/4 border:white inline-block"></i>
-                  <span class="inline-block">Seeder</span>
-                </th>
-                <th>Size</th>
-                <th>Uploaded</th>
-                <th>Download</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="item in tpbList"
-                :key="item.name"
-                @click="addTorentToTransmission(item.magnetLink)"
-                :class="{ 'bg:orange':item.progress, 'hover:bg:grey-darker cursor:pointer':!item.progress }"
-              >
-                <td class="inline-block truncate p:1/4" style="max-width:450px">{{ item.name }}</td>
-                <td class="w:full text:center p:1/4" style="min-width:50px">
-                  <span v-if="item.quality">{{ item.quality }}</span>
-                </td>
-                <td class="w:full text:center p:1/4" style="min-width:50px">
-                  <span v-if="item.seeder">{{ item.seeder }}</span>
-                </td>
-                <td class="w:full text:center p:1/4" style="min-width:125px">
-                  <span v-if="item.size">{{ item.size }}</span>
-                </td>
-                <td class="w:full text:center p:1/4" style="min-width:100px">
-                  <span v-if="item.uploaded">{{ item.uploaded }}</span>
-                </td>
-                <td>
-                  <span v-if="item.progress">{{ item.progress }} %</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <div v-if="tpbList">
+            <table class="border:collapse max-h:xs table:fixed" v-if="tpbList.length > 0">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Quality</th>
+                  <th style="min-width: 100px">
+                    <i class="arrow p:1/5 mr:1/4 border:white inline-block"></i>
+                    <span class="inline-block">Seeder</span>
+                  </th>
+                  <th>Size</th>
+                  <th>Uploaded</th>
+                  <th>Download</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="item in tpbList"
+                  :key="item.name"
+                  @click="addTorentToTransmission(item.magnetLink)"
+                  :class="{ 'bg:orange':item.progress, 'hover:bg:grey-darker cursor:pointer':!item.progress }"
+                >
+                  <td class="inline-block truncate p:1/4" style="max-width:450px">{{ item.name }}</td>
+                  <td class="w:full text:center p:1/4" style="min-width:50px">
+                    <span v-if="item.quality">{{ item.quality }}</span>
+                  </td>
+                  <td class="w:full text:center p:1/4" style="min-width:50px">
+                    <span v-if="item.seeder">{{ item.seeder }}</span>
+                  </td>
+                  <td class="w:full text:center p:1/4" style="min-width:125px">
+                    <span v-if="item.size">{{ item.size }}</span>
+                  </td>
+                  <td class="w:full text:center p:1/4" style="min-width:100px">
+                    <span v-if="item.uploaded">{{ item.uploaded }}</span>
+                  </td>
+                  <td>
+                    <span v-if="item.progress">{{ item.progress }} %</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div v-else class="text:center">No results :(</div>
+          </div>
         </div>
       </div>
     </template>
