@@ -18,6 +18,7 @@ module.exports = {
       components: path.resolve(__dirname, "src/frontend/components/"),
       fonts: path.resolve(__dirname, "src/frontend/fonts/"),
       pages: path.resolve(__dirname, "src/frontend/pages/"),
+      plugins: path.resolve(__dirname, "src/frontend/plugins/"),
       store: path.resolve(__dirname, "src/frontend/store/"),
       scss: path.resolve(__dirname, "src/frontend/scss/")
     }

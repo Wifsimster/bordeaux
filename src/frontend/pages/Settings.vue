@@ -1,10 +1,10 @@
 <template>
   <div class="flex flex:wrap">
-    <server class="flex:1 min-w:xs max-w:sm py:1"></server>
-    <directory class="flex:1 min-w:xs max-w:sm py:1"></directory>
-    <transmission class="flex:1 min-w:xs max-w:sm py:1"></transmission>
-    <plex class="flex:1 min-w:xs max-w:sm py:1"></plex>
-    <trakt class="flex:1 min-w:xs max-w:sm py:1"></trakt>
+    <server class="w:full sm:flex:6/12 md:flex:4/12 xl:flex:3/12 py:1"></server>
+    <directory class="w:full sm:flex:6/12 md:flex:4/12 xl:flex:3/12 py:1"></directory>
+    <transmission class="w:full sm:flex:6/12 md:flex:4/12 xl:flex:3/12 py:1"></transmission>
+    <plex class="w:full sm:flex:6/12 md:flex:4/12 xl:flex:3/12 py:1"></plex>
+    <trakt class="w:full sm:flex:6/12 md:flex:4/12 xl:flex:3/12 py:1"></trakt>
   </div>
 </template>
 
