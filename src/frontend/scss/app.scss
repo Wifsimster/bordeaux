@@ -1,0 +1,41 @@
+@import "~beta-scss/packages/global";
+
+@font-face {
+  font-family: "Felona";
+  src: url("~fonts/Felona.woff2") format("woff2");
+  font-variation-settings: "wght" 200;
+}
+
+* {
+  font-family: "Felona";
+
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: map-get($colors, "grey-darkest");
+  }
+  ::-webkit-scrollbar-thumb {
+    background: map-get($colors, "blue-dark");
+  }
+}
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// Lazy loading
+img {
+  transition: filter 0.5s;
+}
+img[lazy="loading"] {
+  filter: blur(20px);
+}
+img[lazy="loaded"] {
+  filter: blur(0);
+}
+
+@import "./form";
+@import "./transitions";

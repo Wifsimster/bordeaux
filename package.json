@@ -8,7 +8,8 @@
     "backend": "node src/backend/server.js",
     "frontend": "node src/frontend/server.js",
     "build:dev": "webpack --config webpack.dev.js",
-    "build:production": "webpack --config webpack.prod.js"
+    "build:production": "webpack --config webpack.prod.js",
+    "build:stats": "webpack --config webpack.prod.js --json > stats.json"
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",

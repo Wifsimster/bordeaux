@@ -44,5 +44,6 @@ That's all :)
 
 ## Screenshots
 
-![screen](https://github.com/Wifsimster/bordeaux/blob/master/unamed_01.png)
-![screen](https://github.com/Wifsimster/bordeaux/blob/master/unamed_02.png)
+![screen](https://github.com/Wifsimster/bordeaux/blob/master/assets/unamed_01.png)
+
+![screen](https://github.com/Wifsimster/bordeaux/blob/master/assets/unamed_02.png)

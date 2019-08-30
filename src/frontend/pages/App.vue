@@ -44,25 +44,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~scss/global";
-
-@font-face {
-  font-family: "Felona";
-  src: url("~fonts/Felona.woff2") format("woff2");
-  font-variation-settings: "wght" 200;
-}
-
-* {
-  font-family: "Felona";
-
-  ::-webkit-scrollbar {
-    width: 4px;
-  }
-  ::-webkit-scrollbar-track {
-    background: map-get($colors, "grey-darkest");
-  }
-  ::-webkit-scrollbar-thumb {
-    background: map-get($colors, "blue-dark");
-  }
-}
+@import "~scss/app";
 </style>

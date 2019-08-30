@@ -361,8 +361,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../scss/global";
-
 .arrow {
   border-width: 0 2px 2px 0;
   transform: rotate(-135deg);
