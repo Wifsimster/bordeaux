@@ -10,9 +10,7 @@ if (!settings) {
 
 const wss = new WebSocket.Server({ port: settings.port })
 
-console.log(
-  `Web Socket server started at : ws://${settings.host}:${settings.port}`
-)
+console.log(`Web Socket server started at : ws://${settings.host}:${settings.port}`)
 
 const Transmission = require("./channels/transmission")
 const Directory = require("./channels/directory")
@@ -35,16 +33,16 @@ wss.on("connection", function connection(ws, req) {
     ws.isAlive = true
   })
 
-  setInterval(function ping() {
-    wss.clients.forEach(function each(ws) {
-      if (ws.isAlive === false) {
-        console.warn("Client dead => Terminate connection !")
-        return ws.terminate()
-      }
-      ws.isAlive = false
-      ws.ping(() => {})
-    })
-  }, 30000)
+  // setInterval(function ping() {
+  //   wss.clients.forEach(function each(ws) {
+  //     if (ws.isAlive === false) {
+  //       console.warn("Client dead => Terminate connection !")
+  //       return ws.terminate()
+  //     }
+  //     ws.isAlive = false
+  //     ws.ping(() => {})
+  //   })
+  // }, 30000)
 
   ws.on("message", async data => {
     data = JSON.parse(data)
