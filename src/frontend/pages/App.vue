@@ -20,8 +20,6 @@ const Navigation = () => import("components/navigation.vue");
 const Logo = () => import("components/logo.vue");
 const Notification = () => import("components/notification.vue");
 
-import "beta-scss";
-
 export default {
   components: {
     Navigation,
@@ -46,8 +44,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../scss/global";
-@import "node_modules/beta-scss/scss/global";
+@import "~scss/global";
 
 @font-face {
   font-family: "Felona";

@@ -41,7 +41,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" scoped>
-@import "~beta-scss/scss/global";
-</style>

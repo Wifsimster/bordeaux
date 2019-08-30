@@ -1,4 +1,5 @@
-@import "../../../node_modules/beta-scss/scss/global";
+@import "~beta-scss/packages/global";
+@import "~beta-scss/src/variables";
 
 label,
 input {
@@ -33,7 +34,7 @@ input {
   }
 
   &:placeholder-shown + label {
-    @extend .max-w\:3\/4;
+    @extend .max-w\:8\/12;
     @extend .whitespace\:no-wrap;
     @extend .overflow\:hidden;
     text-overflow: ellipsis;
