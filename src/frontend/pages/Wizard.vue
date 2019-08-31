@@ -23,6 +23,7 @@
 
     <div class="flex flex:wrap justify:end items:baseline">
       <a class="cursor:pointer" @click="previous()">Previous</a>
+      <a class="cursor:pointer ml:2" @click="next()">Skip</a>
       <transition name="slide:down">
         <btn @click="next()" class="ml:2" v-if="isValid">Next</btn>
       </transition>

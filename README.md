@@ -6,11 +6,18 @@ Simple TV Shows manager with Transmission, Trakt and Plex integration over WebSo
 
 > Work in progress...
 
-## Features
+Transmission, Trakt and Plex are not mandatory. They simply add more features to the app.
 
-- Calendar of your Trakt tv shows ([Trakt.tv](https://trakt.tv/dashboard) ID mandatory)
-- Transfert new downloaded tv shows episodes
-- Download subtitles for new episodes
+## Core features
+
+- Transfert new downloaded tv shows episodes to your library
+- Download subtitles for new episodes (`en` and `fr` supported)
+
+## Additional features
+
+- Calendar of your tv shows from your [Trakt.tv](https://trakt.tv/dashboard) account
+- Detect collected and downloaded episode from your [Trakt.tv](https://trakt.tv/dashboard) account
+- Synchronize your [Plex](https://www.plex.tv) library when you transfert episodes
 
 ## Prerequis
 

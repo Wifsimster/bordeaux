@@ -133,6 +133,9 @@ export default {
         this.getEpisode();
         this.searchTorrents();
         this.addedMessage = null;
+
+        const file = `${this.episode.show.title}/Season ${this.episode.episode.season}/${this.episode.show.title} - ${this.episode.episode.season}x${this.episode.episode.number}`;
+        this.hasSubtitle(file);
       }
     },
     message(data) {
@@ -176,6 +179,7 @@ export default {
               if (data.error) {
                 this.error = data.error;
               } else {
+                console.log(data.results);
                 this.subtitle = data.results;
               }
               break;
@@ -209,27 +213,29 @@ export default {
               } else {
                 const torrents = data.results.torrents;
 
-                this.tpbList.map((tracker, index) => {
-                  torrents.map(torrent => {
-                    let trackerId = /magnet:\?xt=urn:btih:([0-9a-z]+)&dn/.exec(
-                      tracker.magnetLink
-                    );
-
-                    let torrentId = /magnet:\?xt=urn:btih:([0-9a-z]+)&dn/.exec(
-                      torrent.magnetLink
-                    );
-
-                    if (trackerId[1] === torrentId[1]) {
-                      this.$set(
-                        this.tpbList,
-                        index,
-                        Object.assign(tracker, {
-                          progress: parseInt(torrent.percentDone * 100)
-                        })
+                if (this.tpbList) {
+                  this.tpbList.map((tracker, index) => {
+                    torrents.map(torrent => {
+                      let trackerId = /magnet:\?xt=urn:btih:([0-9a-z]+)&dn/.exec(
+                        tracker.magnetLink
                       );
-                    }
+
+                      let torrentId = /magnet:\?xt=urn:btih:([0-9a-z]+)&dn/.exec(
+                        torrent.magnetLink
+                      );
+
+                      if (trackerId[1] === torrentId[1]) {
+                        this.$set(
+                          this.tpbList,
+                          index,
+                          Object.assign(tracker, {
+                            progress: parseInt(torrent.percentDone * 100)
+                          })
+                        );
+                      }
+                    });
                   });
-                });
+                }
               }
               break;
           }
