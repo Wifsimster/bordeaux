@@ -170,6 +170,17 @@ export default {
           }
           break;
 
+        case "subtitle":
+          switch (data.method) {
+            case "hasSubtitle":
+              if (data.error) {
+                this.error = data.error;
+              } else {
+                this.subtitle = data.results;
+              }
+              break;
+          }
+          break;
         case "transmission":
           switch (data.method) {
             case "add":
@@ -200,7 +211,15 @@ export default {
 
                 this.tpbList.map((tracker, index) => {
                   torrents.map(torrent => {
-                    if (tracker.magnetLink.startsWith(torrent.magnetLink)) {
+                    let trackerId = /magnet:\?xt=urn:btih:([0-9a-z]+)&dn/.exec(
+                      tracker.magnetLink
+                    );
+
+                    let torrentId = /magnet:\?xt=urn:btih:([0-9a-z]+)&dn/.exec(
+                      torrent.magnetLink
+                    );
+
+                    if (trackerId[1] === torrentId[1]) {
                       this.$set(
                         this.tpbList,
                         index,
