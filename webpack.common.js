@@ -3,7 +3,6 @@ const webpack = require("webpack")
 const packageJson = require("./package.json")
 const { CleanWebpackPlugin } = require("clean-webpack-plugin")
 const VueLoaderPlugin = require("vue-loader/lib/plugin")
-const uuid = require("uuid")
 
 module.exports = {
   entry: ["@babel/polyfill", path.join(__dirname, "src/frontend/app.js")],
@@ -29,7 +28,7 @@ module.exports = {
     new webpack.DefinePlugin({
       VERSION: JSON.stringify(packageJson.version),
       BUILD_DATE: JSON.stringify(new Date()),
-      UUID: JSON.stringify(uuid.v4())
+      UUID: JSON.stringify("67d119bc-e8ae-45ff-8cf3-0fc876576a6a")
     })
   ],
   module: {

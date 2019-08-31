@@ -2,7 +2,7 @@
   <modal size="max-w:xl" :show="show" @close="$emit('close')">
     <template #content>
       <div class="relative w:full" v-if="detail" v-lazy-container="getLazyContainer()">
-        <img class="min-h:full w:full align:middle rounded:t" :data-src="getImageSrc()" />
+        <img class="w:full align:middle rounded:t cover" :data-src="getImageSrc()" />
         <div class="absolute t:0 flex w:full justify:end">
           <div class="shadow bg:purple px:1/2 py:1/4 text:7/8 my:1/2" v-if="subtitle">Subtitle</div>
           <div
@@ -14,6 +14,7 @@
             v-if="hasBeenWatched()"
           >Watched</div>
           <div class="shadow bg:orange px:1/2 py:1/4 text:7/8 my:1/2">{{ detail.rating.toFixed(1) }}</div>
+          <div @click="$emit('close')" class="shadow cursor:pointer line-height:1 text:2 p:1/2">x</div>
         </div>
         <div class="absolute b:1 l:1 r:1">
           <div>{{ episode.show.title }}: Season {{ episode.episode.season }}</div>
@@ -364,6 +365,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.cover {
+  object-fit: cover;
+  max-height: 500px;
+}
+
 .arrow {
   border-width: 0 2px 2px 0;
   transform: rotate(-135deg);

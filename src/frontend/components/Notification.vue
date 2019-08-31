@@ -19,7 +19,7 @@
         <div
           v-if="item.timeout"
           class="rounded:b m:0 p:0"
-          :class="'bg:' + item.color + '-dark'"
+          :class="'bg:' + item.color + '-darker'"
           :style="'height: 4px; width:calc(' + item.width + '% - 0.25rem);'"
         ></div>
       </div>

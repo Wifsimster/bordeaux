@@ -45,11 +45,15 @@ export default {
         }
       },
       set(val) {
-        this.$set(
-          this.settings,
-          "password",
-          CryptoJS.AES.encrypt(val, UUID).toString()
-        );
+        if (val) {
+          this.$set(
+            this.settings,
+            "password",
+            CryptoJS.AES.encrypt(val, UUID).toString()
+          );
+        } else {
+          this.settings.password = "";
+        }
       }
     }
   },

@@ -8,7 +8,7 @@ Simple TV Shows manager with Transmission, Trakt and Plex integration over WebSo
 
 ## Features
 
-- Calendar of your Trakt tv shows
+- Calendar of your Trakt tv shows ([Trakt.tv](https://trakt.tv/dashboard) ID mandatory)
 - Transfert new downloaded tv shows episodes
 - Download subtitles for new episodes
 
