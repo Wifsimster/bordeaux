@@ -41,6 +41,10 @@ module.exports = {
       {
         from: "./static/manifest.json",
         to: "./static"
+      },
+      {
+        from: "./src/frontend/service-worker.js",
+        to: "./"
       }
     ])
   ],
