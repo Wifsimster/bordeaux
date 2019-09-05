@@ -1,21 +1,23 @@
 {
   "name": "bordeaux",
-  "version": "1.0.1",
   "description": "Simple TV Shows manager with Transmission, Trakt and Plex integration",
+  "author": "Damien BATTISTELLA <battistella@protonmail.com>",
+  "version": "1.0.1",
+  "license": "MIT",
   "main": "server.js",
   "scripts": {
-    "start": "webpack-dev-server --config webpack.dev.js",
+    "start": "webpack-dev-server --config build/webpack.dev.js",
     "backend": "node src/backend/server.js",
     "frontend": "node src/frontend/server.js",
-    "build:dev": "webpack --config webpack.dev.js",
-    "build:production": "webpack --config webpack.prod.js",
-    "build:stats": "webpack --config webpack.prod.js --json > stats.json"
+    "build:dev": "webpack --config build/webpack.dev.js",
+    "build:production": "webpack --config build/webpack.prod.js",
+    "build:stats": "webpack --config build/webpack.prod.js --json > stats.json"
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
     "@babel/runtime": "^7.5.5",
     "axios": "^0.19.0",
-    "beta-scss": "^1.3.4",
+    "beta-scss": "^1.3.16",
     "crypto-js": "^3.1.9-1",
     "medoc": "^1.2.9",
     "os": "^0.1.1",
@@ -38,8 +40,10 @@
     "@babel/preset-env": "^7.5.5",
     "babel-loader": "^8.0.6",
     "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^5.0.4",
     "css-loader": "^3.2.0",
     "file-loader": "^4.2.0",
+    "html-webpack-plugin": "^3.2.0",
     "node-sass": "^4.12.0",
     "sass-loader": "^8.0.0",
     "script-loader": "^0.7.2",
@@ -56,8 +60,6 @@
     "type": "git",
     "url": "git+https://github.com/Wifsimster/bordeaux.git"
   },
-  "author": "Damien BATTISTELLA <battistella@protonmail.com>",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Wifsimster/bordeaux/issues"
   },
