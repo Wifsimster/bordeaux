@@ -1,5 +1,5 @@
 <template>
-  <modal size="max-w:xl" :show="true" @close="$emit('close')">
+  <modal size="max-w:lg" :show="true" @close="$emit('close')">
     <template #content>
       <alert color="red" v-if="error">{{ error }}</alert>
       <div class="m:1 border rounded p:1">{{ baseUrl }}</div>

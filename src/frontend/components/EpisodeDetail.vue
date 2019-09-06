@@ -1,5 +1,5 @@
 <template>
-  <modal size="max-w:xl" :show="show" @close="$emit('close')">
+  <modal size="max-w:lg" :show="show" @close="$emit('close')">
     <template #content>
       <div class="relative w:full" v-if="detail" v-lazy-container="getLazyContainer()">
         <img class="w:full align:middle rounded:t cover" :data-src="getImageSrc()" />
