@@ -39,6 +39,10 @@ module.exports = {
     }),
     new CopyWebpackPlugin([
       {
+        from: "./static/img/*",
+        to: "./"
+      },
+      {
         from: "./static/manifest.json",
         to: "./static"
       },
