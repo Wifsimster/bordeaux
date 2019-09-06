@@ -10,6 +10,7 @@
         >...</div>
         <div
           v-for="item in directories"
+          :key="item"
           @click="getDirectories(item)"
           class="hover:bg:grey-darkest cursor:pointer px:1/4 py:1/2 transition"
         >{{ item }}</div>
