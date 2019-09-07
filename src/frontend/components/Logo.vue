@@ -1,14 +1,19 @@
 <template>
-  <div class="flex:1">
-    <div class="flex flex:wrap relative items:center items:baseline justify:center">
+  <div>
+    <div class="flex flex:wrap relative items:center items:center justify:center m:1/2">
       <router-link
-      to="/"
+        to="/"
         tag="div"
-        class="relative text:2 text:bold mt:1/2 mr:1 cursor:pointer glitch"
+        class="relative text:2 text:bold mr:1/2 cursor:pointer glitch"
         data-text="Bordeaux"
       >Bordeaux</router-link>
-      <div v-if="isAlive" class="text:green text:7/8">Opened</div>
-      <div v-else class="text:red text:7/8 cursor:pointer" @click="connect()">Closed</div>
+      <div v-if="isAlive">
+        <div class="md:none p:1/4 rounded:full bg:green"></div>
+        <div class="none md:block text:green text:7/8">Opened</div>
+      </div>
+      <div v-else class="text:red text:7/8 cursor:pointer" @click="connect()">
+        <div class="none md:block">Closed</div>
+      </div>
     </div>
   </div>
 </template>
