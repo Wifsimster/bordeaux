@@ -1,7 +1,7 @@
 <template>
   <div class="bg:black text:white h:screen w:screen overflow:hidden">
     <div class="flex flex:col h:screen">
-      <nav class="flex flex:wrap w:screen">
+      <nav class="flex justify:between items:baseline flex:wrap w:screen">
         <logo></logo>
         <navigation></navigation>
       </nav>
