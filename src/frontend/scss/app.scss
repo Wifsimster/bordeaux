@@ -6,6 +6,12 @@
   font-variation-settings: "wght" 200;
 }
 
+:root {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizelegibility;
+}
+
 * {
   font-family: "Felona";
 
@@ -21,9 +27,6 @@
     width: 6px;
     height: 6px;
   }
-  // ::-webkit-scrollbar-track {
-  //   background: map-get($colors, "grey-darkest");
-  // }
   ::-webkit-scrollbar-thumb {
     background: map-get($colors, "blue-dark");
   }
