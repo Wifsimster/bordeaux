@@ -30,7 +30,7 @@ export default {
     connect() {
       this.$store.dispatch(
         "webSocket/ws",
-        new WebSocket(`ws://${location.hostname}:8080`)
+        new WebSocket(`wss://${location.hostname}:444`)
       );
     }
   }

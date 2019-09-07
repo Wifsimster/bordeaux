@@ -13,9 +13,9 @@ self.oninstall = function(event) {
 }
 
 self.onactivate = function(event) {
-  // this.console.log("onactivate", event)
+  this.console.log("onactivate", event)
 }
 
 self.onfetch = function(event) {
-  // this.console.log("onfetch", event)
+  this.console.log("onfetch", event)
 }

@@ -5,6 +5,10 @@ const path = require("path")
 module.exports = merge(common, {
   mode: "development",
   devServer: {
+    https: {
+      cert: "./ssl/certificate.crt",
+      key: "./ssl/private.key"
+    },
     contentBase: path.join(__dirname),
     historyApiFallback: true,
     compress: true,

@@ -38,11 +38,13 @@ new Vue({
 // Service Workers for PWA
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
-    .register("./service-worker.js")
+    .register("/service-worker.js")
     .then(function(reg) {
       console.log("◕‿◕", reg)
     })
     .catch(function(err) {
       console.log("ಠ_ಠ", err)
     })
+} else {
+  console.warn("Service workers can't load here !")
 }

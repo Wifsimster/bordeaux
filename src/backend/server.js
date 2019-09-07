@@ -1,16 +1,25 @@
 const WebSocket = require("ws")
 const File = require("./utils/file")
+const fs = require("fs")
+const https = require("https")
 
 var settings = File.readFile("server-config")
 
 if (!settings) {
-  File.writeFile("server-config", { host: "localhost", port: "8080" })
+  File.writeFile("server-config", { host: "localhost", port: "444" })
   settings = File.readFile("server-config")
 }
 
-const wss = new WebSocket.Server({ port: settings.port })
+const server = https.createServer({
+  cert: fs.readFileSync("./ssl/certificate.crt"),
+  key: fs.readFileSync("./ssl/private.key")
+})
 
-console.log(`Web Socket server started at : ws://${settings.host}:${settings.port}`)
+const wss = new WebSocket.Server({ server })
+
+server.listen(settings.port)
+
+console.log(`Web Socket server started at : wss://${settings.host}:${settings.port}`)
 
 const Transmission = require("./channels/transmission")
 const Directory = require("./channels/directory")
