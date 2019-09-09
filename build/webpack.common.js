@@ -1,13 +1,13 @@
 const path = require("path")
 const webpack = require("webpack")
-const packageJson = require("../package.json")
 const { CleanWebpackPlugin } = require("clean-webpack-plugin")
 const VueLoaderPlugin = require("vue-loader/lib/plugin")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
 const CopyWebpackPlugin = require("copy-webpack-plugin")
+const packageJson = require("../package.json")
 
 module.exports = {
-  entry: [path.join(__dirname, "../src/frontend/app.js")],
+  entry: [path.join(__dirname, "../src/frontend/app")],
   output: {
     filename: "[name].bundle.js",
     path: path.join(__dirname, "../dist"),
@@ -16,13 +16,13 @@ module.exports = {
   resolve: {
     modules: [path.join(__dirname, "../src/"), "node_modules"],
     alias: {
+      img: path.join(__dirname, "../static/img/"),
+      fonts: path.join(__dirname, "../static/fonts/"),
       components: path.join(__dirname, "../src/frontend/components/"),
       pages: path.join(__dirname, "../src/frontend/pages/"),
       plugins: path.join(__dirname, "../src/frontend/plugins/"),
       store: path.join(__dirname, "../src/frontend/store/"),
-      scss: path.join(__dirname, "../src/frontend/scss/"),
-      fonts: path.join(__dirname, "../static/fonts/"),
-      img: path.join(__dirname, "../static/img/")
+      scss: path.join(__dirname, "../src/frontend/scss/")
     }
   },
   plugins: [
