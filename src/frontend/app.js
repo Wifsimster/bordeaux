@@ -28,12 +28,15 @@ new Vue({
   render: h => h(App)
 })
 
+// import sw from "offline-plugin/runtime"
+// sw.install()
+
 // Detect installation prompt for PWA
-// let deferredPrompt
-// window.addEventListener("beforeinstallprompt", e => {
-//   console.log("beforeinstallprompt", e)
-//   deferredPrompt = e
-// })
+let deferredPrompt
+window.addEventListener("beforeinstallprompt", e => {
+  console.log("beforeinstallprompt", e)
+  deferredPrompt = e
+})
 
 // Service Workers for PWA
 if ("serviceWorker" in navigator) {

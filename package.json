@@ -7,8 +7,8 @@
   "main": "server.js",
   "scripts": {
     "start": "webpack-dev-server --config build/webpack.dev.js",
-    "backend": "node src/backend/server.js",
-    "frontend": "node src/frontend/server.js",
+    "backend": "node build/back.server.js",
+    "frontend": "node build/dev.server.js",
     "build:dev": "webpack --config build/webpack.dev.js",
     "build:production": "webpack --config build/webpack.prod.js",
     "build:stats": "webpack --config build/webpack.prod.js --json > stats.json"
@@ -45,6 +45,7 @@
     "file-loader": "^4.2.0",
     "html-webpack-plugin": "^3.2.0",
     "node-sass": "^4.12.0",
+    "offline-plugin": "^5.0.7",
     "sass-loader": "^8.0.0",
     "script-loader": "^0.7.2",
     "style-loader": "^1.0.0",

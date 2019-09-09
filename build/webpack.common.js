@@ -2,14 +2,14 @@ const path = require("path")
 const webpack = require("webpack")
 const { CleanWebpackPlugin } = require("clean-webpack-plugin")
 const VueLoaderPlugin = require("vue-loader/lib/plugin")
-const HtmlWebpackPlugin = require("html-webpack-plugin")
 const CopyWebpackPlugin = require("copy-webpack-plugin")
+const HtmlWebpackPlugin = require("html-webpack-plugin")
 const packageJson = require("../package.json")
 
 module.exports = {
   entry: [path.join(__dirname, "../src/frontend/app")],
   output: {
-    filename: "[name].bundle.js",
+    filename: "static/js/[name].bundle.js",
     path: path.join(__dirname, "../dist"),
     publicPath: "/"
   },
