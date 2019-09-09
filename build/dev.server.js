@@ -1,33 +1,31 @@
-const https = require("https")
+const http = require("http")
 const fs = require("fs")
 const path = require("path")
 var express = require("express")
 var app = express()
 
 const HOST = `localhost`
-const PORT = 8443
+const PORT = 80
 
-const credentials = {
-  key: fs.readFileSync(path.join(__dirname, "../ssl/private.key")),
-  cert: fs.readFileSync(path.join(__dirname, "../ssl/certificate.crt"))
-}
-
-app.get("/sw.js", function(req, res) {
-  console.log(req.url)
-  fs.readFile(path.join(__dirname, "../dist/sw.js"), "utf-8", (err, content) => {
+const handler = function(req, res) {
+  // console.log(req.url)
+  fs.readFile(path.join(__dirname, "../dist/index.html"), "utf-8", (err, content) => {
     if (err) {
       console.log(`We cannot open ${url} file.`)
     }
-    console.log(content)
-
-    // TODO : Maybe content is not correct, need to rewrite sw.js
-
     res.send(content)
   })
-})
+}
+
+app.get("/", handler)
+app.get("/calendar", handler)
+app.get("/transfert", handler)
+app.get("/subtitles", handler)
+app.get("/settings", handler)
+app.get("/wizard", handler)
 
 app.use(express.static(path.join(__dirname, "../dist")))
 
-https.createServer(credentials, app).listen(PORT, () => {
-  console.log(`Server listening on: https://${HOST}:${PORT}`)
+http.createServer(app).listen(PORT, () => {
+  console.log(`Server listening on: http://${HOST}:${PORT}`)
 })

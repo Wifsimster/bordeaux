@@ -1,4 +1,5 @@
 import Vue from "vue"
+
 import App from "pages/App.vue"
 import router from "./router"
 import store from "./store"
@@ -28,16 +29,6 @@ new Vue({
   render: h => h(App)
 })
 
-// import sw from "offline-plugin/runtime"
-// sw.install()
-
-// Detect installation prompt for PWA
-let deferredPrompt
-window.addEventListener("beforeinstallprompt", e => {
-  console.log("beforeinstallprompt", e)
-  deferredPrompt = e
-})
-
 // Service Workers for PWA
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
@@ -49,5 +40,5 @@ if ("serviceWorker" in navigator) {
       console.log("ಠ_ಠ", err)
     })
 } else {
-  console.warn("Service workers can't load here !")
+  console.error("Service workers can't load here !")
 }

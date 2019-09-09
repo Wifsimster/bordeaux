@@ -10,7 +10,7 @@
           <label for="host">Host</label>
         </div>
         <div class="relative mx:2">
-          <input id="port" type="text" v-model="settings.port" placeholder="444" />
+          <input id="port" type="text" v-model="settings.port" placeholder="8080" />
           <label for="port">Port</label>
         </div>
       </form>
