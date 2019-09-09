@@ -1,5 +1,5 @@
 <template>
-  <div class="p:1">
+  <div class="lg:p:1">
     <alert color="red" v-if="error">{{ error }}</alert>
 
     <alert v-if="results">
@@ -11,14 +11,14 @@
 
     <loader v-if="isLoading"></loader>
 
-    <div class="flex justify:center">
-      <div class="flex:1">
+    <div class="flex justify:between">
+      <div>
         <btn @click="previous()" size="sm">Previous</btn>
       </div>
-      <div class="flex:1 text:center">
+      <div>
         <btn @click="today()" size="sm">Today</btn>
       </div>
-      <div class="flex:1 text:right">
+      <div>
         <btn @click="next()" size="sm">Next</btn>
       </div>
     </div>
