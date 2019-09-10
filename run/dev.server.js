@@ -9,12 +9,16 @@ const PORT = 80
 
 const handler = function(req, res) {
   // console.log(req.url)
-  fs.readFile(path.join(__dirname, "../dist/index.html"), "utf-8", (err, content) => {
-    if (err) {
-      console.log(`We cannot open ${url} file.`)
+  fs.readFile(
+    path.join(__dirname, "../dist/index.html"),
+    "utf-8",
+    (err, content) => {
+      if (err) {
+        console.log(`We cannot open ${req.url} file.`)
+      }
+      res.send(content)
     }
-    res.send(content)
-  })
+  )
 }
 
 app.get("/", handler)

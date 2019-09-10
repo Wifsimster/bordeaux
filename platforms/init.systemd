@@ -1,0 +1,10 @@
+# Systemd service
+
+## Example Using SickRage as daemon without pid file
+# Type=forking
+# GuessMainPID=no
+# ExecStart=/usr/bin/nodejs /opt/bordeaux/build/startup.js
+
+### Example Using simple
+# Type=simple
+# ExecStart=/usr/bin/nodejs /opt/bordeaux/build/startup.js
