@@ -31,21 +31,15 @@ Download the project or fork it, then install all dependencies.
 $ npm install --production
 ```
 
-## Start the backend
-
-First, start the WebSockets server. Default URL: `ws://localhost:8080`
+## Start the app (backend & frontend)
 
 ```
-$ npm run backend
+$ node .\run\startup.js
 ```
 
-## Start the frontend
+The server start at `ws://localhost:8080` by default.
+The web app start at `http://localhost:8082` by default.
 
-Then, start the web application. Default URL : `http://localhost:8082`
-
-```
-$ npm run frontend
-```
 
 That's all :)
 
