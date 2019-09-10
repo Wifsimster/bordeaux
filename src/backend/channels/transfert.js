@@ -11,6 +11,9 @@ class Transfert {
       case "search":
         var settings = File.readFile(CONFIG_FILE)
         data.results = Medoc.search(settings.from, settings.to)
+        if (!Array.isArray(data.results)) {
+          data.error = data.results.message
+        }
         break
       case "move":
         data.results = await Medoc.move(data.params.episode)
