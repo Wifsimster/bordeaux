@@ -38,6 +38,7 @@ $ node .\run\startup.js
 ```
 
 The server start at `ws://localhost:8080` by default.
+
 The web app start at `http://localhost:8082` by default.
 
 
