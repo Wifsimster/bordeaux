@@ -9,7 +9,23 @@
         <p>Files transfert with success :)</p>
       </alert>
 
-      <div v-if="hasEpisodes">
+      <!-- Mobile -->
+      <div v-if="hasEpisodes" class="sm:none flex:col">
+        <div
+          v-for="episode in episodes"
+          :key="episode.directory"
+          class="flex flex:wrap justify:between"
+        >
+          <div>{{ episode.destination.filename }}</div>
+          <div>
+            <loader v-if="episode.loading"></loader>
+            <span v-if="episode.transfered" class="text:green">Done</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Desktop -->
+      <div v-if="hasEpisodes" class="none sm:block">
         <table class="border:collapse w:full">
           <thead>
             <tr>
