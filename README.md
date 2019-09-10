@@ -4,8 +4,6 @@ Simple TV Shows manager with Transmission, Trakt and Plex integration over WebSo
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Wifsimster/bordeaux/blob/master/LICENSE)
 
-> Work in progress...
-
 Transmission, Trakt and Plex are not mandatory. They simply add more features to the app.
 
 ## Core features
