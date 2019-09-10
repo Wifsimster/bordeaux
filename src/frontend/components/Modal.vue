@@ -1,14 +1,14 @@
 <template>
   <transition name="fade">
     <div
-      class="fixed t:0 r:0 b:0 l:0 overflow:auto bg:smoke flex z:40 py:1/2"
+      class="fixed t:0 r:0 b:0 l:0 overflow:auto bg:smoke flex z:40"
       ref="container"
       v-if="show"
       @keyup.esc="$emit('close')"
       @click="close"
     >
       <div
-        class="flex flex:col align:top justify:end m:auto bg:black w:full shadow rounded"
+        class="flex flex:col align:top bg:black w:full shadow rounded sm:justify:end sm:m:auto"
         :class="size"
       >
         <slot name="content"></slot>

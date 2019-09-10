@@ -13,18 +13,18 @@
 
     <div class="flex justify:between">
       <div>
-        <btn @click="previous()" size="sm">Previous</btn>
+        <btn @click="previous()">Previous</btn>
       </div>
       <div>
-        <btn @click="today()" size="sm">Today</btn>
+        <btn @click="today()">Today</btn>
       </div>
       <div>
-        <btn @click="next()" size="sm">Next</btn>
+        <btn @click="next()">Next</btn>
       </div>
     </div>
 
-    <div class="mx:1" v-if="episodes && episodes.length > 0">
-      <transition-group name="slide">
+    <transition name="slide-right">
+      <div class="mx:1" v-if="episodes && episodes.length > 0">
         <div class="w:full" v-for="day in days" :key="format(day)">
           <div class="text:orange p:1/4 bg:grey-darkest">{{ format(day) }}</div>
           <div class="responsive:6">
@@ -43,11 +43,11 @@
                 />
                 <div class="absolute t:0 flex w:full justify:end">
                   <div
-                    class="shadow bg:orange px:1/2 py:1/2 text:7/8 my:1/4"
+                    class="shadow:large bg:orange px:4/5 py:2/5 text:7/8 my:1/4"
                     v-if="hasBeenWatched(episode)"
                   ></div>
                   <div
-                    class="shadow bg:green px:1/2 py:1/2 text:7/8 my:1/4"
+                    class="shadow:large bg:green px:4/5 py:2/5 text:7/8 my:1/4"
                     v-if="hasBeenCollected(episode)"
                   ></div>
                 </div>
@@ -60,8 +60,8 @@
             <template v-else>Nothing this day</template>
           </div>
         </div>
-      </transition-group>
-    </div>
+      </div>
+    </transition>
 
     <episode-detail :show="hasSelectedEpisode" :episode="selectedEpisode" @close="onClose"></episode-detail>
   </div>
@@ -225,12 +225,15 @@ export default {
       this.selectedEpisode = episode;
     },
     previous() {
+      this.episodes = null;
       this.currentDay = subDays(this.currentDay, 7);
     },
     today() {
+      this.episodes = null;
       this.currentDay = subDays(new Date(), 6);
     },
     next() {
+      this.episodes = null;
       this.currentDay = addDays(this.currentDay, 7);
     },
     getEpisodes() {
@@ -243,9 +246,9 @@ export default {
     getImageSrc(episode) {
       if (episode.images) {
         return {
-          src: `https://image.tmdb.org/t/p/original${episode.images[0].file_path}`,
-          loading: `https://trakt.tv/assets/placeholders/thumb/fanart-96d5b92c25602cd5f5f8bc3d7fe1a249.png`,
-          error: `https://trakt.tv/assets/placeholders/thumb/fanart-96d5b92c25602cd5f5f8bc3d7fe1a249.png`
+          src: `https://image.tmdb.org/t/p/original${episode.images[0].file_path}`
+          // loading: `https://trakt.tv/assets/placeholders/thumb/fanart-96d5b92c25602cd5f5f8bc3d7fe1a249.png`,
+          // error: `https://trakt.tv/assets/placeholders/thumb/fanart-96d5b92c25602cd5f5f8bc3d7fe1a249.png`
         };
       }
     },

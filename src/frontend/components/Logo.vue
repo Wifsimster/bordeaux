@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex flex:wrap relative items:center items:center justify:center m:1/2">
+    <div class="flex flex:wrap relative items:center items:center justify:center p:1/2">
       <router-link
         to="/"
         tag="div"
