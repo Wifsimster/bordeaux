@@ -53,10 +53,12 @@
                     v-if="hasBeenCollected(episode)"
                   ></div>
                 </div>
-                <div class="absolute b:3 l:1">{{ episode.show.title }}</div>
-                <div
-                  class="absolute b:1 l:1 text:bold truncate max-w:11/12"
-                >{{ episode.episode.season }}x{{ episode.episode.number }} {{ episode.episode.title }}</div>
+                <div class="absolute b:0 l:0 p:1/2 w:full bg:smoke">
+                  <div class="text:9/8 line-height:1 text:bold">{{ episode.show.title }}</div>
+                  <div
+                    class="text:9/8 truncate max-w:11/12"
+                  >{{ episode.episode.season }}x{{ episode.episode.number }} {{ episode.episode.title }}</div>
+                </div>
               </div>
             </template>
             <template v-else>Nothing this day</template>
@@ -301,3 +303,13 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.bg\:smoke {
+  background-image: linear-gradient(
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.12) 50%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+</style>

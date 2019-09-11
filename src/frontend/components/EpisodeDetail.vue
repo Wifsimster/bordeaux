@@ -16,9 +16,9 @@
           <div class="shadow bg:orange px:1/2 py:1/4 text:7/8 my:1/2">{{ detail.rating.toFixed(1) }}</div>
           <div @click="$emit('close')" class="shadow cursor:pointer line-height:1 text:2 p:1/2">x</div>
         </div>
-        <div class="absolute b:1 l:1 r:1">
-          <div>{{ episode.show.title }}: Season {{ episode.episode.season }}</div>
-          <div class="truncate max-w:11/12">
+        <div class="absolute b:0 l:0 r:1 pl:1/2 w:full bg:smoke">
+          <div class="text:9/8 line-height:1 text:bold">{{ episode.show.title }}</div>
+          <div class="text:9/8 truncate max-w:11/12">
             <span class="text:bold">{{ episode.episode.season }}x{{episode.episode.number}}</span>
             {{ episode.episode.title }}
           </div>
@@ -26,7 +26,7 @@
       </div>
       <div v-if="detail">
         <div class="flex flex:wrap justify:between">
-          <div class="p:1/2 sm:p:1">Runtime : {{ detail.runtime }}</div>
+          <div class="p:1/2 sm:p:1">{{ detail.runtime }} mn</div>
           <div class="p:1/2 sm:p:1">{{ getDate(detail.first_aired) }}</div>
           <div class="none sm:block sm:p:1">{{ detail.votes }} votes</div>
         </div>
@@ -300,7 +300,7 @@ export default {
       return false;
     },
     getDate(value) {
-      return format(parseISO(value), "yyyy-MM-dd");
+      return format(parseISO(value), "MM / dd / yyyy");
     },
     getLazyContainer() {
       if (this.episode.images) {
@@ -399,5 +399,13 @@ export default {
 .arrow {
   border-width: 0 2px 2px 0;
   transform: rotate(-135deg);
+}
+
+.bg\:smoke {
+  background-image: linear-gradient(
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.12) 50%,
+    rgba(0, 0, 0, 0) 100%
+  );
 }
 </style>
