@@ -2,11 +2,11 @@
   <div v-if="!isWizard">
     <!--  Mobile desktop -->
     <div
-      class="kebab flex justify:end sm:none text:white text:3/2 relative cursor:pointer"
+      class="kebab flex justify:end md:none text:white text:3/2 relative cursor:pointer"
       @click="displayKebab = true"
     ></div>
     <div
-      class="absolute t:0 r:0 flex flex:col w:0 h:0 z:10 bg:black transition overflow:hidden"
+      class="absolute t:0 r:0 flex flex:col w:0 h:0 z:50 bg:black transition overflow:hidden"
       :class="{ 'w:full h:full': displayKebab }"
     >
       <div
