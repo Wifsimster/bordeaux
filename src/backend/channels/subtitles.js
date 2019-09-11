@@ -29,9 +29,7 @@ class Subtitles {
         })
         break
       case "hasSubtitle":
-        data.results = Yquem.hasSubtitle(data.params.file).catch(err => {
-          data.error = err
-        })
+        data.results = Yquem.hasSubtitle(data.params.file)
         break
       default:
         console.log(`[Subtitles] Unknow method : ${data.method}`)

@@ -157,10 +157,11 @@ export default {
             case "searchEpisode":
               this.isLoading = false;
               if (data.error) {
+                console.error(data.error);
                 if (data.error.code === 502) {
                   this.error = "The Pirate Bay is down !";
                 } else {
-                  this.error = data.error;
+                  this.error = "The Pirate Bay is inacessible !";
                 }
               } else {
                 this.tpbList = data.results.filter(item => item.seeder > 0);
@@ -179,12 +180,12 @@ export default {
               if (data.error) {
                 this.error = data.error;
               } else {
-                console.log(data.results);
                 this.subtitle = data.results;
               }
               break;
           }
           break;
+
         case "transmission":
           switch (data.method) {
             case "add":

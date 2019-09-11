@@ -1,11 +1,11 @@
-const Petrus = require('petrus')
+const Petrus = require("petrus")
 
 class Download {
   constructor() {}
 
   static async response(data) {
     switch (data.method) {
-      case 'searchEpisode':
+      case "searchEpisode":
         data.results = await Petrus.search(data.params.title).catch(err => {
           data.error = err
         })
