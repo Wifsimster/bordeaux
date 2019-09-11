@@ -8,16 +8,19 @@
 
     <transition name="slide:right" mode="out-in">
       <div v-if="step === 1" key="1">
-        <directory @is-valid="e => isDirectoryValid = e"></directory>
+        <directory @is-valid="e => isDirectoryValid = e" />
       </div>
       <div v-if="step === 2" key="2">
-        <transmission @is-valid="e => isTransmissionValid = e"></transmission>
+        <subtitles @is-valid="e => isTransmissionValid = e" />
       </div>
       <div v-if="step === 3" key="3">
-        <plex @is-valid="e => isPlexValid = e"></plex>
+        <transmission @is-valid="e => isTransmissionValid = e"></transmission>
       </div>
       <div v-if="step === 4" key="4">
-        <trakt @is-valid="e => isTraktValid = e"></trakt>
+        <plex @is-valid="e => isPlexValid = e" />
+      </div>
+      <div v-if="step === 5" key="5">
+        <trakt @is-valid="e => isTraktValid = e" />
       </div>
     </transition>
 
@@ -36,12 +39,14 @@ import Directory from "components/settings/directory.vue";
 import Transmission from "components/settings/transmission.vue";
 import Plex from "components/settings/plex.vue";
 import Trakt from "components/settings/trakt.vue";
+import Subtitles from "components/settings/subtitles.vue";
 export default {
   components: {
     Directory,
     Transmission,
     Plex,
-    Trakt
+    Trakt,
+    Subtitles
   },
   computed: {
     width() {
@@ -53,12 +58,15 @@ export default {
           return this.isDirectoryValid;
           break;
         case 2:
-          return this.isTransmissionValid;
+          return this.isSubtitlesValid;
           break;
         case 3:
-          return this.isPlexValid;
+          return this.isTransmissionValid;
           break;
         case 4:
+          return this.isPlexValid;
+          break;
+        case 5:
           return this.isTraktValid;
           break;
       }
@@ -71,7 +79,7 @@ export default {
       isPlexValid: false,
       isTraktValid: false,
       step: 1,
-      steps: 4
+      steps: 5
     };
   },
   methods: {
@@ -83,6 +91,9 @@ export default {
     next() {
       if (this.step < this.steps) {
         this.step++;
+      }
+      if (this.step === this.steps) {
+        this.$router.push("/");
       }
     }
   },

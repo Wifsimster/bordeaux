@@ -11,12 +11,16 @@
         </div>
         <div class="relative mx:2">
           <input
-            id="afterTransfert"
+            id="downloadAfterTransfert"
             type="checkbox"
-            v-model="settings.afterTransfert"
-            placeholder="afterTransfert"
+            v-model="settings.downloadAfterTransfert"
+            placeholder="downloadAfterTransfert"
           />
-          <label for="afterTransfert">Download after transfert</label>
+          <label for="downloadAfterTransfert">Download after transfert</label>
+        </div>
+        <div class="relative mx:2">
+          <input id="daysOld" type="number" v-model="settings.daysOld" placeholder="2" />
+          <label for="daysOld">Days old for manual search</label>
         </div>
       </form>
     </div>
@@ -40,10 +44,13 @@ export default {
     this.getAll();
   },
   watch: {
-    "settings.host"(newVal, oldVal) {
+    "settings.languages"(newVal, oldVal) {
       this.update();
     },
-    "settings.port"(newVal, oldVal) {
+    "settings.downloadAfterTransfert"(newVal, oldVal) {
+      this.update();
+    },
+    "settings.daysOld"(newVal, oldVal) {
       this.update();
     },
     message(data) {
