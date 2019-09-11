@@ -16,11 +16,6 @@
         @click="displayKebab = false"
       >x</div>
       <router-link
-        to="/"
-        class="text:white text:3/2 p:1"
-        exact-active-class="text:orange md:border:b:1/4 border:orange"
-      >Dashboard</router-link>
-      <router-link
         to="/calendar"
         class="text:white text:3/2 p:1"
         exact-active-class="text:orange md:border:b:1/4 border:orange"
@@ -44,11 +39,6 @@
 
     <!-- Desktop menu -->
     <div class="none md:flex flex:wrap items:center justify:center">
-      <router-link
-        to="/"
-        class="text:white text:3/2 py:1"
-        exact-active-class="border:b:1/4 border:orange"
-      >Dashboard</router-link>
       <router-link
         to="/calendar"
         class="text:white text:3/2 py:1"
