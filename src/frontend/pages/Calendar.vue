@@ -1,6 +1,20 @@
 <template>
-  <div class="lg:p:1">
+  <div class="sm:p:1/2">
     <alert color="red" v-if="error">{{ error }}</alert>
+
+    <div class="sticky t:0 bg:black z:10 px:1/2">
+      <div class="flex justify:between">
+        <div>
+          <btn @click="previous()">Previous</btn>
+        </div>
+        <div>
+          <btn @click="today()">Today</btn>
+        </div>
+        <div>
+          <btn @click="next()">Next</btn>
+        </div>
+      </div>
+    </div>
 
     <alert v-if="results">
       <p>Fichiers ajoutés à Transmission :</p>
@@ -11,20 +25,8 @@
 
     <loader v-if="isLoading"></loader>
 
-    <div class="flex justify:between">
-      <div>
-        <btn @click="previous()">Previous</btn>
-      </div>
-      <div>
-        <btn @click="today()">Today</btn>
-      </div>
-      <div>
-        <btn @click="next()">Next</btn>
-      </div>
-    </div>
-
     <transition name="slide-right">
-      <div class="mx:1" v-if="episodes && episodes.length > 0">
+      <div class v-if="episodes && episodes.length > 0">
         <div class="w:full" v-for="day in days" :key="format(day)">
           <div class="text:orange p:1/4 bg:grey-darkest">{{ format(day) }}</div>
           <div class="responsive:6">
@@ -260,7 +262,7 @@ export default {
       }
     },
     format(value) {
-      return format(value, "dd / MM / yyyy");
+      return format(value, "MM / dd / yyyy");
     },
     getTransmissionSettings() {
       this.$store.commit("webSocket/send", {
