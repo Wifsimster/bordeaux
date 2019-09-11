@@ -4,7 +4,7 @@
       <div class="p:1">
         <div class="text:3/2 text:center">Check token</div>
         <alert color="red" v-if="error">{{ error }}</alert>
-        <loading :is-loading="isLoading"></loading>
+        <loading :is-loading="isLoading" class="mt:1"></loading>
         <div class="flex flex:wrap justify:end items:baseline mt:2">
           <a @click="$emit('close')" class="cursor:pointer">Cancel</a>
           <btn @click="check()" class="ml:1">Retry</btn>

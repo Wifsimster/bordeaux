@@ -4,16 +4,18 @@
 
     <loader v-if="isLoading" :message="loadingMessage"></loader>
 
-    <div v-if="!isLoading && hasEpisodes" class="flex flex:col">
-      <div v-for="item in episodes" :key="item.file" class="flex flex:wrap">
-        <div class="flex:1">{{ item.file }}</div>
-        <div class="flex:1">
-          <loader v-if="item.loading"></loader>
-          <div v-if="item.subtitle && item.subtitle.file">{{ item.subtitle.file }}</div>
+    <div v-if="!isLoading" class="flex flex:col">
+      <div v-if="hasEpisodes">
+        <div v-for="item in episodes" :key="item.file" class="flex flex:wrap">
+          <div class="flex:1">{{ item.file }}</div>
+          <div class="flex:1">
+            <loader v-if="item.loading"></loader>
+            <div v-if="item.subtitle && item.subtitle.file">{{ item.subtitle.file }}</div>
+          </div>
         </div>
       </div>
       <transition name="opacity">
-        <div v-if="!hasEpisodes" class="text:center">No recent episode found :(</div>
+        <div v-if="hasNoEpisode" class="text:center">No recent episode found :(</div>
       </transition>
     </div>
 
@@ -42,18 +44,27 @@ export default {
     return {
       error: null,
       episodes: null,
+      settings: null,
       results: null,
       isLoading: false,
       loadingMessage: null
     };
   },
   created() {
-    this.search();
+    this.getAll();
   },
   watch: {
     message(data) {
       if (data.object === "subtitles") {
         switch (data.method) {
+          case "getAll":
+            if (data.error) {
+              this.error = data.error;
+            } else {
+              this.settings = Object.assign({}, data.results);
+              this.search();
+            }
+            break;
           case "search":
             this.isLoading = false;
             if (data.error) {
@@ -87,15 +98,23 @@ export default {
     }
   },
   methods: {
-    search() {
-      this.episodes = null;
-      this.isLoading = true;
-      this.loadingMessage = `Searching recent episodes...`;
+    getAll() {
       this.$store.commit("webSocket/send", {
         object: "subtitles",
-        method: "search",
-        params: { fileAge: 2 }
+        method: "getAll"
       });
+    },
+    search() {
+      if (this.settings) {
+        this.episodes = null;
+        this.isLoading = true;
+        this.loadingMessage = `Searching recent episodes...`;
+        this.$store.commit("webSocket/send", {
+          object: "subtitles",
+          method: "search",
+          params: { fileAge: this.settings.daysOld }
+        });
+      }
     },
     getSubtitle(episode, index) {
       this.$set(
