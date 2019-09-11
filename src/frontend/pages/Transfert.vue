@@ -76,10 +76,12 @@ export default {
       episodes: null,
       success: null,
       isLoading: false,
-      loadingMessage: null
+      loadingMessage: null,
+      subtitlesSettings: null
     };
   },
   created() {
+    this.getSubtitlesSettings();
     this.search();
   },
   watch: {
@@ -103,6 +105,7 @@ export default {
 
                 this.episodes.map((episode, index) => {
                   if (data.params.episode.origin.path === episode.origin.path) {
+                    this.getSubtitle(data.params.episode.destination.path);
                     this.$set(
                       this.episodes,
                       index,
@@ -124,6 +127,17 @@ export default {
                 this.error = data.error;
               } else {
                 console.log(`[Plex] Refresh Tv Shows...`);
+              }
+              break;
+          }
+          break;
+        case "subtitles":
+          switch (data.method) {
+            case "getAll":
+              if (data.error) {
+                this.error = data.error;
+              } else {
+                this.subtitlesSettings = data.results;
               }
               break;
           }
@@ -165,6 +179,24 @@ export default {
         method: "refresh",
         params: { uuid: UUID }
       });
+    },
+    getSubtitlesSettings() {
+      this.$store.commit("webSocket/send", {
+        object: "subtitles",
+        method: "getAll"
+      });
+    },
+    getSubtitle(file) {
+      if (
+        this.subtitlesSettings &&
+        this.subtitlesSettings.downloadAfterTransfert
+      ) {
+        this.$store.commit("webSocket/send", {
+          object: "subtitles",
+          method: "getSubtitle",
+          params: { file: file }
+        });
+      }
     }
   }
 };
