@@ -13,9 +13,12 @@ It aims to be lightweight, mobile friendly and build only in JS/Node.js.
 
 ## Additional features
 
-- Calendar of your tv shows from your [Trakt.tv](https://trakt.tv/dashboard) account
-- Detect collected and downloaded episode from your [Trakt.tv](https://trakt.tv/dashboard) account
-- Synchronize your [Plex](https://www.plex.tv) library when you transfert episodes
+[Trakt.tv](https://trakt.tv/dashboard) service :
+- provides a full calendar to display episodes releases
+- return collected and downloaded episodes from your account
+
+[Plex](https://www.plex.tv) service :
+- enable automatic synchronization of your Plex library when episodes are transfered
 
 ## Prerequis
 
