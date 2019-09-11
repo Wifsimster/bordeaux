@@ -62,6 +62,7 @@ export default {
               this.error = data.error;
             } else {
               this.settings = Object.assign({}, data.results);
+              this.isValid();
             }
             break;
           case "update":
@@ -69,6 +70,7 @@ export default {
               this.error = data.error;
             } else {
               this.settings = Object.assign({}, data.results);
+              this.isValid();
             }
             break;
           default:
@@ -90,6 +92,12 @@ export default {
         method: "update",
         params: this.settings
       });
+    },
+    isValid() {
+      this.$emit(
+        "is-valid",
+        this.settings.languages && this.settings.languages.length > 0
+      );
     }
   }
 };

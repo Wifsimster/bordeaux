@@ -11,7 +11,7 @@
         <directory @is-valid="e => isDirectoryValid = e" />
       </div>
       <div v-if="step === 2" key="2">
-        <subtitles @is-valid="e => isTransmissionValid = e" />
+        <subtitles @is-valid="e => isSubtitlesValid = e" />
       </div>
       <div v-if="step === 3" key="3">
         <transmission @is-valid="e => isTransmissionValid = e"></transmission>
@@ -75,6 +75,7 @@ export default {
   data() {
     return {
       isDirectoryValid: false,
+      isSubtitlesValid: false,
       isTransmissionValid: false,
       isPlexValid: false,
       isTraktValid: false,
@@ -93,7 +94,9 @@ export default {
         this.step++;
       }
       if (this.step === this.steps) {
-        this.$router.push("/");
+        this.$router.push("/").catch(err => {
+          console.warn(err);
+        });
       }
     }
   },
@@ -101,7 +104,9 @@ export default {
     isTraktValid(val) {
       if (val) {
         localStorage.setItem("token", "bordeaux");
-        this.$router.push("/");
+        this.$router.push("/").catch(err => {
+          console.warn(err);
+        });
       }
     }
   }
