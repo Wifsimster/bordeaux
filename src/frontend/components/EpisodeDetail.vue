@@ -173,7 +173,7 @@ export default {
           }
           break;
 
-        case "subtitle":
+        case "subtitles":
           switch (data.method) {
             case "hasSubtitle":
               if (data.error) {
@@ -380,7 +380,7 @@ export default {
     },
     hasSubtitle(file) {
       this.$store.commit("webSocket/send", {
-        object: "subtitle",
+        object: "subtitles",
         method: "hasSubtitle",
         params: { file: file }
       });
