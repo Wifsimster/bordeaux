@@ -90,23 +90,25 @@ export default {
       }
     },
     next() {
+      if (this.step === this.steps) {
+        this.goToDashboard();
+      }
+
       if (this.step < this.steps) {
         this.step++;
       }
-      if (this.step === this.steps) {
-        this.$router.push("/").catch(err => {
-          console.warn(err);
-        });
-      }
+    },
+    goToDashboard() {
+      localStorage.setItem("token", "bordeaux");
+      this.$router.push("/").catch(err => {
+        console.warn(err);
+      });
     }
   },
   watch: {
     isTraktValid(val) {
       if (val) {
-        localStorage.setItem("token", "bordeaux");
-        this.$router.push("/").catch(err => {
-          console.warn(err);
-        });
+        this.goToDashboard();
       }
     }
   }
