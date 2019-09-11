@@ -55,3 +55,62 @@ input {
   opacity: 0;
   transition: inherit;
 }
+
+// Checkbox
+$size: 1.25rem;
+input[type="checkbox"] {
+  @extend .w\:auto;
+  @extend .absolute;
+  @extend .opacity\:0;
+  & + label {
+    min-height: 2rem;
+    transform: none;
+    @extend .w\:auto;
+    @extend .t\:1\/2;
+    @extend .relative;
+    @extend .inline-block;
+    @extend .pl\:2;
+    @extend .pr\:0;
+    @extend .mr\:1;
+    &:before {
+      content: "";
+      @extend .transition;
+      @extend .absolute;
+      @extend .z\:10;
+      @extend .l\:0;
+      @extend .r\:0;
+      @extend .t\:0;
+      @extend .w\:0;
+      @extend .h\:0;
+    }
+    &:after {
+      @extend .rounded;
+      @extend .transition;
+      @extend .border\:grey-dark;
+      @extend .bg\:transparent;
+      @extend .border\:1\/8;
+      @extend .absolute;
+      @extend .l\:0;
+      @extend .r\:0;
+      content: "";
+      height: $size;
+      width: $size;
+    }
+  }
+  &:checked + label {
+    &:before {
+      width: calc(0.45 * #{$size});
+      height: calc(0.8 * #{$size});
+      border-top: 2px solid map-get($colors, "transparent");
+      border-left: 2px solid map-get($colors, "transparent");
+      border-right: 2px solid map-get($colors, "white");
+      border-bottom: 2px solid map-get($colors, "white");
+      transform: rotateZ(37deg);
+      transform-origin: 100% 100%;
+    }
+    &:after {
+      @extend .bg\:grey-dark;
+      @extend .border\:grey-dark;
+    }
+  }
+}
