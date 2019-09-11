@@ -47,8 +47,12 @@ export default {
     encryptedPassword: {
       get() {
         if (this.settings.password) {
-          const bytes = CryptoJS.AES.decrypt(this.settings.password, UUID);
-          return bytes.toString(CryptoJS.enc.Utf8);
+          try {
+            const bytes = CryptoJS.AES.decrypt(this.settings.password, UUID);
+            return bytes.toString(CryptoJS.enc.Utf8);
+          } catch (e) {
+            console.warn(`[Transmission] Password cannot be decrypt : ${e}`);
+          }
         }
       },
       set(val) {
