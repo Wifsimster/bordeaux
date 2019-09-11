@@ -4,7 +4,11 @@ Simple TV Shows manager with Transmission, Trakt and Plex integration over WebSo
 
 Transmission, Trakt and Plex are not mandatory. They simply add more features to the app.
 
-It aims to be lightweight, mobile friendly and build only in JS/Node.js.
+It aims to be :
+- lightweight
+- mobile friendly
+- as little dependence as possible
+- build only in JS/Node.js
 
 ## Core features
 
