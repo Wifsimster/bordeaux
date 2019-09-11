@@ -13,8 +13,8 @@ const router = new Router({
   mode: "history",
   scrollBehavior: () => ({ y: 0 }),
   routes: [
-    { path: "/", redirect: "/calendar" },
     { path: "/wizard", component: Wizard },
+    { path: "/", components: Dashboard, meta: { requiresAuth: true } },
     { path: "/calendar", component: Calendar, meta: { requiresAuth: true } },
     { path: "/transfert", component: Transfert, meta: { requiresAuth: true } },
     { path: "/subtitles", component: Subtitles, meta: { requiresAuth: true } },
