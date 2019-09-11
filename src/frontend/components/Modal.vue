@@ -8,7 +8,7 @@
       @click="close"
     >
       <div
-        class="flex flex:col align:top bg:black w:full shadow rounded sm:justify:end sm:m:auto"
+        class="flex flex:col align:top bg:black shadow rounded sm:justify:end sm:m:auto max-w:sm md:max-w:md"
         :class="size"
       >
         <slot name="content"></slot>
@@ -26,7 +26,7 @@ export default {
     },
     size: {
       type: String,
-      default: "max-w:sm"
+      default: "lg:max-w:lg"
     }
   },
   methods: {

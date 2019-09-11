@@ -1,5 +1,5 @@
 <template>
-  <modal size="max-w:lg" :show="show" @close="$emit('close')">
+  <modal size="lg:max-w:lg" :show="show" @close="$emit('close')">
     <template #content>
       <div class="relative w:full" v-if="detail" v-lazy-container="getLazyContainer()">
         <img class="w:full align:middle rounded:t cover" :data-src="getImageSrc()" />
@@ -25,12 +25,12 @@
         </div>
       </div>
       <div v-if="detail">
-        <div class="flex">
-          <div class="p:1">Aired : {{ getDate(detail.first_aired) }}</div>
-          <div class="p:1">Runtime : {{ detail.runtime }}</div>
-          <div class="p:1">Votes : {{ detail.votes }}</div>
+        <div class="flex flex:wrap justify:between">
+          <div class="p:1/2 sm:p:1">Runtime : {{ detail.runtime }}</div>
+          <div class="p:1/2 sm:p:1">{{ getDate(detail.first_aired) }}</div>
+          <div class="none sm:block sm:p:1">{{ detail.votes }} votes</div>
         </div>
-        <div class="p:1">{{ detail.overview }}</div>
+        <div class="p:1/2 sm:p:1">{{ detail.overview }}</div>
 
         <loader v-if="isLoading" :message="loadingMessage"></loader>
 
