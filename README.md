@@ -1,7 +1,5 @@
 # Bordeaux
 
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Wifsimster/bordeaux/blob/master/LICENSE)
-
 Simple TV Shows manager with Transmission, Trakt and Plex integration over WebSockets.
 
 It aims to be lightweight, mobile friendly and build only in JS/Node.js.
@@ -49,3 +47,7 @@ That's all :)
 ![screen](https://github.com/Wifsimster/bordeaux/blob/master/assets/unamed_01.png)
 
 ![screen](https://github.com/Wifsimster/bordeaux/blob/master/assets/unamed_02.png)
+
+## Licence
+
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Wifsimster/bordeaux/blob/master/LICENSE)
