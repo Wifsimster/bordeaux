@@ -4,6 +4,11 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin")
 const VueLoaderPlugin = require("vue-loader/lib/plugin")
 const CopyWebpackPlugin = require("copy-webpack-plugin")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
+
+const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+const glob = require("glob-all")
+const PurgecssPlugin = require("purgecss-webpack-plugin")
+
 const packageJson = require("../package.json")
 
 module.exports = {
@@ -50,16 +55,33 @@ module.exports = {
         from: "./src/frontend/service-worker.js",
         to: "./"
       }
-    ])
+    ]),
+    new MiniCssExtractPlugin({
+      filename: "static/css/[name].bundle.css",
+      ignoreOrder: false
+    }),
+    new PurgecssPlugin({
+      paths: glob.sync([
+        path.join(__dirname, "../index.html"),
+        path.join(__dirname, "../src/frontend/**/*.vue"),
+        path.join(__dirname, "../src/frontend/**/*.js")
+      ]),
+      extractors: [
+        {
+          extractor: content => content.match(/[\w-/:]+(?<!:)/g) || [],
+          extensions: ["html", "js", "vue"]
+        }
+      ]
+    })
   ],
   module: {
     rules: [
       { test: /\.vue$/, loader: "vue-loader" },
       { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" },
-      { test: /\.css$/, use: ["vue-style-loader", "css-loader"] },
       {
-        test: /\.scss$/,
-        use: ["vue-style-loader", "css-loader", "sass-loader"]
+        test: /\.(s)css$/,
+        // use: ["vue-style-loader", "css-loader", "sass-loader"]
+        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
       },
       {
         test: /\.(png|jpe?g|gif|svg|ico)(\?.*)?$/,
