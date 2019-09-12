@@ -9,6 +9,18 @@
       "request": "launch",
       "name": "Backend",
       "program": "${workspaceFolder}\\run\\back.server.js"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Frontend",
+      "program": "${workspaceFolder}\\run\\front.server.js"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Cron transfert",
+      "program": "${workspaceFolder}\\src\\backend\\cron\\transfert.js"
     }
   ]
 }
