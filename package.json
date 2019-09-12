@@ -10,7 +10,7 @@
     "frontend": "node run/dev.server.js",
     "start": "webpack-dev-server --config build/webpack.dev.js",
     "build:dev": "webpack --config build/webpack.dev.js",
-    "build:production": "webpack --config build/webpack.prod.js",
+    "build:prod": "webpack --config build/webpack.prod.js",
     "build:stats": "webpack --config build/webpack.prod.js --json > stats.json"
   },
   "dependencies": {
