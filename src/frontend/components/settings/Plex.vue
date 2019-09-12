@@ -1,31 +1,34 @@
 <template>
   <div>
-    <div class="px:1">
-      <div class="text:white text:3/2">
-        Plex
-        <span
-          v-if="testOk"
-          class="inline-block rounded:full bg:green ml:1/4 p:1/3 align:middle"
-        ></span>
-        <span v-else class="inline-block rounded:full bg:red ml:1/4 p:1/3 align:middle"></span>
-      </div>
-      <div class="text:grey-dark">Used to get your collected and watched episodes.</div>
-      <form v-if="settings">
-        <div class="relative mx:2">
-          <input id="plex_username" v-model="settings.username" placeholder="Eliot" />
-          <label for="plex_username">Username</label>
-        </div>
-        <div class="relative mx:2">
-          <input
-            id="plex_password"
-            type="password"
-            v-model="encryptedPassword"
-            placeholder="M3gA_Pa22w0rD!"
-          />
-          <label for="plex_password">Password</label>
-        </div>
-      </form>
+    <div class="text:white text:3/2">
+      Plex
+      <span v-if="testOk" class="inline-block rounded:full bg:green ml:1/4 p:1/3 align:middle"></span>
+      <span v-else class="inline-block rounded:full bg:red ml:1/4 p:1/3 align:middle"></span>
     </div>
+    <div class="text:grey-dark">Used to get your collected and watched episodes.</div>
+    <form v-if="settings">
+      <div class="relative mx:2">
+        <input id="plex_username" v-model="settings.username" placeholder="Eliot" />
+        <label for="plex_username">Username</label>
+      </div>
+      <div class="relative mx:2">
+        <input
+          id="plex_password"
+          type="password"
+          v-model="encryptedPassword"
+          placeholder="M3gA_Pa22w0rD!"
+        />
+        <label for="plex_password">Password</label>
+      </div>
+      <div class="relative mx:2">
+        <input
+          id="synchronizeAfterTransfert"
+          type="checkbox"
+          v-model="settings.synchronizeAfterTransfert"
+        />
+        <label for="synchronizeAfterTransfert">Synchronize after transfert</label>
+      </div>
+    </form>
   </div>
 </template>
 
@@ -77,6 +80,9 @@ export default {
       this.update();
     },
     "settings.password"() {
+      this.update();
+    },
+    "settings.synchronizeAfterTransfert"() {
       this.update();
     },
     message(data) {

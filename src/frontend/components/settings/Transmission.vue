@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="px:1">
+    <div>
       <div class="text:3/2">
         Transmission
         <span

@@ -1,11 +1,11 @@
 <template>
   <div class="flex flex:wrap">
-    <server class="w:full sm:flex:6/12 md:flex:4/12 xl:flex:3/12 py:1" />
-    <directory class="w:full sm:flex:6/12 md:flex:4/12 xl:flex:3/12 py:1" />
-    <transmission class="w:full sm:flex:6/12 md:flex:4/12 xl:flex:3/12 py:1" />
-    <plex class="w:full sm:flex:6/12 md:flex:4/12 xl:flex:3/12 py:1" />
-    <trakt class="w:full sm:flex:6/12 md:flex:4/12 xl:flex:3/12 py:1" />
-    <subtitles class="w:full sm:flex:6/12 md:flex:4/12 xl:flex:3/12 py:1" />
+    <server class="w:full sm:flex:6/12 md:flex:4/12 xl:flex:3/12 sm:py:1 px:1" />
+    <directory class="w:full sm:flex:6/12 md:flex:4/12 xl:flex:3/12 sm:py:1 px:1" />
+    <transmission class="w:full sm:flex:6/12 md:flex:4/12 xl:flex:3/12 sm:py:1 px:1" />
+    <plex class="w:full sm:flex:6/12 md:flex:4/12 xl:flex:3/12 sm:py:1 px:1" />
+    <trakt class="w:full sm:flex:6/12 md:flex:4/12 xl:flex:3/12 sm:py:1 px:1" />
+    <subtitles class="w:full sm:flex:6/12 md:flex:4/12 xl:flex:3/12 sm:py:1 px:1" />
   </div>
 </template>
 

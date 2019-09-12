@@ -1,7 +1,7 @@
 <template>
   <div>
     <alert color="red" v-if="error">{{ error }}</alert>
-    <div class="px:1">
+    <div>
       <div class="text:white text:3/2">
         Trakt
         <span

@@ -1,7 +1,7 @@
 <template>
   <div>
     <alert color="red" v-if="error">{{ error }}</alert>
-    <div class="px:1">
+    <div>
       <div class="text:white text:3/2">Subtitles</div>
       <div class="text:grey-dark">Manage subtitles</div>
       <form v-if="settings">
@@ -10,17 +10,16 @@
           <label for="languages">Languages</label>
         </div>
         <div class="relative mx:2">
+          <input id="daysOld" type="number" v-model="settings.daysOld" placeholder="2" />
+          <label for="daysOld">Days old for manual search</label>
+        </div>
+        <div class="relative mx:2">
           <input
             id="downloadAfterTransfert"
             type="checkbox"
             v-model="settings.downloadAfterTransfert"
-            placeholder="downloadAfterTransfert"
           />
           <label for="downloadAfterTransfert">Download after transfert</label>
-        </div>
-        <div class="relative mx:2">
-          <input id="daysOld" type="number" v-model="settings.daysOld" placeholder="2" />
-          <label for="daysOld">Days old for manual search</label>
         </div>
       </form>
     </div>

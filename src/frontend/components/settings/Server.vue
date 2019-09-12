@@ -1,7 +1,7 @@
 <template>
   <div>
     <alert color="red" v-if="error">{{ error }}</alert>
-    <div class="px:1">
+    <div>
       <div class="text:white text:3/2">Server</div>
       <div class="text:grey-dark">Restart needed at any change.</div>
       <form v-if="settings">
@@ -12,6 +12,12 @@
         <div class="relative mx:2">
           <input id="port" type="text" v-model="settings.port" placeholder="8080" />
           <label for="port">Port</label>
+        </div>
+        <div class="relative mx:2">
+          <select id="cron" v-model="settings.cron">
+            <option :value="item.key" v-for="item in list" :key="item.key">{{ item.value }}</option>
+          </select>
+          <label for="cron">Search new files every</label>
         </div>
       </form>
     </div>
@@ -28,7 +34,13 @@ export default {
   data() {
     return {
       error: null,
-      settings: null
+      settings: null,
+      list: [
+        { key: "", value: "never" },
+        { key: "* */1 * * *", value: "hour" },
+        { key: "* */2 * * *", value: "2 hours" },
+        { key: "* * */1 * *", value: "day" }
+      ]
     };
   },
   created() {
@@ -39,6 +51,9 @@ export default {
       this.update();
     },
     "settings.port"(newVal, oldVal) {
+      this.update();
+    },
+    "settings.cron"(newVal, oldVal) {
       this.update();
     },
     message(data) {

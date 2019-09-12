@@ -8,11 +8,11 @@ const SUBTITLES_FILE = "subtitles-config"
 const PLEX_FILE = "plex-config"
 const UUID = "67d119bc-e8ae-45ff-8cf3-0fc876576a6a"
 
-// Run every 5 minutes
+const serverSettings = File.readFile(SERVER_FILE)
+
 const transfert = cron.schedule(
-  "*/5 * * * *",
+  serverSettings.cron,
   () => {
-    const serverSettings = File.readFile(SERVER_FILE)
     const subtitlesSettings = File.readFile(SUBTITLES_FILE)
     const plexSettings = File.readFile(PLEX_FILE)
 

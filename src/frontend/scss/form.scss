@@ -22,7 +22,6 @@ input {
   @extend .border\:b;
   @extend .border\:grey;
   @extend .placeholder\:grey-dark;
-  // @extend .mx\:2;
   @extend .block;
 
   &:focus {
@@ -112,5 +111,25 @@ input[type="checkbox"] {
       @extend .bg\:grey-dark;
       @extend .border\:grey-dark;
     }
+  }
+}
+
+select {
+  height: 36px;
+  @extend .w\:full;
+  @extend .border;
+  @extend .text\:white;
+  @extend .text\:1;
+  @extend .bg\:transparent;
+  @extend .mt\:1;
+
+  option {
+    @extend .text\:white;
+    @extend .text\:1;
+    @extend .bg\:black;
+  }
+
+  & + label {
+    transform: translate(0, -1rem) scale(1);
   }
 }
