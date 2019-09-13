@@ -8,7 +8,7 @@
       @click="close"
     >
       <div
-        class="flex flex:col align:top bg:black shadow rounded sm:justify:end sm:m:auto max-w:sm md:max-w:md"
+        class="flex flex:col align:top bg:black shadow rounded sm:justify:end w:full sm:m:auto max-w:sm md:max-w:md"
         :class="size"
       >
         <slot name="content"></slot>
