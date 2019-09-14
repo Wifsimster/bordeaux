@@ -20,6 +20,7 @@ class Plex {
   static async response(data) {
     var pavie = null
     var settings = null
+    let results = null
 
     switch (data.method) {
       case "getAll":
@@ -31,9 +32,19 @@ class Plex {
         break
       case "signin":
         settings = this.getSettings(data.params.uuid)
-        pavie = new Pavie(settings)
-        await pavie.signin()
-        data.results = await pavie.getUser()
+
+        try {
+          pavie = new Pavie(settings)
+          results = await pavie.signin()
+
+          if (results) {
+            data.results = await pavie.getUser()
+          }
+        } catch (err) {
+          console.warn(err.message)
+          data.error = err.message
+        }
+
         break
       case "refresh":
         settings = this.getSettings(data.params.uuid)

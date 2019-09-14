@@ -38,8 +38,8 @@
 
         <alert color="green" v-if="addedMessage">{{ addedMessage }}</alert>
 
-        <div class="m:1">
-          <div v-if="tpbList">
+        <div class="p:1/2 sm:p:1">
+          <div v-if="tpbList" class="overflow:auto">
             <table class="border:collapse max-h:xs table:fixed" v-if="tpbList.length > 0">
               <thead>
                 <tr>
@@ -407,5 +407,13 @@ export default {
     rgba(0, 0, 0, 0.12) 50%,
     rgba(0, 0, 0, 0) 100%
   );
+}
+
+table {
+  width: 100%;
+  tr,
+  td {
+    width: 100%;
+  }
 }
 </style>

@@ -8,7 +8,7 @@
     <div class="text:grey-dark">Used to get your collected and watched episodes.</div>
     <form v-if="settings">
       <div class="relative mx:2">
-        <input id="plex_username" v-model="settings.username" placeholder="Eliot" />
+        <input id="plex_username" v-model="settings.username" placeholder="Eliot" @blur="test()" />
         <label for="plex_username">Username</label>
       </div>
       <div class="relative mx:2">
@@ -17,6 +17,7 @@
           type="password"
           v-model="encryptedPassword"
           placeholder="M3gA_Pa22w0rD!"
+          @blur="test()"
         />
         <label for="plex_password">Password</label>
       </div>
@@ -136,7 +137,11 @@ export default {
       }
     },
     test() {
-      if (this.settings) {
+      if (
+        this.settings &&
+        this.settings.password &&
+        this.settings.password.length > 3
+      ) {
         this.testOk = null;
         this.$store.commit("webSocket/send", {
           object: "plex",
