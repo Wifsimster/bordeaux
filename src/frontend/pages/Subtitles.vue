@@ -62,7 +62,6 @@ export default {
               this.error = data.error;
             } else {
               this.settings = Object.assign({}, data.results);
-              this.search();
             }
             break;
           case "search":

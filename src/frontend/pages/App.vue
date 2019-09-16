@@ -3,7 +3,7 @@
     <transition name="opacity">
       <div
         class="fixed b:0 l:0 r:0 bg:grey-darkest flex justify:center px:1 shadow:large z:10"
-        v-if="isPWAPromptTrigger"
+        v-if="isMobile && isPWAPromptTrigger"
       >
         <div class="absolute t:1 r:1 p:1/4 cursor:pointer" @click="isPWAPromptTrigger = false">x</div>
         <btn @click="addToHomeScreen">Add to home screen</btn>
@@ -29,6 +29,8 @@ const Navigation = () => import("components/navigation.vue");
 const Logo = () => import("components/logo.vue");
 const Notification = () => import("components/notification.vue");
 
+import Vue from "vue";
+
 export default {
   components: {
     Navigation,
@@ -39,6 +41,11 @@ export default {
     return {
       isPWAPromptTrigger: false
     };
+  },
+  computed: {
+    isMobile() {
+      return Vue.isMobile();
+    }
   },
   created() {
     this.connect();
