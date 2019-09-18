@@ -29,7 +29,6 @@ const Navigation = () => import("components/navigation.vue");
 const Logo = () => import("components/logo.vue");
 const Notification = () => import("components/notification.vue");
 
-// TODO : Add timeline for friend onn Trakt
 // TODO : Add logs history for cron run
 
 import Vue from "vue";
