@@ -10,41 +10,45 @@ const CLIENT_SECRET = `19e784eb7e88e64b9d42cce1725dfcb66214b12befa9d7c7b130b221a
 
 class Trakt {
   constructor() {
-    let settings = File.readFile(CONFIG_FILE)
+    File.readFile(CONFIG_FILE)
+      .then(settings => {
+        this.hostname = `https://api.trakt.tv`
+        this.version = "2"
 
-    this.hostname = `https://api.trakt.tv`
-    this.version = "2"
+        if (!settings) {
+          settings = {}
+        }
 
-    if (!settings) {
-      settings = {}
-    }
+        if (settings.code) {
+          this.code = settings.code
+        }
 
-    if (settings.code) {
-      this.code = settings.code
-    }
+        if (settings.accessToken) {
+          this.accessToken = settings.accessToken
+        }
 
-    if (settings.accessToken) {
-      this.accessToken = settings.accessToken
-    }
-
-    this.instance = axios.create({
-      baseURL: this.hostname,
-      headers: {
-        Authorization: `Bearer ${this.accessToken}`,
-        "trakt-api-key": CLIENT_ID,
-        "trakt-api-version": this.version
-      }
-    })
+        this.instance = axios.create({
+          baseURL: this.hostname,
+          headers: {
+            Authorization: `Bearer ${this.accessToken}`,
+            "trakt-api-key": CLIENT_ID,
+            "trakt-api-version": this.version
+          }
+        })
+      })
+      .catch(err => {
+        console.error(err)
+      })
   }
 
   static async response(data) {
     switch (data.method) {
       case "getAll":
-        data.results = File.readFile(CONFIG_FILE)
+        data.results = await File.readFile(CONFIG_FILE)
         break
       case "update":
         File.writeFile(CONFIG_FILE, data.params)
-        data.results = File.readFile(CONFIG_FILE)
+        data.results = await File.readFile(CONFIG_FILE)
         break
       case "getDeviceCode":
         var trakt = new Trakt()
@@ -80,7 +84,9 @@ class Trakt {
         var trakt = new Trakt()
 
         var episodes = await trakt.instance
-          .get(`calendars/my/shows/${data.params.startDate}/${data.params.days}`)
+          .get(
+            `calendars/my/shows/${data.params.startDate}/${data.params.days}`
+          )
           .then(async response => response.data)
           .catch(err => {
             data.error = err.message

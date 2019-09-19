@@ -9,12 +9,17 @@ class Transmission {
   constructor() {}
 
   static getSettings(uuid) {
-    const settings = File.readFile(CONFIG_FILE)
-    if (settings) {
-      const bytes = CryptoJS.AES.decrypt(settings.password, uuid)
-      settings.password = bytes.toString(CryptoJS.enc.Utf8)
-    }
-    return settings
+    File.readFile(CONFIG_FILE)
+      .then(settings => {
+        if (settings) {
+          const bytes = CryptoJS.AES.decrypt(settings.password, uuid)
+          settings.password = bytes.toString(CryptoJS.enc.Utf8)
+        }
+        return settings
+      })
+      .catch(err => {
+        console.error(err)
+      })
   }
 
   static async response(data) {
@@ -22,23 +27,26 @@ class Transmission {
 
     switch (data.method) {
       case "getAll":
-        data.results = File.readFile(CONFIG_FILE)
+        data.results = await File.readFile(CONFIG_FILE)
         break
       case "update":
-        File.writeFile(CONFIG_FILE, data.params)
-        data.results = File.readFile(CONFIG_FILE)
+        await File.writeFile(CONFIG_FILE, data.params)
+        data.results = await File.readFile(CONFIG_FILE)
         break
       case "add":
         settings = this.getSettings(data.params.uuid)
 
         data.results = await new Promise((resolve, reject) => {
-          new TransmissionManager(settings).addUrl(data.params.magnetLink, (err, arg) => {
-            if (err) {
-              reject(err)
-            } else {
-              resolve(arg)
+          new TransmissionManager(settings).addUrl(
+            data.params.magnetLink,
+            (err, arg) => {
+              if (err) {
+                reject(err)
+              } else {
+                resolve(arg)
+              }
             }
-          })
+          )
         }).catch(err => {
           data.error = err
         })
@@ -47,13 +55,17 @@ class Transmission {
         settings = this.getSettings(data.params.uuid)
 
         data.results = await new Promise((resolve, reject) => {
-          new TransmissionManager(settings).remove(data.params.id, true, (err, arg) => {
-            if (err) {
-              reject(err)
-            } else {
-              resolve(arg)
+          new TransmissionManager(settings).remove(
+            data.params.id,
+            true,
+            (err, arg) => {
+              if (err) {
+                reject(err)
+              } else {
+                resolve(arg)
+              }
             }
-          })
+          )
         }).catch(err => {
           data.error = err
         })

@@ -7,9 +7,10 @@ class Transfert {
   constructor() {}
 
   static async response(data) {
+    let settings
     switch (data.method) {
       case "search":
-        var settings = File.readFile(CONFIG_FILE)
+        settings = await File.readFile(CONFIG_FILE)
         data.results = Medoc.search(settings.from, settings.to)
         if (!Array.isArray(data.results)) {
           data.error = data.results.message

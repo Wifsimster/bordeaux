@@ -6,30 +6,36 @@ const ENCODING = `utf-8`
 class File {
   constructor() {}
 
-  static readFile(url) {
+  static existFile(filename) {
+    if (!fs.existsSync(path.resolve(`${__dirname}/../data/${filename}.json`))) {
+      return false
+    }
+    return true
+  }
+
+  static async readFile(filename) {
     // Create data/ if doesn't exist
     if (!fs.existsSync(`${__dirname}/../data/`)) {
       fs.mkdirSync(`${__dirname}/../data/`)
     }
 
-    var data = fs.readFileSync(
-      path.resolve(`${__dirname}/../data/${url}.json`),
-      {
+    return fs.promises
+      .readFile(path.resolve(`${__dirname}/../data/${filename}.json`), {
         encoding: ENCODING,
         flag: "a+"
-      }
-    )
-
-    if (data === "") {
-      return null
-    } else {
-      return JSON.parse(data)
-    }
+      })
+      .then(data => {
+        if (data === "") {
+          return null
+        } else {
+          return JSON.parse(data)
+        }
+      })
   }
 
-  static writeFile(url, data) {
-    fs.writeFileSync(
-      path.resolve(`${__dirname}/../data/${url}.json`),
+  static async writeFile(filename, data) {
+    fs.promises.writeFile(
+      path.resolve(`${__dirname}/../data/${filename}.json`),
       JSON.stringify(data),
       {
         encoding: ENCODING,

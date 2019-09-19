@@ -9,6 +9,7 @@
         <btn @click="addToHomeScreen">Add to home screen</btn>
       </div>
     </transition>
+
     <div class="flex flex:col h:screen">
       <nav class="flex justify:between items:baseline flex:wrap w:screen">
         <logo></logo>
@@ -28,8 +29,6 @@
 const Navigation = () => import("components/navigation.vue");
 const Logo = () => import("components/logo.vue");
 const Notification = () => import("components/notification.vue");
-
-// TODO : Add logs history for cron run
 
 import Vue from "vue";
 

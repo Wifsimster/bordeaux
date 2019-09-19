@@ -7,6 +7,7 @@ const Calendar = () => import("../pages/Calendar.vue")
 const Transfert = () => import("../pages/Transfert.vue")
 const Subtitles = () => import("../pages/Subtitles.vue")
 const Settings = () => import("../pages/Settings.vue")
+const Activity = () => import("../pages/Activity.vue")
 Vue.use(Router)
 
 const router = new Router({
@@ -18,7 +19,8 @@ const router = new Router({
     { path: "/calendar", component: Calendar, meta: { requiresAuth: true } },
     { path: "/transfert", component: Transfert, meta: { requiresAuth: true } },
     { path: "/subtitles", component: Subtitles, meta: { requiresAuth: true } },
-    { path: "/settings", component: Settings, meta: { requiresAuth: true } }
+    { path: "/settings", component: Settings, meta: { requiresAuth: true } },
+    { path: "/activity", component: Activity, meta: { requiresAuth: true } }
   ]
 })
 

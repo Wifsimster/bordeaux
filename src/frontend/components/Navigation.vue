@@ -70,6 +70,11 @@
         class="text:white text:3/2 py:1"
         exact-active-class="border:b:1/4 border:orange"
       >Settings</router-link>
+      <router-link
+        to="/activity"
+        class="text:white text:3/2 py:1"
+        exact-active-class="border:b:1/4 border:orange"
+      >Activities</router-link>
     </div>
   </div>
 </template>

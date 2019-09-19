@@ -5,13 +5,13 @@
     <div class="sticky t:0 bg:black z:10 px:1/2">
       <div class="flex justify:between">
         <div>
-          <btn @click="previous()">Previous</btn>
+          <btn @click="previous()">&lt;</btn>
         </div>
         <div>
           <btn @click="today()">Today</btn>
         </div>
         <div>
-          <btn @click="next()">Next</btn>
+          <btn @click="next()">&gt;</btn>
         </div>
       </div>
     </div>

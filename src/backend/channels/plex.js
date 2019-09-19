@@ -8,27 +8,29 @@ const CONFIG_FILE = "plex-config"
 class Plex {
   constructor() {}
 
-  static getSettings(uuid) {
-    const settings = File.readFile(CONFIG_FILE)
+  static async getSettings(uuid) {
+    const settings = await File.readFile(CONFIG_FILE)
+
     if (settings) {
       const bytes = CryptoJS.AES.decrypt(settings.password, uuid)
       settings.password = bytes.toString(CryptoJS.enc.Utf8)
     }
+
     return settings
   }
 
   static async response(data) {
-    var pavie = null
-    var settings = null
+    let pavie = null
+    let settings = null
     let results = null
 
     switch (data.method) {
       case "getAll":
-        data.results = File.readFile(CONFIG_FILE)
+        data.results = await File.readFile(CONFIG_FILE)
         break
       case "update":
-        File.writeFile(CONFIG_FILE, data.params)
-        data.results = File.readFile(CONFIG_FILE)
+        await File.writeFile(CONFIG_FILE, data.params)
+        data.results = await File.readFile(CONFIG_FILE)
         break
       case "signin":
         settings = this.getSettings(data.params.uuid)

@@ -2,6 +2,7 @@ const cron = require("node-cron")
 const WebSocket = require("ws")
 
 const File = require("../utils/file")
+const Activity = require("../channels/activity")
 
 const SERVER_FILE = "server-config"
 const SUBTITLES_FILE = "subtitles-config"
@@ -13,6 +14,11 @@ const serverSettings = File.readFile(SERVER_FILE)
 const transfert = cron.schedule(
   serverSettings.cron,
   () => {
+    Activity.response({
+      method: "add",
+      params: { type: "info", message: `Transfert cron trigger` }
+    })
+
     const subtitlesSettings = File.readFile(SUBTITLES_FILE)
     const plexSettings = File.readFile(PLEX_FILE)
 
