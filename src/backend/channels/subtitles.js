@@ -1,5 +1,6 @@
 const Yquem = require("yquem")
 const File = require("../utils/file")
+const Activity = require("./activity")
 
 const SUBTITLES_FILE = "subtitles-config"
 const DIRECTORY_FILE = "directory-config"
@@ -21,17 +22,39 @@ class Subtitles {
         data.results = await File.readFile(SUBTITLES_FILE)
         break
       case "search":
-        results = Yquem.getRecentFilesFromDirectory(
-          directorySettings.to,
-          subtitlesSettings.daysOld
-        )
-        if (!Array.isArray(data.results)) {
-          data.error = results.message
-        } else {
-          data.results = results
+        Activity.response({
+          method: "add",
+          params: {
+            type: "info",
+            object: "Subtitles",
+            message: `Searching subtitle on '${directorySettings.to}'`
+          }
+        })
+
+        try {
+          results = Yquem.getRecentFilesFromDirectory(
+            directorySettings.to,
+            subtitlesSettings.daysOld
+          )
+          if (!Array.isArray(data.results)) {
+            data.error = results.message
+          } else {
+            data.results = results
+          }
+        } catch (err) {
+          data.error = err.message
         }
         break
       case "getSubtitle":
+        Activity.response({
+          method: "add",
+          params: {
+            type: "info",
+            object: "Subtitles",
+            message: `Download subtitle for '${data.params.file}'`
+          }
+        })
+
         data.results = await Yquem.getSubtitle(data.params.file, {
           languages: subtitlesSettings.languages
         }).catch(err => {
@@ -44,6 +67,15 @@ class Subtitles {
         })
         break
       default:
+        Activity.response({
+          method: "add",
+          params: {
+            type: "warn",
+            object: "Subtitles",
+            message: `Unknow method : ${data.method}`
+          }
+        })
+
         console.log(`[Subtitles] Unknow method : ${data.method}`)
     }
     return data

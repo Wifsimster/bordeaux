@@ -14,7 +14,7 @@ export default {
   },
   computed: {
     computedColor() {
-      switch (thid.color) {
+      switch (this.color) {
         case "red":
           return "bg:red-lightest border:red-dark text:red-dark";
         case "orange":

@@ -41,6 +41,8 @@ import parseISO from "date-fns/parseISO";
 import format from "date-fns/format";
 import subDays from "date-fns/subDays";
 import addDays from "date-fns/addDays";
+import compareAsc from "date-fns/compareAsc";
+import compareDesc from "date-fns/compareDesc";
 
 export default {
   name: "activity",
@@ -70,7 +72,10 @@ export default {
             if (data.error) {
               this.error = data.error;
             } else {
-              this.activities = data.results;
+              this.activities = Object.assign([], data.results);
+              this.activities = this.activities.sort((a, b) =>
+                compareDesc(new Date(a.date), new Date(b.date))
+              );
             }
             break;
         }
@@ -85,7 +90,7 @@ export default {
       this.currentDate = addDays(this.currentDate, 1);
     },
     getTime(value) {
-      return format(parseISO(value), "hh:mm:ss");
+      return format(parseISO(value), "hh:mm:ss a");
     },
     displayISODate(value) {
       return format(value, "MM / dd / yyyy");

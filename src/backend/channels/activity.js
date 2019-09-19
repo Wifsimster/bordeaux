@@ -9,7 +9,13 @@ class Activity {
     switch (data.method) {
       case "getAll":
         if (data.params && data.params.date) {
-          data.results = await File.readFile(`activity-${data.params.date}`)
+          try {
+            data.results = await File.readFile(`activity-${data.params.date}`, {
+              flag: "r"
+            })
+          } catch (err) {
+            console.error(err)
+          }
         }
         break
       case "add":

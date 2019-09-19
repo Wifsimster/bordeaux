@@ -13,7 +13,7 @@ class File {
     return true
   }
 
-  static async readFile(filename) {
+  static async readFile(filename, options = { flag: "a+" }) {
     // Create data/ if doesn't exist
     if (!fs.existsSync(`${__dirname}/../data/`)) {
       fs.mkdirSync(`${__dirname}/../data/`)
@@ -22,7 +22,7 @@ class File {
     return fs.promises
       .readFile(path.resolve(`${__dirname}/../data/${filename}.json`), {
         encoding: ENCODING,
-        flag: "a+"
+        flag: options.flag
       })
       .then(data => {
         if (data === "") {

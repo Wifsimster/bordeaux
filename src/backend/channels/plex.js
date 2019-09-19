@@ -1,4 +1,5 @@
 const File = require("../utils/file")
+const Activity = require("./activity")
 
 const Pavie = require("pavie")
 const CryptoJS = require("crypto-js")
@@ -49,12 +50,30 @@ class Plex {
 
         break
       case "refresh":
+        Activity.response({
+          method: "add",
+          params: {
+            type: "info",
+            object: "Plex",
+            message: `Synchronize tb show library`
+          }
+        })
+
         settings = this.getSettings(data.params.uuid)
         pavie = new Pavie(settings)
         await pavie.signin()
         data.results = await pavie.refresh()
         break
       default:
+        Activity.response({
+          method: "add",
+          params: {
+            type: "warn",
+            object: "Plex",
+            message: `Unknow method : ${data.method}`
+          }
+        })
+
         console.log(`[Plex] Unknow method : ${data.method}`)
     }
     return data
