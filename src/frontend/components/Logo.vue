@@ -4,7 +4,7 @@
       <router-link
         to="/"
         tag="div"
-        class="relative text:2 text:bold mr:1/2 cursor:pointer glitch"
+        class="relative text:3/2 sm:text:2 text:bold mr:1/2 cursor:pointer glitch"
         data-text="Bordeaux"
       >Bordeaux</router-link>
       <div v-if="isAlive">

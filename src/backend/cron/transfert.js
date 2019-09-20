@@ -2,7 +2,7 @@ const cron = require("node-cron")
 const WebSocket = require("ws")
 
 const File = require("../utils/file")
-const Activity = require("../channels/activity")
+const Logger = require("../utils/logger")
 
 const SERVER_FILE = "server-config"
 const SUBTITLES_FILE = "subtitles-config"
@@ -14,10 +14,7 @@ const serverSettings = File.readFile(SERVER_FILE)
 const transfert = cron.schedule(
   serverSettings.cron,
   () => {
-    Activity.response({
-      method: "add",
-      params: { type: "info", message: `Transfert cron trigger` }
-    })
+    Logger.info("Transfert", `[CRON] Transfert trigger`)
 
     const subtitlesSettings = File.readFile(SUBTITLES_FILE)
     const plexSettings = File.readFile(PLEX_FILE)
@@ -98,7 +95,8 @@ const transfert = cron.schedule(
     })
 
     ws.on("error", err => {
-      console.error(err)
+      Logger.error("Transfert", err.message)
+      console.error(err.message)
     })
   },
   { scheduled: false }

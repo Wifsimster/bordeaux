@@ -2,11 +2,13 @@
   <div class="bg:black text:white h:screen w:screen overflow:hidden">
     <transition name="opacity">
       <div
-        class="fixed b:0 l:0 r:0 bg:grey-darkest flex justify:center px:1 shadow:large z:10"
+        class="fixed b:0 l:0 r:0 bg:grey-darkest flex justify:center px:1 shadow:large z:10 flex items:center"
         v-if="isMobile && isPWAPromptTrigger"
       >
-        <div class="absolute t:1 r:1 p:1/4 cursor:pointer" @click="isPWAPromptTrigger = false">x</div>
-        <btn @click="addToHomeScreen">Add to home screen</btn>
+        <div class="flex:1 flex justify:center">
+          <btn @click="addToHomeScreen">Add to home screen</btn>
+        </div>
+        <div class="mr:1 py:1/2 cursor:pointer text:2" @click="isPWAPromptTrigger = false">x</div>
       </div>
     </transition>
 
@@ -17,7 +19,7 @@
       </nav>
       <main class="h:11/12 overflow-y:auto overflow-x:hidden">
         <notification></notification>
-        <transition name="opacity" mode="out-in">
+        <transition name="fade" mode="out-in">
           <router-view></router-view>
         </transition>
       </main>

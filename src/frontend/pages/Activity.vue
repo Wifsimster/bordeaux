@@ -22,12 +22,13 @@
             :key="activity.date"
             class="w:full flex hover:bg:grey-darkest p:1/2"
           >
-            <div class="pr:1">
+            <div class="pr:1" style="min-width: 30px">
               <i
                 :class="{'error' : activity.type=== 'error', 'warn' : activity.type=== 'warn', 'info' : activity.type=== 'info'}"
               ></i>
             </div>
-            <div class="py:1/2" style="min-width: 90px">{{ getTime(activity.date) }}</div>
+            <div class="py:1/2" style="min-width: 120px">{{ getTime(activity.date) }}</div>
+            <div class="py:1" style="min-width: 125px">{{ activity.object }}</div>
             <div class="flex:1 py:1">{{ activity.message }}</div>
           </div>
         </div>

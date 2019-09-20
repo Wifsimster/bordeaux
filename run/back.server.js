@@ -1,3 +1,5 @@
+const Logger = require("../src/backend/utils/logger")
+
 async function main() {
   const WebSocket = require("ws")
   const File = require("../src/backend/utils/file")
@@ -13,8 +15,11 @@ async function main() {
 
   const wss = new WebSocket.Server({ port: PORT })
 
-  console.log(
-    `Web Socket server started at : ws://${settings.host}:${settings.port}`
+  console.log(`Server started : ws://${settings.host}:${settings.port}`)
+
+  Logger.info(
+    "Server",
+    `Server started : ws://${settings.host}:${settings.port}`
   )
 
   const Transmission = require("../src/backend/channels/transmission")
@@ -29,19 +34,7 @@ async function main() {
   const Explorer = require("../src/backend/channels/explorer")
   const Activity = require("../src/backend/channels/activity")
 
-  Activity.response({
-    method: "add",
-    params: { type: "info", message: "Server started" }
-  })
-
   wss.on("connection", function connection(ws, req) {
-    console.log(`New client connection for ${req.url}`)
-
-    Activity.response({
-      method: "add",
-      params: { type: "info", message: `New client connection for ${req.url}` }
-    })
-
     // Detect and close broken connections
     ws.isAlive = true
 
@@ -87,6 +80,7 @@ async function main() {
           data = await Activity.response(data)
           break
         default:
+          Logger.warn("Server", `Unknow object : '${data.object}'`)
           console.error(`Unknow object : '${data.object}'`)
       }
 

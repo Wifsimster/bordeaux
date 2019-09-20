@@ -10,45 +10,45 @@
       :class="{ 'w:full h:full': displayKebab }"
     >
       <div
-        class="absolute t:0 r:0 text:3/2 cursor:pointer p:1"
+        class="absolute t:0 r:0 text:7/4 cursor:pointer py:1"
         v-if="displayKebab"
         @click="displayKebab = false"
       >x</div>
       <router-link
         to="/"
         class="text:white text:3/2 p:1"
-        exact-active-class="text:orange md:border:b:1/4 border:orange"
+        exact-active-class="text:orange"
         title="Dashboard"
       >Dashboard</router-link>
       <router-link
         v-if="hasTrakt"
         to="/calendar"
         class="text:white text:3/2 p:1"
-        exact-active-class="text:orange md:border:b:1/4 border:orange"
+        exact-active-class="text:orange"
         title="Calendar"
       >Calendar</router-link>
       <router-link
         to="/transfert"
         class="text:white text:3/2 p:1"
-        exact-active-class="text:orange md:border:b:1/4 border:orange"
+        exact-active-class="text:orange"
         title="Transfert"
       >Transfert</router-link>
       <router-link
         to="/subtitles"
         class="text:white text:3/2 p:1"
-        exact-active-class="text:orange md:border:b:1/4 border:orange"
+        exact-active-class="text:orange"
         title="Subtitles"
       >Subtitles</router-link>
       <router-link
         to="/activity"
         class="text:white text:3/2 p:1"
-        exact-active-class="text:orange md:border:b:1/4 border:orange"
+        exact-active-class="text:orange"
         title="Activities"
       >Activities</router-link>
       <router-link
         to="/settings"
         class="text:white text:3/2 p:1"
-        exact-active-class="text:orange md:border:b:1/4 border:orange"
+        active-class="text:orange"
         title="Settings"
       >Settings</router-link>
     </div>
@@ -58,38 +58,40 @@
       <router-link
         to="/"
         class="text:white text:3/2 py:1"
-        exact-active-class="border:b:1/4 border:orange"
+        exact-active-class="text:orange"
         title="Dashboard"
       >Dashboard</router-link>
       <router-link
         v-if="hasTrakt"
         to="/calendar"
         class="text:white text:3/2 py:1"
-        exact-active-class="border:b:1/4 border:orange"
+        exact-active-class="text:orange"
         title="Calendar"
       >Calendar</router-link>
       <router-link
         to="/transfert"
         class="text:white text:3/2 py:1"
-        exact-active-class="border:b:1/4 border:orange"
+        exact-active-class="text:orange"
         title="Transfert"
       >Transfert</router-link>
       <router-link
         to="/subtitles"
         class="text:white text:3/2 py:1"
-        exact-active-class="border:b:1/4 border:orange"
+        exact-active-class="text:orange"
         title="Subtitles"
       >Subtitles</router-link>
       <router-link
         to="/activity"
         class="text:white text:3/2 py:1"
-        exact-active-class="border:b:1/4 border:orange"
+        exact-active-class="text:orange before:border:orange"
         title="Activities"
-      >Activities</router-link>
+      >
+        <i class="activities"></i>
+      </router-link>
       <router-link
         to="/settings"
         class="text:white text:3/2 py:1"
-        active-class="border:b:1/4 border:orange"
+        active-class="text:orange"
         title="Settings"
       >
         <i class="settings"></i>

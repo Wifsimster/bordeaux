@@ -1,6 +1,7 @@
 const axios = require("axios")
 
 const File = require("../utils/file")
+const Logger = require("../utils/logger")
 
 const Tmdb = require("../classes/tmdb")
 
@@ -54,6 +55,8 @@ class Trakt {
         break
       case "getDeviceCode":
         try {
+          Logger.info("Trakt", "getDeviceCode")
+
           trakt = new Trakt()
           await trakt.init()
 
@@ -68,27 +71,32 @@ class Trakt {
               data.error = err.message
             })
         } catch (err) {
-          console.error(err)
+          Logger.error("Trakt", err.message)
           data.error = err.message
         }
         break
       case "checkDeviceAuthorization":
-        trakt = new Trakt()
-        await trakt.init()
+        try {
+          trakt = new Trakt()
+          await trakt.init()
 
-        data.results = await trakt.instance
-          .post("oauth/device/token", {
-            code: data.params.code,
-            client_id: CLIENT_ID,
-            client_secret: CLIENT_SECRET
-          })
-          .then(response => {
-            return response.data
-          })
-          .catch(err => {
-            console.error(err)
-            data.error = err.message
-          })
+          data.results = await trakt.instance
+            .post("oauth/device/token", {
+              code: data.params.code,
+              client_id: CLIENT_ID,
+              client_secret: CLIENT_SECRET
+            })
+            .then(response => {
+              return response.data
+            })
+            .catch(err => {
+              Logger.error("Trakt", err.message)
+              data.error = err.message
+            })
+        } catch (err) {
+          Logger.error("Trakt", err.message)
+          data.error = err.message
+        }
         break
       case "getEpisodes":
         try {
@@ -101,6 +109,7 @@ class Trakt {
             )
             .then(async response => response.data)
             .catch(err => {
+              Logger.error("Trakt", err.message)
               data.error = err.message
             })
 
@@ -111,6 +120,7 @@ class Trakt {
               episode.images = await tmdb
                 .getEpisodeImages(episode)
                 .catch(err => {
+                  Logger.warn("Trakt", err)
                   console.warn(err)
                 })
 
@@ -118,6 +128,7 @@ class Trakt {
                 episode.images = await tmdb
                   .getShowImages(episode)
                   .catch(err => {
+                    Logger.warn("Trakt", err)
                     console.warn(err)
                   })
               }
@@ -127,7 +138,7 @@ class Trakt {
           )
           data.results = episodes
         } catch (err) {
-          console.error(err)
+          Logger.error("Trakt", err.message)
           data.error = err.message
         }
         break
@@ -147,7 +158,7 @@ class Trakt {
               data.error = err.message
             })
         } catch (err) {
-          console.error(err)
+          Logger.error("Trakt", err.message)
           data.error = err.message
         }
         break
@@ -165,7 +176,7 @@ class Trakt {
               data.error = err.message
             })
         } catch (err) {
-          console.error(err)
+          Logger.error("Trakt", err.message)
           data.error = err.message
         }
         break
@@ -183,7 +194,7 @@ class Trakt {
               data.error = err.message
             })
         } catch (err) {
-          console.error(err)
+          Logger.error("Trakt", err.message)
           data.error = err.message
         }
         break
@@ -201,12 +212,12 @@ class Trakt {
               data.error = err.message
             })
         } catch (err) {
-          console.error(err)
+          Logger.error("Trakt", err.message)
           data.error = err.message
         }
-
         break
       default:
+        Logger.warn("Trakt", `Unknow method : ${data.method}`)
         console.log(`[Trakt] Unknow method : ${data.method}`)
     }
     return data

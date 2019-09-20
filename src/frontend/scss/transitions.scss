@@ -1,4 +1,5 @@
-// Transitions
+/* purgecss start ignore */
+// fade
 .fade-enter-active,
 .fade-leave-active {
   transition: all 0.3s;
@@ -8,7 +9,7 @@
   opacity: 0;
 }
 
-// List
+// list
 .list-enter-active,
 .list-leave-active {
   transition: all 1s;
@@ -19,7 +20,7 @@
   transform: translateY(30px);
 }
 
-// Slide right
+// slide:right
 .slide\:right-enter-active,
 .slide\:right-leave-active {
   transition: all 0.3s;
@@ -33,7 +34,7 @@
   transform: translateX(-30px);
 }
 
-// Slide down
+// slide:down
 .slide\:down-enter-active,
 .slide\:down-leave-active {
   transition: all 0.3s;
@@ -43,3 +44,4 @@
   opacity: 0;
   transform: translateY(-30px);
 }
+/* purgecss end ignore */

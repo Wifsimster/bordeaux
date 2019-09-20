@@ -90,6 +90,7 @@ input[type="checkbox"] {
       @extend .border\:1\/8;
       @extend .absolute;
       @extend .l\:0;
+      @extend .t\:0;
       @extend .r\:0;
       content: "";
       height: $size;

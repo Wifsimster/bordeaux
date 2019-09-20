@@ -1,5 +1,5 @@
 const Petrus = require("petrus")
-const Activity = require("./activity")
+const Logger = require("../utils/logger")
 
 class Download {
   constructor() {}
@@ -7,30 +7,20 @@ class Download {
   static async response(data) {
     switch (data.method) {
       case "searchEpisode":
-        Activity.response({
-          method: "add",
-          params: {
-            type: "info",
-            object: "Download",
-            message: `Searching ${data.params.title}`
-          }
-        })
+        try {
+          Logger.info("Download", `Searching ${data.params.title}`)
 
-        data.results = await Petrus.search(data.params.title).catch(err => {
-          data.error = err
-        })
+          data.results = await Petrus.search(data.params.title).catch(err => {
+            data.error = err
+          })
+        } catch (err) {
+          Logger.error("Download", err.message)
+          data.error = err.message
+        }
         break
       default:
-        Activity.response({
-          method: "add",
-          params: {
-            type: "warn",
-            object: "Download",
-            message: `Unknow method : ${data.method}`
-          }
-        })
-
-        console.log(`[Download] Unknow method : ${data.method}`)
+        Logger.warn("Download", `Unknow method : ${data.method}`)
+        console.warn(`[Download] Unknow method : ${data.method}`)
     }
     return data
   }

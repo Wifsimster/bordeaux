@@ -28,8 +28,7 @@ class Activity {
 
         fileData.push({
           date: new Date(),
-          type: data.params.type,
-          message: data.params.message
+          ...data.params
         })
 
         await File.writeFile(filename, fileData)

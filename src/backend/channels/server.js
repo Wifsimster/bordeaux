@@ -15,7 +15,7 @@ class Server {
         data.results = await File.readFile(CONFIG_FILE)
         break
       default:
-        console.log(`[Server] Unknow method : ${data.method}`)
+        console.warn(`[Server] Unknow method : ${data.method}`)
     }
     return data
   }
