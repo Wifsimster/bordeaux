@@ -18,27 +18,38 @@
         to="/"
         class="text:white text:3/2 p:1"
         exact-active-class="text:orange md:border:b:1/4 border:orange"
+        title="Dashboard"
       >Dashboard</router-link>
       <router-link
         v-if="hasTrakt"
         to="/calendar"
         class="text:white text:3/2 p:1"
         exact-active-class="text:orange md:border:b:1/4 border:orange"
+        title="Calendar"
       >Calendar</router-link>
       <router-link
         to="/transfert"
         class="text:white text:3/2 p:1"
         exact-active-class="text:orange md:border:b:1/4 border:orange"
+        title="Transfert"
       >Transfert</router-link>
       <router-link
         to="/subtitles"
         class="text:white text:3/2 p:1"
         exact-active-class="text:orange md:border:b:1/4 border:orange"
+        title="Subtitles"
       >Subtitles</router-link>
+      <router-link
+        to="/activity"
+        class="text:white text:3/2 p:1"
+        exact-active-class="text:orange md:border:b:1/4 border:orange"
+        title="Activities"
+      >Activities</router-link>
       <router-link
         to="/settings"
         class="text:white text:3/2 p:1"
         exact-active-class="text:orange md:border:b:1/4 border:orange"
+        title="Settings"
       >Settings</router-link>
     </div>
 
@@ -48,33 +59,41 @@
         to="/"
         class="text:white text:3/2 py:1"
         exact-active-class="border:b:1/4 border:orange"
+        title="Dashboard"
       >Dashboard</router-link>
       <router-link
         v-if="hasTrakt"
         to="/calendar"
         class="text:white text:3/2 py:1"
         exact-active-class="border:b:1/4 border:orange"
+        title="Calendar"
       >Calendar</router-link>
       <router-link
         to="/transfert"
         class="text:white text:3/2 py:1"
         exact-active-class="border:b:1/4 border:orange"
+        title="Transfert"
       >Transfert</router-link>
       <router-link
         to="/subtitles"
         class="text:white text:3/2 py:1"
         exact-active-class="border:b:1/4 border:orange"
+        title="Subtitles"
       >Subtitles</router-link>
-      <router-link
-        to="/settings"
-        class="text:white text:3/2 py:1"
-        exact-active-class="border:b:1/4 border:orange"
-      >Settings</router-link>
       <router-link
         to="/activity"
         class="text:white text:3/2 py:1"
         exact-active-class="border:b:1/4 border:orange"
+        title="Activities"
       >Activities</router-link>
+      <router-link
+        to="/settings"
+        class="text:white text:3/2 py:1"
+        active-class="border:b:1/4 border:orange"
+        title="Settings"
+      >
+        <i class="settings"></i>
+      </router-link>
     </div>
   </div>
 </template>

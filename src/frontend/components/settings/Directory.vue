@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="sm:min-w:sm">
     <alert color="red" v-if="error">{{ error }}</alert>
     <div>
       <div class="text:3/2">Directories</div>

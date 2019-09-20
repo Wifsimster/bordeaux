@@ -44,7 +44,7 @@ class Plex {
             data.results = await pavie.getUser()
           }
         } catch (err) {
-          console.warn(err.message)
+          console.error(err.message)
           data.error = err.message
         }
 

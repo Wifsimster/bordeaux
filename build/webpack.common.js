@@ -80,8 +80,16 @@ module.exports = {
       { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" },
       {
         test: /\.(s)css$/,
-        // use: ["vue-style-loader", "css-loader", "sass-loader"]
-        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              hmr: process.env.NODE_ENV === "development"
+            }
+          },
+          "css-loader",
+          "sass-loader"
+        ]
       },
       {
         test: /\.(png|jpe?g|gif|svg|ico)(\?.*)?$/,

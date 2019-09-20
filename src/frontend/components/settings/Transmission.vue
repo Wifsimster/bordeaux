@@ -1,39 +1,37 @@
 <template>
-  <div>
-    <div>
-      <div class="text:3/2">
-        Transmission
-        <span
-          v-if="testOk"
-          class="inline-block rounded:full bg:green ml:1/4 p:1/3 align:middle"
-        ></span>
-        <span v-else class="inline-block rounded:full bg:red ml:1/4 p:1/3 align:middle"></span>
-      </div>
-      <div class="text:grey-dark">Needed to add magnetlink from The Pirate Bay.</div>
-      <form v-if="settings">
-        <div class="relative mx:2">
-          <input id="transmission_host" v-model="settings.host" placeholder="localhost" />
-          <label for="transmission_host">Host</label>
-        </div>
-        <div class="relative mx:2">
-          <input id="transmission_port" type="number" v-model="settings.port" placeholder="9091" />
-          <label for="transmission_port">Port</label>
-        </div>
-        <div class="relative mx:2">
-          <input id="transmission_username" v-model="settings.username" placeholder="Eliot" />
-          <label for="transmission_username">Username</label>
-        </div>
-        <div class="relative mx:2">
-          <input
-            id="transmission_password"
-            type="password"
-            v-model="encryptedPassword"
-            placeholder="M3gA_Pa22w0rD!"
-          />
-          <label for="transmission_password">Password</label>
-        </div>
-      </form>
+  <div class="sm:min-w:sm">
+    <div class="text:3/2">
+      Transmission
+      <span
+        v-if="testOk"
+        class="inline-block rounded:full bg:green ml:1/4 p:1/3 align:middle"
+      ></span>
+      <span v-else class="inline-block rounded:full bg:red ml:1/4 p:1/3 align:middle"></span>
     </div>
+    <div class="text:grey-dark">Needed to add magnetlink from The Pirate Bay.</div>
+    <form v-if="settings">
+      <div class="relative mx:2">
+        <input id="transmission_host" v-model="settings.host" placeholder="localhost" />
+        <label for="transmission_host">Host</label>
+      </div>
+      <div class="relative mx:2">
+        <input id="transmission_port" type="number" v-model="settings.port" placeholder="9091" />
+        <label for="transmission_port">Port</label>
+      </div>
+      <div class="relative mx:2">
+        <input id="transmission_username" v-model="settings.username" placeholder="Eliot" />
+        <label for="transmission_username">Username</label>
+      </div>
+      <div class="relative mx:2">
+        <input
+          id="transmission_password"
+          type="password"
+          v-model="encryptedPassword"
+          placeholder="M3gA_Pa22w0rD!"
+        />
+        <label for="transmission_password">Password</label>
+      </div>
+    </form>
   </div>
 </template>
 
