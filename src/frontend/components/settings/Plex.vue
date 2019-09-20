@@ -1,5 +1,5 @@
 <template>
-  <div class="sm:min-w:sm">
+  <div class="min-w:full sm:min-w:sm">
     <div class="text:white text:3/2">
       Plex
       <span v-if="testOk" class="inline-block rounded:full bg:green ml:1/4 p:1/3 align:middle"></span>

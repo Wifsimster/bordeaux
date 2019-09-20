@@ -1,5 +1,5 @@
 <template>
-  <div class="sm:min-w:sm">
+  <div class="min-w:full sm:min-w:sm">
     <div class="text:3/2">
       Transmission
       <span

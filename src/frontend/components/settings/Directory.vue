@@ -1,9 +1,9 @@
 <template>
-  <div class="sm:min-w:sm">
+  <div class="min-w:full sm:min-w:sm">
     <alert color="red" v-if="error">{{ error }}</alert>
     <div>
       <div class="text:3/2">Directories</div>
-      <div class="text:grey-dark">Directories scan.</div>
+      <div class="text:grey-dark">Directories scan for transfert & subtitles.</div>
       <form v-if="settings">
         <div class="relative mx:2">
           <input

@@ -21,7 +21,7 @@ input {
   @extend .bg\:transparent;
   @extend .border\:b;
   @extend .border\:grey;
-  @extend .placeholder\:grey-dark;
+  @extend .placeholder\:grey-darker;
   @extend .block;
 
   &:focus {
