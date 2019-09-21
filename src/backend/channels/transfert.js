@@ -1,6 +1,6 @@
 const Medoc = require("medoc")
 const File = require("../utils/file")
-const Activity = require("./activity")
+const Logger = require("../utils/logger")
 
 const CONFIG_FILE = "directory-config"
 
@@ -11,45 +11,32 @@ class Transfert {
     let settings
     switch (data.method) {
       case "search":
-        settings = await File.readFile(CONFIG_FILE)
+        try {
+          Logger.info("Transfert", `Searching new episode on '${settings.from}'`)
+          settings = await File.readFile(CONFIG_FILE)
+          data.results = Medoc.search(settings.from, settings.to)
 
-        Activity.response({
-          method: "add",
-          params: {
-            type: "info",
-            object: "Transfert",
-            message: `Searching new episode on '${settings.from}'`
+          if (!Array.isArray(data.results)) {
+            Logger.error("Transfert", data.results.message)
+            data.error = data.results.message
           }
-        })
-
-        data.results = Medoc.search(settings.from, settings.to)
-
-        if (!Array.isArray(data.results)) {
-          data.error = data.results.message
+        } catch (err) {
+          Logger.error("Transfert", err.message)
+          data.error = err.message
         }
 
         break
       case "move":
-        Activity.response({
-          method: "add",
-          params: {
-            type: "info",
-            object: "Transfert",
-            message: `Moving '${data.params.episode}'`
-          }
-        })
-
-        data.results = await Medoc.move(data.params.episode)
+        try {
+          Logger.info("Transfert", `Moving '${data.params.episode}'`)
+          data.results = await Medoc.move(data.params.episode)
+        } catch (err) {
+          Logger.error("Transfert", err.message)
+          data.error = err.message
+        }
         break
       default:
-        Activity.response({
-          method: "add",
-          params: {
-            type: "warn",
-            object: "Transfert",
-            message: `Unknow method : ${data.method}`
-          }
-        })
+        Logger.info("Transfert", `Unknow method : ${data.method}`)
         console.log(`[Transfert] Unknow method : ${data.method}`)
     }
     return data
