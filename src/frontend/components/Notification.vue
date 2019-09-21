@@ -11,7 +11,7 @@
         <div class="flex items:baseline">
           <div class="text:white px:1 pl:1/2 pr:1/4">{{ item.message }}</div>
           <i
-            class="float:right text:white text:3/4 mr:1/2 p:1/4 rounded cursor:pointer"
+            class="float:right text:white mr:1/2 p:1/4 rounded cursor:pointer"
             :class="'hover:bg:' + item.color + '-light'"
             @click="close(index)"
           >x</i>

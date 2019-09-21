@@ -10,20 +10,23 @@ class Plex {
   constructor() {}
 
   static async getSettings(uuid) {
-    const settings = await File.readFile(CONFIG_FILE)
+    try {
+      const settings = await File.readFile(CONFIG_FILE)
 
-    if (settings) {
-      const bytes = CryptoJS.AES.decrypt(settings.password, uuid)
-      settings.password = bytes.toString(CryptoJS.enc.Utf8)
+      if (settings) {
+        const bytes = CryptoJS.AES.decrypt(settings.password, uuid)
+        settings.password = bytes.toString(CryptoJS.enc.Utf8)
+      }
+
+      return settings
+    } catch (err) {
+      Logger.error("Plex", err.message)
+      throw new Error(err)
     }
-
-    return settings
   }
 
   static async response(data) {
-    let pavie = null
-    let settings = null
-    let results = null
+    let pavie, settings, results
 
     switch (data.method) {
       case "getAll":
@@ -35,7 +38,7 @@ class Plex {
         break
       case "signin":
         try {
-          settings = this.getSettings(data.params.uuid)
+          settings = await this.getSettings(data.params.uuid)
           pavie = new Pavie(settings)
           results = await pavie.signin()
 
@@ -50,7 +53,8 @@ class Plex {
       case "refresh":
         try {
           Logger.info("Plex", `Synchronize tb show library`)
-          settings = this.getSettings(data.params.uuid)
+
+          settings = await this.getSettings(data.params.uuid)
           pavie = new Pavie(settings)
           await pavie.signin()
           data.results = await pavie.refresh()

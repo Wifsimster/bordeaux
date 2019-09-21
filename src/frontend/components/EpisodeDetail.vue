@@ -74,7 +74,7 @@
                   <td class="w:full text:center p:1/4" style="min-width:100px">
                     <span v-if="item.uploaded">{{ item.uploaded }}</span>
                   </td>
-                  <td>
+                  <td class="text:center">
                     <span v-if="item.progress">{{ item.progress }} %</span>
                   </td>
                 </tr>
