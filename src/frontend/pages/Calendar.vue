@@ -5,13 +5,19 @@
     <div class="sticky t:0 bg:black z:10 px:1/2">
       <div class="flex justify:between">
         <div>
-          <btn @click="previous()">&lt;</btn>
+          <a
+            @click="previous()"
+            class="text:bold cursor:pointer m:1/2 px:1/2 py:3/4 text:3/2 hover:bg:grey-darkest rounded:full"
+          >&lt;</a>
         </div>
         <div>
           <btn @click="today()">Today</btn>
         </div>
         <div>
-          <btn @click="next()">&gt;</btn>
+          <a
+            @click="next()"
+            class="text:bold cursor:pointer m:1/2 px:1/2 py:3/4 text:3/2 hover:bg:grey-darkest rounded:full"
+          >&gt;</a>
         </div>
       </div>
     </div>

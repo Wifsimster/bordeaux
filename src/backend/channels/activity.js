@@ -14,7 +14,8 @@ class Activity {
               flag: "r"
             })
           } catch (err) {
-            console.error(err)
+            data.results = []
+            console.warn(err)
           }
         }
         break
