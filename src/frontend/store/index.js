@@ -1,6 +1,5 @@
 import Vue from "vue"
 import Vuex from "vuex"
-import pathify from "vuex-pathify"
 
 Vue.use(Vuex)
 
@@ -10,7 +9,6 @@ import notification from "store/modules/notification"
 
 export default new Vuex.Store({
   strict: process.env.NODE_ENV !== "production",
-  plugins: [pathify.plugin],
   modules: { webSocket, trakt, notification }
 })
 

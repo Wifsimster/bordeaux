@@ -246,7 +246,7 @@ export default {
   },
   methods: {
     hasBeenWatched() {
-      var watched = this.$store.get("trakt/watched");
+      var watched = this.$store.getters["trakt/watched"];
 
       if (watched) {
         var showWatch = watched.filter(
@@ -273,7 +273,7 @@ export default {
       return false;
     },
     hasBeenCollected() {
-      var collected = this.$store.get("trakt/collected");
+      var collected = this.$store.getters["trakt/collected"];
 
       if (collected) {
         var showWatch = collected.filter(

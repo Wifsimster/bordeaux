@@ -147,14 +147,14 @@ export default {
             if (data.error) {
               this.error = data.error;
             } else {
-              this.$store.set("trakt/watched", data.results);
+              this.$store.dispatch("trakt/setWatched", data.results);
             }
             break;
           case "getCollected":
             if (data.error) {
               this.error = data.error;
             } else {
-              this.$store.set("trakt/collected", data.results);
+              this.$store.dispatch("trakt/setCollected", data.results);
             }
             break;
         }
@@ -168,7 +168,7 @@ export default {
     },
     hasBeenWatched(episode) {
       if (episode) {
-        var watched = this.$store.get("trakt/watched");
+        var watched = this.$store.getters["trakt/watched"];
 
         if (watched) {
           var showWatch = watched.filter(
@@ -197,7 +197,7 @@ export default {
     },
     hasBeenCollected(episode) {
       if (episode) {
-        var collected = this.$store.get("trakt/collected");
+        var collected = this.$store.getters["trakt/collected"];
 
         if (collected) {
           var showWatch = collected.filter(

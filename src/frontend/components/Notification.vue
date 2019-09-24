@@ -28,11 +28,11 @@
 </template>
 
 <script>
-import { get } from "vuex-pathify";
-
 export default {
   computed: {
-    list: get("notification/list")
+    list() {
+      return this.$store.getters["notification/list"];
+    }
   },
   methods: {
     close(index) {

@@ -1,12 +1,14 @@
-import { make } from "vuex-pathify"
-
 const state = {
   ws: null,
   isAlive: null,
   message: null
 }
 
-const getters = make.getters(state)
+const getters = {
+  ws: state => state.ws,
+  isAlive: state => state.isAlive,
+  message: state => state.message
+}
 
 const mutations = {
   ws(state, data) {

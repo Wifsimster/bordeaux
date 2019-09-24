@@ -1,5 +1,4 @@
 import Vue from "vue"
-import { make } from "vuex-pathify"
 
 const BOUND_TIMER = 100
 const TIMER = 3000
@@ -8,7 +7,9 @@ const state = {
   list: []
 }
 
-const getters = make.getters(state)
+const getters = {
+  list: state => state.list
+}
 
 // Mutations mutate the state
 // Mutations hanler must be synchronous
@@ -21,7 +22,9 @@ const mutations = {
     state.list.map((e, index) => {
       if (e.id === item.id) {
         state.list[index].remain = item.remain - 1 * BOUND_TIMER
-        state.list[index].width = Math.ceil((state.list[index].remain / item.timeout) * 100)
+        state.list[index].width = Math.ceil(
+          (state.list[index].remain / item.timeout) * 100
+        )
       }
     })
   },

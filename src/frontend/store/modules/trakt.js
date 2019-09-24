@@ -1,13 +1,26 @@
-import { make } from "vuex-pathify"
-
 const state = {
   watched: null,
   collected: null
 }
 
-const getters = make.getters(state)
-const mutations = make.mutations(state)
-const actions = make.actions(state)
+const getters = {
+  watched: state => state.watched,
+  collected: state => state.collected
+}
+
+const mutations = {
+  setWatched(state, data) {
+    state.watched = data
+  },
+  setCollected(state, data) {
+    state.collected = data
+  }
+}
+
+const actions = {
+  setWatched: ({ commit, state }, data) => commit("setWatched", data),
+  setCollected: ({ commit, state }, data) => commit("setCollected", data)
+}
 
 export default {
   namespaced: true,
