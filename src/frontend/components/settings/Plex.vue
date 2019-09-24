@@ -2,25 +2,37 @@
   <div class="min-w:full sm:min-w:sm">
     <div class="text:white text:3/2">
       Plex
-      <span v-if="testOk" class="inline-block rounded:full bg:green ml:1/4 p:1/3 align:middle"></span>
+      <span
+        v-if="isConnected"
+        class="inline-block rounded:full bg:green ml:1/4 p:1/3 align:middle"
+      ></span>
       <span v-else class="inline-block rounded:full bg:red ml:1/4 p:1/3 align:middle"></span>
     </div>
     <div class="text:grey-dark">Used to get your collected and watched episodes.</div>
-    <form v-if="settings">
-      <div class="relative mx:2">
-        <input id="plex_username" v-model="settings.username" placeholder="Eliot" @blur="test()" />
-        <label for="plex_username">Username</label>
+
+    <alert v-if="error" color="red">{{ error }}</alert>
+
+    <div v-if="settings">
+      <div v-if="!isConnected">
+        <div class="relative mx:2">
+          <input id="plex_username" v-model="settings.username" placeholder="Eliot" />
+          <label for="plex_username">Username</label>
+        </div>
+        <div class="relative mx:2">
+          <input
+            id="plex_password"
+            type="password"
+            v-model="encryptedPassword"
+            placeholder="M3gA_Pa22w0rD!"
+          />
+          <label for="plex_password">Password</label>
+        </div>
       </div>
-      <div class="relative mx:2">
-        <input
-          id="plex_password"
-          type="password"
-          v-model="encryptedPassword"
-          placeholder="M3gA_Pa22w0rD!"
-          @blur="test()"
-        />
-        <label for="plex_password">Password</label>
+      <div v-else class="pt:2">
+        Connected as {{ this.settings.username }}
+        <btn class="ml:1" @click="reset()">Signout</btn>
       </div>
+
       <div class="relative mx:2">
         <input
           id="synchronizeAfterTransfert"
@@ -29,17 +41,21 @@
         />
         <label for="synchronizeAfterTransfert">Synchronize after transfert</label>
       </div>
-    </form>
+    </div>
   </div>
 </template>
 
 <script>
 import CryptoJS from "crypto-js";
+
 export default {
   name: "Plex",
   computed: {
     message() {
       return this.$store.getters["webSocket/message"];
+    },
+    isConnected() {
+      return this.settings && this.settings.token;
     },
     encryptedPassword: {
       get() {
@@ -69,22 +85,24 @@ export default {
     return {
       error: null,
       settings: null,
-      testOk: null
+      timeout: null
     };
   },
   created() {
     this.getAll();
-
-    if (localStorage.getItem("plex")) {
-      this.testOk = true;
-    }
   },
   watch: {
     "settings.username"() {
       this.update();
+      this.debounce(() => {
+        this.signin();
+      }, 2000);
     },
     "settings.password"() {
       this.update();
+      this.debounce(() => {
+        this.signin();
+      }, 2000);
     },
     "settings.synchronizeAfterTransfert"() {
       this.update();
@@ -105,18 +123,14 @@ export default {
               this.error = data.error;
             } else {
               this.settings = Object.assign({}, data.results);
-              this.signin();
             }
             break;
           case "signin":
             if (data.error) {
-              localStorage.removeItem("plex");
-              this.error = data.error;
               this.$emit("is-valid", false);
             } else {
-              localStorage.setItem("plex", data.results.authToken);
-              this.testOk = true;
               this.$emit("is-valid", true);
+              this.getAll();
             }
             break;
           default:
@@ -126,6 +140,22 @@ export default {
     }
   },
   methods: {
+    debounce(func, wait) {
+      if (this.timeout) {
+        clearTimeout(this.timeout);
+      }
+
+      this.timeout = setTimeout(() => {
+        console.log("Debounce after", wait);
+        func.apply(this);
+      }, wait);
+    },
+    reset() {
+      this.settings.username = null;
+      this.settings.password = null;
+      this.settings.token = null;
+      this.update();
+    },
     getAll() {
       this.$store.commit("webSocket/send", {
         object: "plex",
@@ -147,7 +177,6 @@ export default {
         this.settings.password &&
         this.settings.password.length > 3
       ) {
-        this.testOk = null;
         this.$store.commit("webSocket/send", {
           object: "plex",
           method: "signin",

@@ -44,6 +44,11 @@ class Plex {
 
           if (results) {
             data.results = await pavie.getUser()
+
+            if (data.results && data.results.authToken) {
+              settings.token = data.results.authToken
+              await File.writeFile(CONFIG_FILE, settings)
+            }
           }
         } catch (err) {
           Logger.error("Plex", err.message)
