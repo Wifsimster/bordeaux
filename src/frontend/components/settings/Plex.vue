@@ -74,7 +74,10 @@ export default {
   },
   created() {
     this.getAll();
-    this.test();
+
+    if (localStorage.getItem("plex")) {
+      this.testOk = true;
+    }
   },
   watch: {
     "settings.username"() {
@@ -102,14 +105,16 @@ export default {
               this.error = data.error;
             } else {
               this.settings = Object.assign({}, data.results);
-              this.test();
+              this.signin();
             }
             break;
           case "signin":
             if (data.error) {
+              localStorage.removeItem("plex");
               this.error = data.error;
               this.$emit("is-valid", false);
             } else {
+              localStorage.setItem("plex", data.results.authToken);
               this.testOk = true;
               this.$emit("is-valid", true);
             }
@@ -136,7 +141,7 @@ export default {
         });
       }
     },
-    test() {
+    signin() {
       if (
         this.settings &&
         this.settings.password &&
