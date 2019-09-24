@@ -98,17 +98,23 @@ export default {
     this.getAll();
   },
   watch: {
-    "settings.username"() {
+    "settings.username"(newValue, oldValue) {
       this.update();
-      this.debounce(() => {
-        this.signin();
-      }, 2000);
+
+      if (oldValue !== undefined) {
+        this.debounce(() => {
+          this.signin();
+        }, 2000);
+      }
     },
-    "settings.password"() {
+    "settings.password"(newValue, oldValue) {
       this.update();
-      this.debounce(() => {
-        this.signin();
-      }, 2000);
+
+      if (oldValue !== undefined) {
+        this.debounce(() => {
+          this.signin();
+        }, 2000);
+      }
     },
     "settings.synchronizeAfterTransfert"() {
       this.update();
