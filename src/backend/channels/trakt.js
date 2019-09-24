@@ -6,8 +6,6 @@ const Logger = require("../utils/logger")
 const Tmdb = require("../classes/tmdb")
 
 const CONFIG_FILE = "trakt-config"
-const CLIENT_ID = `6c57241f02608080a10914e28c4b7df760a554ee9d387ade7dd06a308bd7748b`
-const CLIENT_SECRET = `19e784eb7e88e64b9d42cce1725dfcb66214b12befa9d7c7b130b221a1207f6e`
 
 class Trakt {
   constructor() {}
@@ -34,13 +32,14 @@ class Trakt {
       baseURL: this.hostname,
       headers: {
         Authorization: `Bearer ${this.accessToken}`,
-        "trakt-api-key": CLIENT_ID,
+        "trakt-api-key": settings.clientID,
         "trakt-api-version": this.version
       }
     })
   }
 
   static async response(data) {
+    var settings
     var trakt
     var tmdb
     var episodes
@@ -56,18 +55,20 @@ class Trakt {
       case "getDeviceCode":
         try {
           Logger.info("Trakt", "getDeviceCode")
+          settings = await File.readFile(CONFIG_FILE)
 
           trakt = new Trakt()
           await trakt.init()
 
           data.results = await trakt.instance
             .post("oauth/device/code", {
-              client_id: CLIENT_ID
+              client_id: settings.clientID
             })
             .then(response => {
               return response.data
             })
             .catch(err => {
+              Logger.error("Trakt", err.message)
               data.error = err.message
             })
         } catch (err) {
@@ -77,14 +78,15 @@ class Trakt {
         break
       case "checkDeviceAuthorization":
         try {
+          settings = await File.readFile(CONFIG_FILE)
           trakt = new Trakt()
           await trakt.init()
 
           data.results = await trakt.instance
             .post("oauth/device/token", {
               code: data.params.code,
-              client_id: CLIENT_ID,
-              client_secret: CLIENT_SECRET
+              client_id: settings.clientID,
+              client_secret: settings.clientSecret
             })
             .then(response => {
               return response.data

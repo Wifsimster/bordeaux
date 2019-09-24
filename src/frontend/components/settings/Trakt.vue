@@ -11,8 +11,26 @@
         <span v-else class="inline-block rounded:full bg:red ml:1/4 p:1/3 align:middle"></span>
       </div>
       <div class="text:grey-dark">Used to build the calendar.</div>
+      <div class="mx:2">
+        1. Create a new application on
+        <a
+          target="__blank"
+          href="https://trakt.tv/oauth/applications"
+          class="underline"
+        >Trakt.tv</a>
+      </div>
+      <div class="mx:2">2. Insert your client id and secret :</div>
+      <div class="relative mx:2">
+        <input id="trakt_id" v-model="settings.clientID" placeholder="Client ID" />
+        <label for="trakt_id">Client ID</label>
+      </div>
+      <div class="relative mx:2">
+        <input id="trakt_secret" v-model="settings.clientSecret" placeholder="Client Secret" />
+        <label for="trakt_secret">Client Secret</label>
+      </div>
+      <div>3. Generate your access code :</div>
       <div class="flex flex:wrap justify:center mt:1">
-        <btn @click="generateDeviceTokenShow = true">Generate an access code</btn>
+        <btn @click="generateDeviceTokenShow = true">Generate my access code</btn>
       </div>
     </div>
 
@@ -58,6 +76,12 @@ export default {
     this.getAll();
   },
   watch: {
+    "settings.clientID"() {
+      this.update();
+    },
+    "settings.clientSecret"() {
+      this.update();
+    },
     message(data) {
       if (data.object === "trakt") {
         this.error = null;

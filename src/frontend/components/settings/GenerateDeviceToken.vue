@@ -11,10 +11,10 @@
             <a
               :href="results.verification_url"
               target="_blank"
-              class="text:white"
+              class="text:white underline"
             >Verification</a>
           </div>
-          <div class="text:center">2. Click "It's done"</div>
+          <div class="text:center mx:1">2. Click "It's done"</div>
           <div class="flex flex:wrap justify:end items:baseline mt:2">
             <a @click="$emit('close')" class="cursor:pointer">Cancel</a>
             <btn @click="$emit('request', results)" class="ml:1">It's done</btn>
