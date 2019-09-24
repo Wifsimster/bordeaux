@@ -13,25 +13,30 @@
     <alert v-if="error" color="red">{{ error }}</alert>
 
     <div v-if="settings">
-      <div v-if="!isConnected">
-        <div class="relative mx:2">
-          <input id="plex_username" v-model="settings.username" placeholder="Eliot" />
-          <label for="plex_username">Username</label>
+      <transition name="fade">
+        <div v-if="!isConnected">
+          <div class="relative mx:2">
+            <input id="plex_username" v-model="settings.username" placeholder="Eliot" />
+            <label for="plex_username">Username</label>
+          </div>
+          <div class="relative mx:2">
+            <input
+              id="plex_password"
+              type="password"
+              v-model="encryptedPassword"
+              placeholder="M3gA_Pa22w0rD!"
+            />
+            <label for="plex_password">Password</label>
+          </div>
+          <transition name="fade">
+            <div v-if="debouncing">Connecting ...</div>
+          </transition>
         </div>
-        <div class="relative mx:2">
-          <input
-            id="plex_password"
-            type="password"
-            v-model="encryptedPassword"
-            placeholder="M3gA_Pa22w0rD!"
-          />
-          <label for="plex_password">Password</label>
+        <div v-else class="pt:2">
+          Connected as {{ this.settings.username }}
+          <btn class="ml:1" @click="reset()">Signout</btn>
         </div>
-      </div>
-      <div v-else class="pt:2">
-        Connected as {{ this.settings.username }}
-        <btn class="ml:1" @click="reset()">Signout</btn>
-      </div>
+      </transition>
 
       <div class="relative mx:2">
         <input
@@ -85,7 +90,8 @@ export default {
     return {
       error: null,
       settings: null,
-      timeout: null
+      timeout: null,
+      debouncing: false
     };
   },
   created() {
@@ -141,13 +147,15 @@ export default {
   },
   methods: {
     debounce(func, wait) {
+      this.debouncing = true;
+
       if (this.timeout) {
         clearTimeout(this.timeout);
       }
 
       this.timeout = setTimeout(() => {
-        console.log("Debounce after", wait);
         func.apply(this);
+        this.debouncing = false;
       }, wait);
     },
     reset() {
