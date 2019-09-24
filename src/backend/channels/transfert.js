@@ -12,8 +12,13 @@ class Transfert {
     switch (data.method) {
       case "search":
         try {
-          Logger.info("Transfert", `Searching new episode on '${settings.from}'`)
           settings = await File.readFile(CONFIG_FILE)
+
+          Logger.info(
+            "Transfert",
+            `Searching new episode on '${settings.from}'`
+          )
+
           data.results = Medoc.search(settings.from, settings.to)
 
           if (!Array.isArray(data.results)) {
