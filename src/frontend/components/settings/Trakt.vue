@@ -16,7 +16,7 @@
         <a
           target="__blank"
           href="https://trakt.tv/oauth/applications"
-          class="underline"
+          class="underline text:white"
         >Trakt.tv</a>
       </div>
       <div class="mx:2">2. Insert your client id and secret :</div>
