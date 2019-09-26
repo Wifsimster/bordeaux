@@ -98,6 +98,9 @@ export default {
     this.getAll();
   },
   watch: {
+    isConnected(val) {
+      this.$emit("is-valid", val);
+    },
     "settings.username"(newValue, oldValue) {
       this.update();
 
@@ -141,7 +144,6 @@ export default {
             if (data.error) {
               this.$emit("is-valid", false);
             } else {
-              this.$emit("is-valid", true);
               this.getAll();
             }
             break;

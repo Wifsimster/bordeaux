@@ -34,9 +34,6 @@ body {
   ::-webkit-scrollbar-thumb {
     background: map-get($colors, "blue-dark");
   }
-  :visited {
-    color: white;
-  }
 }
 
 .truncate {
