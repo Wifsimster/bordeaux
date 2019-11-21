@@ -101,8 +101,6 @@ export default {
               if (data.error) {
                 console.error(error);
               } else {
-                this.refreshPlex();
-
                 this.episodes.map((episode, index) => {
                   if (data.params.episode.origin.path === episode.origin.path) {
                     this.getSubtitle(data.params.episode.destination.path);
@@ -124,7 +122,11 @@ export default {
           switch (data.method) {
             case "refresh":
               if (data.error) {
-                this.error = data.error;
+                console.error(data.error);
+                this.$store("notification/add", {
+                  message: "Error when refreshing Plex library !",
+                  type: "error"
+                });
               } else {
                 console.log(`[Plex] Refresh Tv Shows...`);
               }
@@ -159,6 +161,7 @@ export default {
         this.episodes.map((episode, index) => {
           this.move(episode, index);
         });
+        this.refreshPlex();
       }
     },
     move(episode, index) {
