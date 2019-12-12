@@ -106,38 +106,34 @@ class Trakt {
           await trakt.init()
 
           episodes = await trakt.instance
-            .get(
-              `calendars/my/shows/${data.params.startDate}/${data.params.days}`
-            )
+            .get(`calendars/my/shows/${data.params.startDate}/${data.params.days}`)
             .then(async response => response.data)
             .catch(err => {
               Logger.error("Trakt", err.message)
               data.error = err.message
             })
 
-          tmdb = new Tmdb()
+          if (episodes) {
+            tmdb = new Tmdb()
 
-          episodes = await Promise.all(
-            episodes.map(async episode => {
-              episode.images = await tmdb
-                .getEpisodeImages(episode)
-                .catch(err => {
+            episodes = await Promise.all(
+              episodes.map(async episode => {
+                episode.images = await tmdb.getEpisodeImages(episode).catch(err => {
                   Logger.warn("Trakt", err)
                   console.warn(err)
                 })
 
-              if (!episode.images || episode.images.length === 0) {
-                episode.images = await tmdb
-                  .getShowImages(episode)
-                  .catch(err => {
+                if (!episode.images || episode.images.length === 0) {
+                  episode.images = await tmdb.getShowImages(episode).catch(err => {
                     Logger.warn("Trakt", err)
                     console.warn(err)
                   })
-              }
+                }
 
-              return episode
-            })
-          )
+                return episode
+              })
+            )
+          }
           data.results = episodes
         } catch (err) {
           Logger.error("Trakt", err.message)
