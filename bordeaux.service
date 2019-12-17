@@ -1,0 +1,20 @@
+[Unit]
+Description=Bordeaux client daemon
+After=network-online.target
+ 
+[Service]
+Type=simple
+ 
+User=pi
+Group=pi
+UMask=007
+ 
+ExecStart=node /bordeaux/run/startup.js
+ 
+Restart=on-failure
+ 
+# Configures the time to wait before service is stopped forcefully.
+TimeoutStopSec=300
+ 
+[Install]
+WantedBy=multi-user.target
