@@ -7,6 +7,7 @@ Transmission, Trakt and Plex are not mandatory. They simply add more features to
 ## Goals
 
 It aims to be :
+
 - simple
 - lightweight
 - mobile friendly
@@ -21,10 +22,12 @@ It aims to be :
 ## Additional features
 
 [Trakt.tv](https://trakt.tv/dashboard) service :
+
 - provides a full calendar to display episodes releases
 - return collected and downloaded episodes from your account
 
 [Plex](https://www.plex.tv) service :
+
 - enable automatic synchronization of your Plex library when episodes are transfered
 
 ## Prerequis
@@ -49,8 +52,15 @@ The server start at `ws://localhost:8080` by default.
 
 The web app start at `http://localhost:8082` by default.
 
-
 That's all :)
+
+## Enable systemd service
+
+systemctl enable bordeaux.service
+
+## Start service
+
+systemctl start bordeaux.service
 
 ## Screenshots
 
