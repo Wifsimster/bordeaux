@@ -1,17 +1,17 @@
 const { exec } = require("child_process")
 
-exec("node .\\run\\back.server.js", (err, stdout, stderr) => {
+exec("node .\\back.server.js", (err, stdout, stderr) => {
   if (err) {
-    console.error(`Couldn't execute the command : 'back.server.js'`)
+    console.error(`Couldn't execute the command : 'back.server.js'`, err)
     return
   }
   console.log(`stdout: ${stdout}`)
   console.log(`stderr: ${stderr}`)
 })
 
-exec("node .\\run\\dev.server.js", (err, stdout, stderr) => {
+exec("node .\\dev.server.js", (err, stdout, stderr) => {
   if (err) {
-    console.error(`Couldn't execute the command : 'dev.server.js'`)
+    console.error(`Couldn't execute the command : 'dev.server.js'`, err)
     return
   }
   console.log(`stdout: ${stdout}`)
