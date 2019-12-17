@@ -1,7 +1,12 @@
 <template>
   <div class="loader w:full text:center">
-    <div class="relative mx:0 my:auto">
-      <div v-for="index in 4" :key="index" :class="`bg:${color}`" class="absolute rounded:full"></div>
+    <div class="relative my:0 mx:auto">
+      <div
+        v-for="index in 4"
+        :key="index"
+        :class="`bg:${color}`"
+        class="absolute rounded:full"
+      ></div>
     </div>
     <p :class="`text:${color}`" v-if="message">{{ message }}</p>
   </div>
@@ -19,7 +24,7 @@ export default {
       default: null
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

@@ -2,13 +2,18 @@
   <div class="bg:black text:white h:screen w:screen overflow:hidden">
     <transition name="opacity">
       <div
-        class="fixed b:0 l:0 r:0 bg:grey-darkest flex justify:center px:1 shadow:large z:10 flex items:center"
+        class="fixed b:0 l:0 r:0 bg:grey-darkest flex justify:center py:1 shadow:large z:10 flex items:center"
         v-if="isMobile && isPWAPromptTrigger"
       >
         <div class="flex:1 flex justify:center">
           <btn @click="addToHomeScreen">Add to home screen</btn>
         </div>
-        <div class="mr:1 py:1/2 cursor:pointer text:2" @click="isPWAPromptTrigger = false">x</div>
+        <div
+          class="mr:1 py:1/2 cursor:pointer text:2"
+          @click="isPWAPromptTrigger = false"
+        >
+          x
+        </div>
       </div>
     </transition>
 
@@ -28,11 +33,11 @@
 </template>
 
 <script>
-const Navigation = () => import("components/navigation.vue");
-const Logo = () => import("components/logo.vue");
-const Notification = () => import("components/notification.vue");
+const Navigation = () => import("components/navigation.vue")
+const Logo = () => import("components/logo.vue")
+const Notification = () => import("components/notification.vue")
 
-import Vue from "vue";
+import Vue from "vue"
 
 export default {
   components: {
@@ -43,36 +48,36 @@ export default {
   data() {
     return {
       isPWAPromptTrigger: false
-    };
+    }
   },
   computed: {
     isMobile() {
-      return Vue.isMobile();
+      return Vue.isMobile()
     }
   },
   created() {
-    this.connect();
-    this.isPWA();
+    this.connect()
+    this.isPWA()
   },
   methods: {
     // Detect installation prompt for PWA
     isPWA() {
       window.addEventListener("beforeinstallprompt", e => {
-        e.preventDefault();
-        this.isPWAPromptTrigger = e;
-      });
+        e.preventDefault()
+        this.isPWAPromptTrigger = e
+      })
     },
     addToHomeScreen() {
-      this.isPWAPromptTrigger.userChoice.then(e);
+      this.isPWAPromptTrigger.userChoice.then(e)
     },
     connect() {
       this.$store.dispatch(
         "webSocket/ws",
         new WebSocket(`ws://${location.hostname}:8080`)
-      );
+      )
     }
   }
-};
+}
 </script>
 
 <style lang="scss">

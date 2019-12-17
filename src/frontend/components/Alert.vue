@@ -16,15 +16,15 @@ export default {
     computedColor() {
       switch (this.color) {
         case "red":
-          return "bg:red-lightest border:red-dark text:red-dark";
+          return "bg:red-lightest border:red-dark text:red-dark"
         case "orange":
-          return "bg:orange-lightest border:orange-dark text:orange-dark";
+          return "bg:orange-lightest border:orange-dark text:orange-dark"
         case "green":
-          return "bg:green-lightest border:green-dark text:green-dark";
+          return "bg:green-lightest border:green-dark text:green-dark"
         default:
-          return "bg:blue-lightest border:blue-dark text:blue-dark";
+          return "bg:blue-lightest border:blue-dark text:blue-dark"
       }
     }
   }
-};
+}
 </script>

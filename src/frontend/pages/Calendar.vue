@@ -2,12 +2,12 @@
   <div class="sm:p:1/2">
     <alert color="red" v-if="error">{{ error }}</alert>
 
-    <div class="sticky t:0 bg:black z:10 px:1/2">
+    <div class="sticky t:0 bg:black z:10 py:1/2">
       <div class="flex justify:between">
         <div>
           <a
             @click="previous()"
-            class="text:bold cursor:pointer m:1/2 px:1/2 py:3/4 text:3/2 hover:bg:grey-darkest rounded:full"
+            class="text:bold cursor:pointer m:1/2 py:1/2 px:3/4 text:3/2 hover:bg:grey-darkest rounded:full"
           >&lt;</a>
         </div>
         <div>
@@ -16,7 +16,7 @@
         <div>
           <a
             @click="next()"
-            class="text:bold cursor:pointer m:1/2 px:1/2 py:3/4 text:3/2 hover:bg:grey-darkest rounded:full"
+            class="text:bold cursor:pointer m:1/2 py:1/2 px:3/4 text:3/2 hover:bg:grey-darkest rounded:full"
           >&gt;</a>
         </div>
       </div>

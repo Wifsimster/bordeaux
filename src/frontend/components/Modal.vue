@@ -32,11 +32,11 @@ export default {
   methods: {
     close(el) {
       if (el.target === this.$refs.container) {
-        this.$emit("close");
+        this.$emit("close")
       }
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

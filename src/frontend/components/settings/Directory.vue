@@ -3,9 +3,11 @@
     <alert color="red" v-if="error">{{ error }}</alert>
     <div>
       <div class="text:3/2">Directories</div>
-      <div class="text:grey-dark">Directories scan for transfert & subtitles.</div>
+      <div class="text:grey-dark">
+        Directories scan for transfert & subtitles.
+      </div>
       <form v-if="settings">
-        <div class="relative mx:2">
+        <div class="relative my:3">
           <input
             id="from"
             type="text"
@@ -16,7 +18,7 @@
           />
           <label for="from">New download</label>
         </div>
-        <div class="relative mx:2">
+        <div class="relative my:3">
           <input
             id="to"
             type="text"
@@ -28,14 +30,22 @@
           <label for="to">Existing tv shows</label>
         </div>
       </form>
-      <explorer v-if="openExplorerFrom" @close="openExplorerFrom = false" @selected="fromSelected"></explorer>
-      <explorer v-if="openExplorerTo" @close="openExplorerTo = false" @selected="toSelected"></explorer>
+      <explorer
+        v-if="openExplorerFrom"
+        @close="openExplorerFrom = false"
+        @selected="fromSelected"
+      ></explorer>
+      <explorer
+        v-if="openExplorerTo"
+        @close="openExplorerTo = false"
+        @selected="toSelected"
+      ></explorer>
     </div>
   </div>
 </template>
 
 <script>
-import Explorer from "components/Explorer.vue";
+import Explorer from "components/Explorer.vue"
 export default {
   name: "directory",
   components: {
@@ -43,7 +53,7 @@ export default {
   },
   computed: {
     message() {
-      return this.$store.getters["webSocket/message"];
+      return this.$store.getters["webSocket/message"]
     }
   },
   data() {
@@ -52,63 +62,63 @@ export default {
       settings: null,
       openExplorerFrom: false,
       openExplorerTo: false
-    };
+    }
   },
   created() {
-    this.getAll();
+    this.getAll()
   },
   watch: {
     message(data) {
       if (data.object === "directory") {
-        this.error = null;
+        this.error = null
         switch (data.method) {
           case "getAll":
             if (data.error) {
-              this.error = data.error;
+              this.error = data.error
             } else {
-              this.settings = Object.assign({}, data.results);
-              this.isValid();
+              this.settings = Object.assign({}, data.results)
+              this.isValid()
             }
-            break;
+            break
           case "update":
             if (data.error) {
-              this.error = data.error;
+              this.error = data.error
             } else {
-              this.settings = Object.assign({}, data.results);
-              this.isValid();
+              this.settings = Object.assign({}, data.results)
+              this.isValid()
             }
-            break;
+            break
         }
       }
     }
   },
   methods: {
     fromSelected(val) {
-      this.settings.from = val;
-      this.openExplorerFrom = false;
-      this.update();
+      this.settings.from = val
+      this.openExplorerFrom = false
+      this.update()
     },
     toSelected(val) {
-      this.settings.to = val;
-      this.openExplorerTo = false;
-      this.update();
+      this.settings.to = val
+      this.openExplorerTo = false
+      this.update()
     },
     getAll() {
       this.$store.commit("webSocket/send", {
         object: "directory",
         method: "getAll"
-      });
+      })
     },
     update() {
       this.$store.commit("webSocket/send", {
         object: "directory",
         method: "update",
         params: this.settings
-      });
+      })
     },
     isValid() {
-      this.$emit("is-valid", this.settings.from && this.settings.to);
+      this.$emit("is-valid", this.settings.from && this.settings.to)
     }
   }
-};
+}
 </script>

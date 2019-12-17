@@ -8,29 +8,43 @@
           v-if="this.settings.accessToken && this.settings.refreshToken"
           class="inline-block rounded:full bg:green ml:1/4 p:1/3 align:middle"
         ></span>
-        <span v-else class="inline-block rounded:full bg:red ml:1/4 p:1/3 align:middle"></span>
+        <span
+          v-else
+          class="inline-block rounded:full bg:red ml:1/4 p:1/3 align:middle"
+        ></span>
       </div>
       <div class="text:grey-dark">Used to build the calendar.</div>
-      <div class="mx:2">
+      <div class="my:3">
         1. Create a new application on
         <a
           target="__blank"
           href="https://trakt.tv/oauth/applications"
           class="underline text:white"
-        >Trakt.tv</a>
+          >Trakt.tv</a
+        >
       </div>
-      <div class="mx:2">2. Insert your client id and secret :</div>
-      <div class="relative mx:2">
-        <input id="trakt_id" v-model="settings.clientID" placeholder="Client ID" />
+      <div class="my:3">2. Insert your client id and secret :</div>
+      <div class="relative my:3">
+        <input
+          id="trakt_id"
+          v-model="settings.clientID"
+          placeholder="Client ID"
+        />
         <label for="trakt_id">Client ID</label>
       </div>
-      <div class="relative mx:2">
-        <input id="trakt_secret" v-model="settings.clientSecret" placeholder="Client Secret" />
+      <div class="relative my:3">
+        <input
+          id="trakt_secret"
+          v-model="settings.clientSecret"
+          placeholder="Client Secret"
+        />
         <label for="trakt_secret">Client Secret</label>
       </div>
       <div>3. Generate your access code :</div>
       <div class="flex flex:wrap justify:center mt:1">
-        <btn @click="generateDeviceTokenShow = true">Generate my access code</btn>
+        <btn @click="generateDeviceTokenShow = true"
+          >Generate my access code</btn
+        >
       </div>
     </div>
 
@@ -50,13 +64,13 @@
 </template>
 
 <script>
-import GenerateDeviceToken from "components/settings/GenerateDeviceToken.vue";
-import CheckDeviceToken from "components/settings/CheckDeviceToken.vue";
+import GenerateDeviceToken from "components/settings/GenerateDeviceToken.vue"
+import CheckDeviceToken from "components/settings/CheckDeviceToken.vue"
 export default {
   name: "Trakt",
   computed: {
     message() {
-      return this.$store.getters["webSocket/message"];
+      return this.$store.getters["webSocket/message"]
     }
   },
   components: {
@@ -70,74 +84,74 @@ export default {
       generateDeviceTokenShow: false,
       checkDeviceTokenShow: false,
       request: null
-    };
+    }
   },
   created() {
-    this.getAll();
+    this.getAll()
   },
   watch: {
     "settings.clientID"() {
-      this.update();
+      this.update()
     },
     "settings.clientSecret"() {
-      this.update();
+      this.update()
     },
     message(data) {
       if (data.object === "trakt") {
-        this.error = null;
+        this.error = null
         switch (data.method) {
           case "getAll":
             if (data.error) {
-              this.error = data.error;
+              this.error = data.error
             } else {
-              this.settings = Object.assign({}, data.results);
-              this.isValid();
+              this.settings = Object.assign({}, data.results)
+              this.isValid()
             }
-            break;
+            break
           case "update":
             if (data.error) {
-              this.error = data.error;
+              this.error = data.error
             } else {
-              this.settings = Object.assign({}, data.results);
-              this.isValid();
+              this.settings = Object.assign({}, data.results)
+              this.isValid()
             }
-            break;
+            break
           default:
-            console.log(data.method);
+            console.log(data.method)
         }
       }
     }
   },
   methods: {
     onRequest(request) {
-      this.generateDeviceTokenShow = false;
-      this.checkDeviceTokenShow = true;
+      this.generateDeviceTokenShow = false
+      this.checkDeviceTokenShow = true
 
-      this.request = request;
+      this.request = request
 
-      this.settings.code = request.device_code;
-      this.update();
+      this.settings.code = request.device_code
+      this.update()
     },
     onToken(request) {
-      this.checkDeviceTokenShow = false;
+      this.checkDeviceTokenShow = false
 
-      this.settings.accessToken = request.access_token;
-      this.settings.refreshToken = request.refresh_token;
+      this.settings.accessToken = request.access_token
+      this.settings.refreshToken = request.refresh_token
 
-      this.update();
+      this.update()
     },
     getAll() {
       this.$store.commit("webSocket/send", {
         object: "trakt",
         method: "getAll"
-      });
+      })
     },
     update() {
       this.$store.commit("webSocket/send", {
         object: "trakt",
         method: "update",
         params: this.settings
-      });
+      })
     },
     isValid() {
       this.$emit(
@@ -145,8 +159,8 @@ export default {
         this.settings.code &&
           this.settings.accessToken &&
           this.settings.refreshToken
-      );
+      )
     }
   }
-};
+}
 </script>

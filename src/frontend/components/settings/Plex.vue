@@ -6,20 +6,29 @@
         v-if="isConnected"
         class="inline-block rounded:full bg:green ml:1/4 p:1/3 align:middle"
       ></span>
-      <span v-else class="inline-block rounded:full bg:red ml:1/4 p:1/3 align:middle"></span>
+      <span
+        v-else
+        class="inline-block rounded:full bg:red ml:1/4 p:1/3 align:middle"
+      ></span>
     </div>
-    <div class="text:grey-dark">Used to get your collected and watched episodes.</div>
+    <div class="text:grey-dark">
+      Used to get your collected and watched episodes.
+    </div>
 
     <alert v-if="error" color="red">{{ error }}</alert>
 
     <div v-if="settings">
       <transition name="fade">
         <div v-if="!isConnected">
-          <div class="relative mx:2">
-            <input id="plex_username" v-model="settings.username" placeholder="Eliot" />
+          <div class="relative my:3">
+            <input
+              id="plex_username"
+              v-model="settings.username"
+              placeholder="Eliot"
+            />
             <label for="plex_username">Username</label>
           </div>
-          <div class="relative mx:2">
+          <div class="relative my:3">
             <input
               id="plex_password"
               type="password"
@@ -38,38 +47,40 @@
         </div>
       </transition>
 
-      <div class="relative mx:2">
+      <div class="relative my:3">
         <input
           id="synchronizeAfterTransfert"
           type="checkbox"
           v-model="settings.synchronizeAfterTransfert"
         />
-        <label for="synchronizeAfterTransfert">Synchronize after transfert</label>
+        <label for="synchronizeAfterTransfert"
+          >Synchronize after transfert</label
+        >
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import CryptoJS from "crypto-js";
+import CryptoJS from "crypto-js"
 
 export default {
   name: "Plex",
   computed: {
     message() {
-      return this.$store.getters["webSocket/message"];
+      return this.$store.getters["webSocket/message"]
     },
     isConnected() {
-      return this.settings && this.settings.token;
+      return this.settings && this.settings.token
     },
     encryptedPassword: {
       get() {
         if (this.settings.password) {
           try {
-            const bytes = CryptoJS.AES.decrypt(this.settings.password, UUID);
-            return bytes.toString(CryptoJS.enc.Utf8);
+            const bytes = CryptoJS.AES.decrypt(this.settings.password, UUID)
+            return bytes.toString(CryptoJS.enc.Utf8)
           } catch (e) {
-            console.warn(`[Plex] Password cannot be decrypt : ${e}`);
+            console.warn(`[Plex] Password cannot be decrypt : ${e}`)
           }
         }
       },
@@ -79,9 +90,9 @@ export default {
             this.settings,
             "password",
             CryptoJS.AES.encrypt(val, UUID).toString()
-          );
+          )
         } else {
-          this.settings.password = "";
+          this.settings.password = ""
         }
       }
     }
@@ -92,91 +103,91 @@ export default {
       settings: null,
       timeout: null,
       debouncing: false
-    };
+    }
   },
   created() {
-    this.getAll();
+    this.getAll()
   },
   watch: {
     isConnected(val) {
-      this.$emit("is-valid", val);
+      this.$emit("is-valid", val)
     },
     "settings.username"(newValue, oldValue) {
-      this.update();
+      this.update()
 
       if (oldValue !== undefined) {
         this.debounce(() => {
-          this.signin();
-        }, 2000);
+          this.signin()
+        }, 2000)
       }
     },
     "settings.password"(newValue, oldValue) {
-      this.update();
+      this.update()
 
       if (oldValue !== undefined) {
         this.debounce(() => {
-          this.signin();
-        }, 2000);
+          this.signin()
+        }, 2000)
       }
     },
     "settings.synchronizeAfterTransfert"() {
-      this.update();
+      this.update()
     },
     message(data) {
       if (data.object === "plex") {
-        this.error = null;
+        this.error = null
         switch (data.method) {
           case "getAll":
             if (data.error) {
-              this.error = data.error;
+              this.error = data.error
             } else {
-              this.settings = Object.assign({}, data.results);
+              this.settings = Object.assign({}, data.results)
             }
-            break;
+            break
           case "update":
             if (data.error) {
-              this.error = data.error;
+              this.error = data.error
             } else {
-              this.settings = Object.assign({}, data.results);
+              this.settings = Object.assign({}, data.results)
             }
-            break;
+            break
           case "signin":
             if (data.error) {
-              this.$emit("is-valid", false);
+              this.$emit("is-valid", false)
             } else {
-              this.getAll();
+              this.getAll()
             }
-            break;
+            break
           default:
-            console.log(`Unknow method : ${data.method}`);
+            console.log(`Unknow method : ${data.method}`)
         }
       }
     }
   },
   methods: {
     debounce(func, wait) {
-      this.debouncing = true;
+      this.debouncing = true
 
       if (this.timeout) {
-        clearTimeout(this.timeout);
+        clearTimeout(this.timeout)
       }
 
       this.timeout = setTimeout(() => {
-        func.apply(this);
-        this.debouncing = false;
-      }, wait);
+        func.apply(this)
+        this.debouncing = false
+      }, wait)
     },
     reset() {
-      this.settings.username = null;
-      this.settings.password = null;
-      this.settings.token = null;
-      this.update();
+      this.settings.username = null
+      this.settings.password = null
+      this.settings.token = null
+      this.update()
     },
     getAll() {
       this.$store.commit("webSocket/send", {
         object: "plex",
         method: "getAll"
-      });
+      })
     },
     update() {
       if (this.settings) {
@@ -184,7 +195,7 @@ export default {
           object: "plex",
           method: "update",
           params: this.settings
-        });
+        })
       }
     },
     signin() {
@@ -197,9 +208,9 @@ export default {
           object: "plex",
           method: "signin",
           params: { uuid: UUID }
-        });
+        })
       }
     }
   }
-};
+}
 </script>

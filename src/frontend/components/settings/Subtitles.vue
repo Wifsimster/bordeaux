@@ -5,15 +5,25 @@
       <div class="text:white text:3/2">Subtitles</div>
       <div class="text:grey-dark">Manage subtitles</div>
       <form v-if="settings">
-        <div class="relative mx:2">
-          <input id="languages" type="text" v-model="settings.languages" placeholder="en, fr" />
+        <div class="relative my:3">
+          <input
+            id="languages"
+            type="text"
+            v-model="settings.languages"
+            placeholder="en, fr"
+          />
           <label for="languages">Languages</label>
         </div>
-        <div class="relative mx:2">
-          <input id="daysOld" type="number" v-model="settings.daysOld" placeholder="2" />
+        <div class="relative my:3">
+          <input
+            id="daysOld"
+            type="number"
+            v-model="settings.daysOld"
+            placeholder="2"
+          />
           <label for="daysOld">Days old for manual search</label>
         </div>
-        <div class="relative mx:2">
+        <div class="relative my:3">
           <input
             id="downloadAfterTransfert"
             type="checkbox"
@@ -30,50 +40,50 @@
 export default {
   computed: {
     message() {
-      return this.$store.getters["webSocket/message"];
+      return this.$store.getters["webSocket/message"]
     }
   },
   data() {
     return {
       error: null,
       settings: null
-    };
+    }
   },
   created() {
-    this.getAll();
+    this.getAll()
   },
   watch: {
     "settings.languages"(newVal, oldVal) {
-      this.update();
+      this.update()
     },
     "settings.downloadAfterTransfert"(newVal, oldVal) {
-      this.update();
+      this.update()
     },
     "settings.daysOld"(newVal, oldVal) {
-      this.update();
+      this.update()
     },
     message(data) {
       if (data.object === "subtitles") {
-        this.error = null;
+        this.error = null
         switch (data.method) {
           case "getAll":
             if (data.error) {
-              this.error = data.error;
+              this.error = data.error
             } else {
-              this.settings = Object.assign({}, data.results);
-              this.isValid();
+              this.settings = Object.assign({}, data.results)
+              this.isValid()
             }
-            break;
+            break
           case "update":
             if (data.error) {
-              this.error = data.error;
+              this.error = data.error
             } else {
-              this.settings = Object.assign({}, data.results);
-              this.isValid();
+              this.settings = Object.assign({}, data.results)
+              this.isValid()
             }
-            break;
+            break
           default:
-            console.log(`Unknow method : ${data.method}`);
+            console.log(`Unknow method : ${data.method}`)
         }
       }
     }
@@ -83,24 +93,23 @@ export default {
       this.$store.commit("webSocket/send", {
         object: "subtitles",
         method: "getAll"
-      });
+      })
     },
     update() {
       this.$store.commit("webSocket/send", {
         object: "subtitles",
         method: "update",
         params: this.settings
-      });
+      })
     },
     isValid() {
       this.$emit(
         "is-valid",
         this.settings.languages && this.settings.languages.length > 0
-      );
+      )
     }
   }
-};
+}
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

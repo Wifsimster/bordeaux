@@ -6,14 +6,18 @@
       <div class="flex flex:col m:1">
         <div
           @click="previous()"
-          class="hover:bg:grey-darkest cursor:pointer px:1/4 py:1/2 transition"
-        >...</div>
+          class="hover:bg:grey-darkest cursor:pointer py:1/4 px:1/2 transition"
+        >
+          ...
+        </div>
         <div
           v-for="item in directories"
           :key="item"
           @click="getDirectories(item)"
-          class="hover:bg:grey-darkest cursor:pointer px:1/4 py:1/2 transition"
-        >{{ item }}</div>
+          class="hover:bg:grey-darkest cursor:pointer py:1/4 px:1/2 transition"
+        >
+          {{ item }}
+        </div>
       </div>
       <div class="flex flex:row-reverse items:baseline m:1">
         <btn @click="$emit('selected', root)" class="ml:1">Save</btn>
@@ -31,67 +35,67 @@ export default {
       error: null,
       directories: [],
       root: null
-    };
+    }
   },
   computed: {
     message() {
-      return this.$store.getters["webSocket/message"];
+      return this.$store.getters["webSocket/message"]
     },
     baseUrl() {
       if (this.root) {
-        return this.root;
+        return this.root
       }
     }
   },
   created() {
-    this.getRoot();
+    this.getRoot()
   },
   watch: {
     root() {
-      this.getDirectories();
+      this.getDirectories()
     },
     message(data) {
       if (data.object === "explorer") {
-        this.error = null;
+        this.error = null
         switch (data.method) {
           case "getRoot":
             if (data.error) {
-              this.error = data.error;
+              this.error = data.error
             } else {
-              this.root = data.results;
+              this.root = data.results
             }
-            break;
+            break
           case "getDirectories":
             if (data.error) {
-              this.error = data.error;
+              this.error = data.error
             } else {
-              this.directories = Object.assign({}, data.results);
+              this.directories = Object.assign({}, data.results)
             }
-            break;
+            break
         }
       }
     }
   },
   methods: {
     previous() {
-      var array = this.root.split("/");
+      var array = this.root.split("/")
       if (array.length > 2) {
-        array.splice(array.length - 2, 1);
-        this.root = array.join("/");
+        array.splice(array.length - 2, 1)
+        this.root = array.join("/")
       }
     },
     getRoot() {
       this.$store.commit("webSocket/send", {
         object: "explorer",
         method: "getRoot"
-      });
+      })
     },
     getDirectories(item) {
       if (item) {
         if (this.root) {
-          this.root += `${item}/`;
+          this.root += `${item}/`
         } else {
-          this.root = item;
+          this.root = item
         }
       }
 
@@ -99,11 +103,10 @@ export default {
         object: "explorer",
         method: "getDirectories",
         params: { root: this.root }
-      });
+      })
     }
   }
-};
+}
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

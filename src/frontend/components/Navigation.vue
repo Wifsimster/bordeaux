@@ -10,79 +10,91 @@
       :class="{ 'w:full h:full': displayKebab }"
     >
       <div
-        class="absolute t:0 r:0 text:7/4 cursor:pointer py:1"
+        class="absolute t:0 r:0 text:7/4 cursor:pointer px:1"
         v-if="displayKebab"
         @click="displayKebab = false"
-      >x</div>
+      >
+        x
+      </div>
       <router-link
         to="/"
         class="text:white text:3/2 p:1"
         exact-active-class="text:orange"
         title="Dashboard"
-      >Dashboard</router-link>
+        >Dashboard</router-link
+      >
       <router-link
         v-if="hasTrakt"
         to="/calendar"
         class="text:white text:3/2 p:1"
         exact-active-class="text:orange"
         title="Calendar"
-      >Calendar</router-link>
+        >Calendar</router-link
+      >
       <router-link
         to="/transfert"
         class="text:white text:3/2 p:1"
         exact-active-class="text:orange"
         title="Transfert"
-      >Transfert</router-link>
+        >Transfert</router-link
+      >
       <router-link
         to="/subtitles"
         class="text:white text:3/2 p:1"
         exact-active-class="text:orange"
         title="Subtitles"
-      >Subtitles</router-link>
+        >Subtitles</router-link
+      >
       <router-link
         to="/activity"
         class="text:white text:3/2 p:1"
         exact-active-class="text:orange"
         title="Activities"
-      >Activities</router-link>
+        >Activities</router-link
+      >
       <router-link
         to="/settings"
         class="text:white text:3/2 p:1"
         active-class="text:orange"
         title="Settings"
-      >Settings</router-link>
+        >Settings</router-link
+      >
     </div>
 
     <!-- Desktop menu -->
     <div class="none md:flex flex:wrap items:center justify:center">
       <router-link
         to="/"
-        class="text:white text:3/2 py:1"
+        class="text:white text:3/2 px:1"
         exact-active-class="text:orange"
         title="Dashboard"
-      >Dashboard</router-link>
+        >Dashboard</router-link
+      >
       <router-link
         v-if="hasTrakt"
         to="/calendar"
-        class="text:white text:3/2 py:1"
+        class="text:white text:3/2 px:1"
         exact-active-class="text:orange"
         title="Calendar"
-      >Calendar</router-link>
+        >Calendar</router-link
+      >
       <router-link
         to="/transfert"
-        class="text:white text:3/2 py:1"
+        class="text:white text:3/2 px:1"
         exact-active-class="text:orange"
         title="Transfert"
-      >Transfert</router-link>
+        >Transfert</router-link
+      >
       <router-link
         to="/subtitles"
-        class="text:white text:3/2 py:1"
+        class="text:white text:3/2 px:1"
         exact-active-class="text:orange"
         title="Subtitles"
-      >Subtitles</router-link>
+        >Subtitles</router-link
+      >
       <router-link
         to="/activity"
-        class="text:white text:3/2 py:1"
+        class="text:white text:3/2 px:1"
         exact-active-class="text:orange before:border:orange"
         title="Activities"
       >
@@ -90,7 +102,7 @@
       </router-link>
       <router-link
         to="/settings"
-        class="text:white text:3/2 py:1"
+        class="text:white text:3/2 px:1"
         active-class="text:orange"
         title="Settings"
       >
@@ -104,54 +116,54 @@
 export default {
   computed: {
     message() {
-      return this.$store.getters["webSocket/message"];
+      return this.$store.getters["webSocket/message"]
     },
     isWizard() {
-      return this.$route.path === `/wizard`;
+      return this.$route.path === `/wizard`
     }
   },
   data() {
     return {
       hasTrakt: false,
       displayKebab: false
-    };
+    }
   },
   created() {
-    this.getTrakt();
+    this.getTrakt()
   },
   methods: {
     getTrakt() {
       this.$store.commit("webSocket/send", {
         object: "trakt",
         method: "getAll"
-      });
+      })
     }
   },
   watch: {
     message(data) {
       if (data.object === "trakt") {
-        this.error = null;
+        this.error = null
         switch (data.method) {
           case "getAll":
             if (data.error) {
-              this.error = data.error;
+              this.error = data.error
             } else {
-              let settings = Object.assign({}, data.results);
+              let settings = Object.assign({}, data.results)
               this.hasTrakt =
-                settings.code && settings.accessToken && settings.refreshToken;
+                settings.code && settings.accessToken && settings.refreshToken
             }
-            break;
+            break
           case "update":
-            this.getTrakt();
-            break;
+            this.getTrakt()
+            break
         }
       }
     },
     $route() {
-      this.displayKebab = false;
+      this.displayKebab = false
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
