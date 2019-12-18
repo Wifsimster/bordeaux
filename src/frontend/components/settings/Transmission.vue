@@ -54,6 +54,7 @@
 </template>
 
 <script>
+import { isEmpty } from "plugins"
 import CryptoJS from "crypto-js"
 export default {
   computed: {
@@ -153,11 +154,13 @@ export default {
       })
     },
     update() {
-      this.$store.commit("webSocket/send", {
-        object: "transmission",
-        method: "update",
-        params: this.settings
-      })
+      if (!isEmpty(this.settings)) {
+        this.$store.commit("webSocket/send", {
+          object: "transmission",
+          method: "update",
+          params: this.settings
+        })
+      }
     },
     test() {
       if (this.settings) {

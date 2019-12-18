@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import { isEmpty } from "plugins"
 import parseISO from "date-fns/parseISO"
 import format from "date-fns/format"
 
@@ -110,7 +111,7 @@ export default {
       })
     },
     update() {
-      if (this.settings) {
+      if (!isEmpty(this.settings)) {
         this.$store.commit("webSocket/send", {
           object: "git",
           method: "update",

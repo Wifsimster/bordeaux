@@ -11,8 +11,6 @@ import Card from "components/Card.vue"
 import Loader from "components/Loader.vue"
 import Modal from "components/Modal.vue"
 
-import Plugins from "plugins"
-
 Vue.component("Alert", Alert)
 Vue.component("Btn", Button)
 Vue.component("Card", Card)
@@ -20,7 +18,6 @@ Vue.component("Loader", Loader)
 Vue.component("Modal", Modal)
 
 Vue.use(VueLazyload)
-Vue.use(Plugins)
 
 new Vue({
   el: "#app",

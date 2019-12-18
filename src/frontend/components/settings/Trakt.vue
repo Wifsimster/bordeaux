@@ -64,6 +64,8 @@
 </template>
 
 <script>
+import { isEmpty } from "plugins"
+
 import GenerateDeviceToken from "components/settings/GenerateDeviceToken.vue"
 import CheckDeviceToken from "components/settings/CheckDeviceToken.vue"
 export default {
@@ -147,11 +149,13 @@ export default {
       })
     },
     update() {
-      this.$store.commit("webSocket/send", {
-        object: "trakt",
-        method: "update",
-        params: this.settings
-      })
+      if (!isEmpty(this.settings)) {
+        this.$store.commit("webSocket/send", {
+          object: "trakt",
+          method: "update",
+          params: this.settings
+        })
+      }
     },
     isValid() {
       this.$emit(

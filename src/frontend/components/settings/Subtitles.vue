@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import { isEmpty } from "plugins"
 export default {
   computed: {
     message() {
@@ -96,11 +97,13 @@ export default {
       })
     },
     update() {
-      this.$store.commit("webSocket/send", {
-        object: "subtitles",
-        method: "update",
-        params: this.settings
-      })
+      if (!isEmpty(this.settings)) {
+        this.$store.commit("webSocket/send", {
+          object: "subtitles",
+          method: "update",
+          params: this.settings
+        })
+      }
     },
     isValid() {
       this.$emit(

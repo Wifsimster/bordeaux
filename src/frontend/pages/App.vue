@@ -33,12 +33,11 @@
 </template>
 
 <script>
+import { isMobile } from "plugins"
+
 const Navigation = () => import("components/navigation.vue")
 const Logo = () => import("components/logo.vue")
 const Notification = () => import("components/notification.vue")
-
-import Vue from "vue"
-
 export default {
   components: {
     Navigation,
@@ -52,7 +51,7 @@ export default {
   },
   computed: {
     isMobile() {
-      return Vue.isMobile()
+      return isMobile()
     }
   },
   created() {

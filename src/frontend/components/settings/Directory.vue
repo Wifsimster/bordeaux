@@ -45,6 +45,7 @@
 </template>
 
 <script>
+import { isEmpty } from "plugins"
 import Explorer from "components/Explorer.vue"
 export default {
   name: "directory",
@@ -110,11 +111,13 @@ export default {
       })
     },
     update() {
-      this.$store.commit("webSocket/send", {
-        object: "directory",
-        method: "update",
-        params: this.settings
-      })
+      if (!isEmpty(this.settings)) {
+        this.$store.commit("webSocket/send", {
+          object: "directory",
+          method: "update",
+          params: this.settings
+        })
+      }
     },
     isValid() {
       this.$emit("is-valid", this.settings.from && this.settings.to)

@@ -1,4 +1,4 @@
-import Vue from "vue"
+import { getID } from "plugins"
 
 const BOUND_TIMER = 100
 const TIMER = 3000
@@ -42,7 +42,7 @@ const mutations = {
 // Actions can contain asynchronous operations
 const actions = {
   add({ commit, state }, item) {
-    item.id = Vue.getID()
+    item.id = getID()
 
     switch (item.type) {
       case "success":
