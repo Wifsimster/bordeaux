@@ -5,8 +5,8 @@ After=network-online.target
 [Service]
 Type=simple
  
-User=pi
-Group=pi
+User=root
+Group=root
 UMask=007
  
 ExecStart=node /bordeaux/run/startup.js
