@@ -38,6 +38,12 @@
         exact-active-class="text:orange bg:grey-darkest"
         >Transmission</router-link
       >
+      <router-link
+        to="/settings/update"
+        class="text:grey-light text:9/8 block px:1 py:1/2 hover:bg:grey-darkest"
+        exact-active-class="text:orange bg:grey-darkest"
+        >Update</router-link
+      >
     </div>
 
     <!-- Desktop device -->
@@ -77,6 +83,12 @@
         class="text:grey-light text:9/8 block px:1 py:1/2 hover:bg:grey-darkest"
         exact-active-class="text:white border:l:1/4 border:orange bg:grey-darkest"
         >Transmission</router-link
+      >
+      <router-link
+        to="/settings/update"
+        class="text:grey-light text:9/8 block px:1 py:1/2 hover:bg:grey-darkest"
+        exact-active-class="text:white border:l:1/4 border:orange bg:grey-darkest"
+        >Update</router-link
       >
     </div>
   </div>

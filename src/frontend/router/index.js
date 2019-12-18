@@ -16,6 +16,7 @@ const SettingsSubtitles = () => import("../components/settings/subtitles.vue")
 const SettingsTrakt = () => import("../components/settings/trakt.vue")
 const SettingsTransmission = () =>
   import("../components/settings/transmission.vue")
+const SettingsUpdate = () => import("../components/settings/update.vue")
 
 Vue.use(Router)
 
@@ -40,7 +41,8 @@ const router = new Router({
         { path: "server", component: SettingsServer },
         { path: "subtitles", component: SettingsSubtitles },
         { path: "trakt", component: SettingsTrakt },
-        { path: "transmission", component: SettingsTransmission }
+        { path: "transmission", component: SettingsTransmission },
+        { path: "update", component: SettingsUpdate }
       ]
     }
   ]

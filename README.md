@@ -38,13 +38,13 @@ You need to install Node.js (> 10.16.0 recommended), see [here](https://nodejs.o
 
 Download the project or fork it, then install all dependencies.
 
-```
+```Sheel
 $ npm install --production
 ```
 
 ## Start the app (backend & frontend)
 
-```
+```Sheel
 $ node .\run\startup.js
 ```
 
@@ -57,15 +57,15 @@ That's all :)
 ## Enable systemd service
 
 ```Sheel
-cd bordeaux/
-cp bordeaux.service /etc/systemd/system
-systemctl enable bordeaux.service
+$ cd bordeaux/
+$ cp bordeaux.service /etc/systemd/system
+$ systemctl enable bordeaux.service
 ```
 
 ## Start service
 
 ```Sheel
-systemctl start bordeaux.service
+$ systemctl start bordeaux.service
 ```
 
 ## Screenshots

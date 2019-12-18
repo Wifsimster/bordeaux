@@ -4,13 +4,24 @@ async function main() {
   const WebSocket = require("ws")
   const File = require("../src/backend/utils/file")
 
-  let settings = await File.readFile("server-config")
-
   const PORT = 8080
 
+  let settings = await File.readFile("server-config")
+
+  // Create server-config settings if doesn't exist
   if (!settings) {
     await File.writeFile("server-config", { host: "localhost", port: PORT })
     settings = await File.readFile("server-config")
+  }
+
+  let update = await File.readFile("update-config")
+
+  // Create update-config settings if doesn't exist
+  if (!update) {
+    await File.writeFile("update-config", {
+      cron: "* */1 * * *",
+      enable: true
+    })
   }
 
   const wss = new WebSocket.Server({ port: PORT })
@@ -31,8 +42,13 @@ async function main() {
   const Trakt = require("../src/backend/channels/trakt")
   const Plex = require("../src/backend/channels/plex")
   const Fanart = require("../src/backend/channels/fanart")
+  const Git = require("../src/backend/channels/git")
   const Explorer = require("../src/backend/channels/explorer")
   const Activity = require("../src/backend/channels/activity")
+
+  //  CRON
+  require("../src/backend/cron/transfert")
+  require("../src/backend/cron/update")
 
   wss.on("connection", function connection(ws, req) {
     // Detect and close broken connections
@@ -57,6 +73,9 @@ async function main() {
           break
         case `fanart`:
           data = await Fanart.response(data)
+          break
+        case `git`:
+          data = await Git.response(data)
           break
         case `directory`:
           data = await Directory.response(data)

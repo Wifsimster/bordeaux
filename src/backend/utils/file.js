@@ -31,6 +31,9 @@ class File {
           return JSON.parse(data)
         }
       })
+      .catch(err => {
+        console.error(err)
+      })
   }
 
   static async writeFile(filename, data) {
