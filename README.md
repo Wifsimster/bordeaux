@@ -56,11 +56,17 @@ That's all :)
 
 ## Enable systemd service
 
+```Sheel
+cd bordeaux/
+cp bordeaux.service /etc/systemd/system
 systemctl enable bordeaux.service
+```
 
 ## Start service
 
+```Sheel
 systemctl start bordeaux.service
+```
 
 ## Screenshots
 
