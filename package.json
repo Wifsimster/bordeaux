@@ -2,7 +2,7 @@
   "name": "bordeaux",
   "description": "Simple TV Shows manager with Transmission, Trakt and Plex integration",
   "author": "Damien BATTISTELLA <battistella@protonmail.com>",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "license": "MIT",
   "main": "server.js",
   "scripts": {
