@@ -4,7 +4,7 @@
     <div>
       <div class="text:white text:3/2">Update</div>
       <div class="text:grey-dark">Restart needed at any change.</div>
-      <form v-if="settings">
+      <div v-if="settings">
         <div class="relative my:3">
           <input id="enable" type="checkbox" v-model="settings.enable" />
           <label for="enable">Automatic update</label>
@@ -17,9 +17,12 @@
           </select>
           <label for="cron">Check for update every</label>
         </div>
+        <div class="relative my:3">
+          <btn @click="pull()">Manual check</btn>
+        </div>
         <div class="relative">Version : {{ version }}</div>
         <div class="relative">Build date : {{ buildDate }}</div>
-      </form>
+      </div>
     </div>
   </div>
 </template>
@@ -39,10 +42,11 @@ export default {
       error: null,
       settings: null,
       list: [
-        { key: "", value: "never" },
-        { key: "* */1 * * *", value: "hour" },
-        { key: "* */2 * * *", value: "2 hours" },
-        { key: "* * */1 * *", value: "day" }
+        { key: "* * */1 * *", value: "hour" },
+        { key: "* * */2 * *", value: "2 hours" },
+        { key: "* * */6 * *", value: "6 hours" },
+        { key: "* * * */1 *", value: "day" },
+        { key: "* * * */7 *", value: "week" }
       ],
       version: VERSION,
       buildDate: format(parseISO(BUILD_DATE), "MM/dd/yyyy HH:mm:ss")
@@ -76,6 +80,16 @@ export default {
               this.settings = Object.assign({}, data.results)
             }
             break
+          case "pull":
+            if (data.error) {
+              this.error = data.error
+            } else {
+              this.$store.dispatch("notification/add", {
+                type: "success",
+                message: data.results
+              })
+            }
+            break
           default:
             console.log(`Unknow method : ${data.method}`)
         }
@@ -83,6 +97,12 @@ export default {
     }
   },
   methods: {
+    pull() {
+      this.$store.commit("webSocket/send", {
+        object: "git",
+        method: "pull"
+      })
+    },
     getAll() {
       this.$store.commit("webSocket/send", {
         object: "git",

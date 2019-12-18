@@ -15,7 +15,7 @@ async function main() {
   const transfert = cron.schedule(
     serverSettings.cron,
     () => {
-      Logger.info("Transfert", `[CRON] Transfert trigger`)
+      Logger.info("Cron", "Transfert trigger")
 
       const subtitlesSettings = File.readFile(SUBTITLES_FILE)
       const plexSettings = File.readFile(PLEX_FILE)

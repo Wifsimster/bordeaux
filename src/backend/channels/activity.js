@@ -1,4 +1,5 @@
 const File = require("../utils/file")
+const format = require("date-fns/format")
 
 class Activity {
   constructor() {}
@@ -15,24 +16,44 @@ class Activity {
             })
           } catch (err) {
             data.results = []
-            console.warn(err)
+            console.error(`[Activity] ReadFile : ${err}`)
           }
         }
         break
       case "add":
-        let fileData = await File.readFile(filename)
+        try {
+          let fileData = await File.readFile(filename)
 
-        if (fileData === null) {
-          await File.writeFile(filename, [])
-          fileData = await File.readFile(filename)
+          if (fileData === null) {
+            console.warn("Activity file is empty !")
+            await File.writeFile(filename, []).catch(err => {
+              console.error(`[Activity] WriteFile : ${err}`)
+            })
+
+            fileData = await File.readFile(filename)
+          }
+
+          if (
+            fileData !== null &&
+            fileData !== undefined &&
+            Array.isArray(fileData)
+          ) {
+            fileData.push({
+              date: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx"),
+              type: data.params.info,
+              object: data.params.object,
+              message: data.params.message
+            })
+
+            await File.writeFile(filename, fileData).catch(err => {
+              console.error(`[Activity] WriteFile : ${err}`)
+            })
+          } else {
+            console.error(`[Activity] File is corrupted !`)
+          }
+        } catch (err) {
+          console.error(`[Activity] Add : ${err}`)
         }
-
-        fileData.push({
-          date: new Date(),
-          ...data.params
-        })
-
-        await File.writeFile(filename, fileData)
         break
       default:
         console.log(`[Activity] Unknow method : ${data.method}`)

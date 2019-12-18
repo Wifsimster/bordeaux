@@ -19,7 +19,7 @@ async function main() {
   // Create update-config settings if doesn't exist
   if (!update) {
     await File.writeFile("update-config", {
-      cron: "* */1 * * *",
+      cron: "* * */1 * *",
       enable: true
     })
   }

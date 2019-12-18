@@ -1,6 +1,5 @@
 const fs = require("fs")
 const path = require("path")
-
 const ENCODING = `utf-8`
 
 class File {
@@ -14,7 +13,6 @@ class File {
   }
 
   static async readFile(filename, options = { flag: "a+" }) {
-    // Create data/ if doesn't exist
     if (!fs.existsSync(`${__dirname}/../data/`)) {
       fs.mkdirSync(`${__dirname}/../data/`)
     }
@@ -32,19 +30,27 @@ class File {
         }
       })
       .catch(err => {
-        console.error(err)
+        console.error(`[File] ReadFile : ${err}`)
       })
   }
 
   static async writeFile(filename, data) {
-    fs.promises.writeFile(
-      path.resolve(`${__dirname}/../data/${filename}.json`),
-      JSON.stringify(data),
-      {
-        encoding: ENCODING,
-        flag: "w"
-      }
-    )
+    if (data !== null && data !== undefined) {
+      fs.promises
+        .writeFile(
+          path.resolve(`${__dirname}/../data/${filename}.json`),
+          JSON.stringify(data),
+          {
+            encoding: ENCODING,
+            flag: "w"
+          }
+        )
+        .catch(err => {
+          console.error(`[File] WriteFile : ${err}`)
+        })
+    } else {
+      console.error(`Trying to write '${filename}' with no data !`)
+    }
   }
 
   static getRoot() {

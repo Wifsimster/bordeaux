@@ -14,7 +14,7 @@ async function main() {
   const update = cron.schedule(
     updateSettings.cron,
     () => {
-      Logger.info("Git", `[CRON] Git pull trigger`)
+      Logger.info("Cron", "Git pull trigger")
 
       const ws = new WebSocket(
         `ws://${serverSettings.host}:${serverSettings.port}`
@@ -29,28 +29,9 @@ async function main() {
         )
       })
 
-      ws.on("message", message => {
-        if (message) {
-          message = JSON.parse(message)
-          const results = message.results
-
-          switch (message.object) {
-            case "git":
-              switch (message.method) {
-                case "update":
-                  if (results) {
-                    console.log("Results Update : ", results)
-                  }
-                  break
-              }
-              break
-          }
-        }
-      })
-
       ws.on("error", err => {
-        Logger.error("Pull", err.message)
         console.error(err.message)
+        Logger.error("Git", err.message)
       })
     },
     { scheduled: false }

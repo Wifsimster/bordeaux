@@ -49,9 +49,10 @@ export default {
       settings: null,
       list: [
         { key: "", value: "never" },
-        { key: "* */1 * * *", value: "hour" },
-        { key: "* */2 * * *", value: "2 hours" },
-        { key: "* * */1 * *", value: "day" }
+        { key: "* * */1 * *", value: "hour" },
+        { key: "* * */2 * *", value: "2 hours" },
+        { key: "* * */6 * *", value: "6 hours" },
+        { key: "* * * */1 *", value: "day" }
       ]
     }
   },
