@@ -54,12 +54,12 @@
 </template>
 
 <script>
-import { isEmpty } from "plugins"
-import CryptoJS from "crypto-js"
+import { isEmpty } from 'plugins'
+import CryptoJS from 'crypto-js'
 export default {
   computed: {
     message() {
-      return this.$store.getters["webSocket/message"]
+      return this.$store.getters['webSocket/message']
     },
     encryptedPassword: {
       get() {
@@ -76,11 +76,11 @@ export default {
         if (val) {
           this.$set(
             this.settings,
-            "password",
+            'password',
             CryptoJS.AES.encrypt(val, UUID).toString()
           )
         } else {
-          this.settings.password = ""
+          this.settings.password = ''
         }
       }
     }
@@ -97,67 +97,67 @@ export default {
     this.test()
   },
   watch: {
-    "settings.host"() {
+    'settings.host'() {
       this.update()
       this.test()
     },
-    "settings.port"() {
+    'settings.port'() {
       this.update()
       this.test()
     },
-    "settings.username"() {
+    'settings.username'() {
       this.update()
       this.test()
     },
-    "settings.password"() {
+    'settings.password'() {
       this.update()
       this.test()
     },
     message(data) {
-      if (data.object === "transmission") {
+      if (data.object === 'transmission') {
         this.error = null
         switch (data.method) {
-          case "getAll":
-            if (data.error) {
-              this.error = data.error
-            } else {
-              this.settings = Object.assign({}, data.results)
-            }
-            break
-          case "update":
-            if (data.error) {
-              this.error = data.error
-            } else {
-              this.settings = Object.assign({}, data.results)
-            }
-            break
-          case "sessionStats":
-            if (data.error) {
-              this.error = data.error
-              this.$emit("is-valid", false)
-            } else {
-              this.testOk = true
-              this.$emit("is-valid", true)
-            }
-            break
-          default:
-            console.log(`Unknow method : ${data.method}`)
+        case 'getAll':
+          if (data.error) {
+            this.error = data.error
+          } else {
+            this.settings = Object.assign({}, data.results)
+          }
+          break
+        case 'update':
+          if (data.error) {
+            this.error = data.error
+          } else {
+            this.settings = Object.assign({}, data.results)
+          }
+          break
+        case 'sessionStats':
+          if (data.error) {
+            this.error = data.error
+            this.$emit('is-valid', false)
+          } else {
+            this.testOk = true
+            this.$emit('is-valid', true)
+          }
+          break
+        default:
+          console.log(`Unknow method : ${data.method}`)
         }
       }
     }
   },
   methods: {
     getAll() {
-      this.$store.commit("webSocket/send", {
-        object: "transmission",
-        method: "getAll"
+      this.$store.commit('webSocket/send', {
+        object: 'transmission',
+        method: 'getAll'
       })
     },
     update() {
       if (!isEmpty(this.settings)) {
-        this.$store.commit("webSocket/send", {
-          object: "transmission",
-          method: "update",
+        this.$store.commit('webSocket/send', {
+          object: 'transmission',
+          method: 'update',
           params: this.settings
         })
       }
@@ -165,9 +165,9 @@ export default {
     test() {
       if (this.settings) {
         this.testOk = null
-        this.$store.commit("webSocket/send", {
-          object: "transmission",
-          method: "sessionStats",
+        this.$store.commit('webSocket/send', {
+          object: 'transmission',
+          method: 'sessionStats',
           params: { uuid: UUID }
         })
       }

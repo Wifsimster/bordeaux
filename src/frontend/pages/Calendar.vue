@@ -78,13 +78,13 @@
 </template>
 
 <script>
-import format from "date-fns/format";
-import addDays from "date-fns/addDays";
-import subDays from "date-fns/subDays";
-import isSameDay from "date-fns/isSameDay";
-import startOfWeek from "date-fns/startOfWeek";
+import format from 'date-fns/format'
+import addDays from 'date-fns/addDays'
+import subDays from 'date-fns/subDays'
+import isSameDay from 'date-fns/isSameDay'
+import startOfWeek from 'date-fns/startOfWeek'
 
-import EpisodeDetail from "components/EpisodeDetail.vue";
+import EpisodeDetail from 'components/EpisodeDetail.vue'
 
 export default {
   components: {
@@ -92,7 +92,7 @@ export default {
   },
   computed: {
     message() {
-      return this.$store.getters["webSocket/message"];
+      return this.$store.getters['webSocket/message']
     }
   },
   data() {
@@ -107,151 +107,151 @@ export default {
       days: [],
       hasSelectedEpisode: false,
       selectedEpisode: null
-    };
+    }
   },
   created() {
-    this.getTransmissionSettings();
+    this.getTransmissionSettings()
 
-    this.currentDay = subDays(new Date(), 6);
+    this.currentDay = subDays(new Date(), 6)
 
-    this.getWatched();
-    this.getCollected();
+    this.getWatched()
+    this.getCollected()
   },
   watch: {
     currentDay() {
-      this.days = [];
+      this.days = []
 
-      for (var index = 0; index < 7; index++) {
-        this.days.push(addDays(this.currentDay, index));
+      for (let index = 0; index < 7; index++) {
+        this.days.push(addDays(this.currentDay, index))
       }
 
-      this.getEpisodes();
+      this.getEpisodes()
     },
     message(data) {
-      if (data.object === "transmission") {
+      if (data.object === 'transmission') {
         switch (data.method) {
-          case "getAll":
-            if (data.error) {
-              this.error = data.error;
-            } else {
-              this.settings = Object.assign({}, data.results);
-            }
-            break;
+        case 'getAll':
+          if (data.error) {
+            this.error = data.error
+          } else {
+            this.settings = Object.assign({}, data.results)
+          }
+          break
         }
       }
 
-      if (data.object === "trakt") {
+      if (data.object === 'trakt') {
         switch (data.method) {
-          case "getEpisodes":
-            if (data.error) {
-              this.error = data.error;
-            } else {
-              this.episodes = data.results;
-            }
-            break;
-          case "getWatched":
-            if (data.error) {
-              this.error = data.error;
-            } else {
-              this.$store.dispatch("trakt/setWatched", data.results);
-            }
-            break;
-          case "getCollected":
-            if (data.error) {
-              this.error = data.error;
-            } else {
-              this.$store.dispatch("trakt/setCollected", data.results);
-            }
-            break;
+        case 'getEpisodes':
+          if (data.error) {
+            this.error = data.error
+          } else {
+            this.episodes = data.results
+          }
+          break
+        case 'getWatched':
+          if (data.error) {
+            this.error = data.error
+          } else {
+            this.$store.dispatch('trakt/setWatched', data.results)
+          }
+          break
+        case 'getCollected':
+          if (data.error) {
+            this.error = data.error
+          } else {
+            this.$store.dispatch('trakt/setCollected', data.results)
+          }
+          break
         }
       }
     }
   },
   methods: {
     onClose() {
-      this.hasSelectedEpisode = false;
-      this.selectedEpisode = null;
+      this.hasSelectedEpisode = false
+      this.selectedEpisode = null
     },
     hasBeenWatched(episode) {
       if (episode) {
-        var watched = this.$store.getters["trakt/watched"];
+        let watched = this.$store.getters['trakt/watched']
 
         if (watched) {
-          var showWatch = watched.filter(
+          let showWatch = watched.filter(
             watch => watch.show.ids.trakt === episode.show.ids.trakt
-          )[0];
+          )[0]
 
           if (showWatch) {
-            var season = showWatch.seasons.filter(
+            let season = showWatch.seasons.filter(
               season => season.number === episode.episode.season
-            )[0];
+            )[0]
 
             if (season) {
-              var number = season.episodes.filter(
+              let number = season.episodes.filter(
                 item => item.number === episode.episode.number
-              )[0];
+              )[0]
 
               if (number) {
-                return true;
+                return true
               }
             }
           }
         }
 
-        return false;
+        return false
       }
     },
     hasBeenCollected(episode) {
       if (episode) {
-        var collected = this.$store.getters["trakt/collected"];
+        let collected = this.$store.getters['trakt/collected']
 
         if (collected) {
-          var showWatch = collected.filter(
+          let showWatch = collected.filter(
             watch => watch.show.ids.trakt === episode.show.ids.trakt
-          )[0];
+          )[0]
 
           if (showWatch) {
-            var season = showWatch.seasons.filter(
+            let season = showWatch.seasons.filter(
               season => season.number === episode.episode.season
-            )[0];
+            )[0]
 
             if (season) {
-              var number = season.episodes.filter(
+              let number = season.episodes.filter(
                 item => item.number === episode.episode.number
-              )[0];
+              )[0]
 
               if (number) {
-                return true;
+                return true
               }
             }
           }
         }
 
-        return false;
+        return false
       }
     },
     open(episode) {
-      this.hasSelectedEpisode = true;
-      this.selectedEpisode = episode;
+      this.hasSelectedEpisode = true
+      this.selectedEpisode = episode
     },
     previous() {
-      this.episodes = null;
-      this.currentDay = subDays(this.currentDay, 7);
+      this.episodes = null
+      this.currentDay = subDays(this.currentDay, 7)
     },
     today() {
-      this.episodes = null;
-      this.currentDay = subDays(new Date(), 6);
+      this.episodes = null
+      this.currentDay = subDays(new Date(), 6)
     },
     next() {
-      this.episodes = null;
-      this.currentDay = addDays(this.currentDay, 7);
+      this.episodes = null
+      this.currentDay = addDays(this.currentDay, 7)
     },
     getEpisodes() {
-      this.$store.commit("webSocket/send", {
-        object: "trakt",
-        method: "getEpisodes",
-        params: { startDate: format(this.currentDay, "yyyy-MM-dd"), days: "7" }
-      });
+      this.$store.commit('webSocket/send', {
+        object: 'trakt',
+        method: 'getEpisodes',
+        params: { startDate: format(this.currentDay, 'yyyy-MM-dd'), days: '7' }
+      })
     },
     getImageSrc(episode) {
       if (episode.images) {
@@ -259,55 +259,55 @@ export default {
           src: `https://image.tmdb.org/t/p/original${episode.images[0].file_path}`
           // loading: `https://trakt.tv/assets/placeholders/thumb/fanart-96d5b92c25602cd5f5f8bc3d7fe1a249.png`,
           // error: `https://trakt.tv/assets/placeholders/thumb/fanart-96d5b92c25602cd5f5f8bc3d7fe1a249.png`
-        };
+        }
       }
     },
     getEpisodesFrom(day) {
       if (this.episodes) {
         return this.episodes.filter(episode => {
-          return isSameDay(new Date(episode.first_aired), day);
-        });
+          return isSameDay(new Date(episode.first_aired), day)
+        })
       }
     },
     format(value) {
-      return format(value, "MM / dd / yyyy");
+      return format(value, 'MM / dd / yyyy')
     },
     getTransmissionSettings() {
-      this.$store.commit("webSocket/send", {
-        object: "transmission",
-        method: "getAll"
-      });
+      this.$store.commit('webSocket/send', {
+        object: 'transmission',
+        method: 'getAll'
+      })
     },
     searchEpisode(episode) {
-      this.$store.commit("webSocket/send", {
-        object: "download",
-        method: "searchLatestEpisode",
+      this.$store.commit('webSocket/send', {
+        object: 'download',
+        method: 'searchLatestEpisode',
         params: { title: episode.show.title }
-      });
+      })
     },
     addToTransmission(magnetLink, index) {
-      this.shows[index].isLoading = true;
+      this.shows[index].isLoading = true
 
-      this.$store.commit("webSocket/send", {
-        object: "download",
-        method: "addToTransmission",
+      this.$store.commit('webSocket/send', {
+        object: 'download',
+        method: 'addToTransmission',
         params: { magnetLink, settings: this.settings, show: this.shows[index] }
-      });
+      })
     },
     getWatched() {
-      this.$store.commit("webSocket/send", {
-        object: "trakt",
-        method: "getWatched"
-      });
+      this.$store.commit('webSocket/send', {
+        object: 'trakt',
+        method: 'getWatched'
+      })
     },
     getCollected() {
-      this.$store.commit("webSocket/send", {
-        object: "trakt",
-        method: "getCollected"
-      });
+      this.$store.commit('webSocket/send', {
+        object: 'trakt',
+        method: 'getCollected'
+      })
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

@@ -3,23 +3,23 @@ export const isEmpty = obj => {
 }
 
 export const getID = () => {
-  return "xxxxxxxx".replace(/[xy]/g, function(c) {
-    var r = (Math.random() * 16) | 0,
-      v = c == "x" ? r : (r & 0x3) | 0x8
+  return 'xxxxxxxx'.replace(/[xy]/g, function(c) {
+    let r = (Math.random() * 16) | 0,
+      v = c == 'x' ? r : (r & 0x3) | 0x8
     return v.toString(16)
   })
 }
 
 export const getUUID = () => {
-  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
-    var r = (Math.random() * 16) | 0,
-      v = c == "x" ? r : (r & 0x3) | 0x8
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    let r = (Math.random() * 16) | 0,
+      v = c == 'x' ? r : (r & 0x3) | 0x8
     return v.toString(16)
   })
 }
 
 export const isMobile = () => {
-  var check = false
+  let check = false
   ;(function(a) {
     if (
       /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(

@@ -1,3 +1,4 @@
+/* eslint-disable node/no-unsupported-features/es-syntax */
 const state = {
   watched: null,
   collected: null
@@ -18,8 +19,8 @@ const mutations = {
 }
 
 const actions = {
-  setWatched: ({ commit, state }, data) => commit("setWatched", data),
-  setCollected: ({ commit, state }, data) => commit("setCollected", data)
+  setWatched: ({ commit }, data) => commit('setWatched', data),
+  setCollected: ({ commit }, data) => commit('setCollected', data)
 }
 
 export default {

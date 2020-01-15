@@ -37,11 +37,11 @@
 </template>
 
 <script>
-import { isEmpty } from "plugins"
+import { isEmpty } from 'plugins'
 export default {
   computed: {
     message() {
-      return this.$store.getters["webSocket/message"]
+      return this.$store.getters['webSocket/message']
     }
   },
   data() {
@@ -49,11 +49,11 @@ export default {
       error: null,
       settings: null,
       list: [
-        { key: "", value: "never" },
-        { key: "* * */1 * *", value: "hour" },
-        { key: "* * */2 * *", value: "2 hours" },
-        { key: "* * */6 * *", value: "6 hours" },
-        { key: "* * * */1 *", value: "day" }
+        { key: '', value: 'never' },
+        { key: '* * */1 * *', value: 'hour' },
+        { key: '* * */2 * *', value: '2 hours' },
+        { key: '* * */6 * *', value: '6 hours' },
+        { key: '* * * */1 *', value: 'day' }
       ]
     }
   },
@@ -61,51 +61,51 @@ export default {
     this.getAll()
   },
   watch: {
-    "settings.host"(newVal, oldVal) {
+    'settings.host'(newVal, oldVal) {
       this.update()
     },
-    "settings.port"(newVal, oldVal) {
+    'settings.port'(newVal, oldVal) {
       this.update()
     },
-    "settings.cron"(newVal, oldVal) {
+    'settings.cron'(newVal, oldVal) {
       this.update()
     },
     message(data) {
-      if (data.object === "server") {
+      if (data.object === 'server') {
         this.error = null
         switch (data.method) {
-          case "getAll":
-            if (data.error) {
-              this.error = data.error
-            } else {
-              this.settings = Object.assign({}, data.results)
-            }
-            break
-          case "update":
-            if (data.error) {
-              this.error = data.error
-            } else {
-              this.settings = Object.assign({}, data.results)
-            }
-            break
-          default:
-            console.log(`Unknow method : ${data.method}`)
+        case 'getAll':
+          if (data.error) {
+            this.error = data.error
+          } else {
+            this.settings = Object.assign({}, data.results)
+          }
+          break
+        case 'update':
+          if (data.error) {
+            this.error = data.error
+          } else {
+            this.settings = Object.assign({}, data.results)
+          }
+          break
+        default:
+          console.log(`Unknow method : ${data.method}`)
         }
       }
     }
   },
   methods: {
     getAll() {
-      this.$store.commit("webSocket/send", {
-        object: "server",
-        method: "getAll"
+      this.$store.commit('webSocket/send', {
+        object: 'server',
+        method: 'getAll'
       })
     },
     update() {
       if (!isEmpty(this.settings)) {
-        this.$store.commit("webSocket/send", {
-          object: "server",
-          method: "update",
+        this.$store.commit('webSocket/send', {
+          object: 'server',
+          method: 'update',
           params: this.settings
         })
       }

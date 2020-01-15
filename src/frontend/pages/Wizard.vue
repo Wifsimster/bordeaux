@@ -35,11 +35,11 @@
 </template>
 
 <script>
-import Directory from "components/settings/directory.vue"
-import Transmission from "components/settings/transmission.vue"
-import Plex from "components/settings/plex.vue"
-import Trakt from "components/settings/trakt.vue"
-import Subtitles from "components/settings/subtitles.vue"
+import Directory from 'components/settings/directory.vue'
+import Transmission from 'components/settings/transmission.vue'
+import Plex from 'components/settings/plex.vue'
+import Trakt from 'components/settings/trakt.vue'
+import Subtitles from 'components/settings/subtitles.vue'
 export default {
   components: {
     Directory,
@@ -54,21 +54,21 @@ export default {
     },
     isValid() {
       switch (this.step) {
-        case 1:
-          return this.isDirectoryValid
-          break
-        case 2:
-          return this.isSubtitlesValid
-          break
-        case 3:
-          return this.isTransmissionValid
-          break
-        case 4:
-          return this.isPlexValid
-          break
-        case 5:
-          return this.isTraktValid
-          break
+      case 1:
+        return this.isDirectoryValid
+        break
+      case 2:
+        return this.isSubtitlesValid
+        break
+      case 3:
+        return this.isTransmissionValid
+        break
+      case 4:
+        return this.isPlexValid
+        break
+      case 5:
+        return this.isTraktValid
+        break
       }
     }
   },
@@ -99,8 +99,8 @@ export default {
       }
     },
     goToDashboard() {
-      localStorage.setItem("token", "bordeaux")
-      this.$router.push("/").catch(err => {
+      localStorage.setItem('token', 'bordeaux')
+      this.$router.push('/').catch(err => {
         console.warn(err)
       })
     }

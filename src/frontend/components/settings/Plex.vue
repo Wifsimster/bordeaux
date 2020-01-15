@@ -53,8 +53,9 @@
           type="checkbox"
           v-model="settings.synchronizeAfterTransfert"
         />
-        <label for="synchronizeAfterTransfert"
-          >Synchronize after transfert</label
+        <label
+          for="synchronizeAfterTransfert"
+        >Synchronize after transfert</label
         >
       </div>
     </div>
@@ -62,14 +63,14 @@
 </template>
 
 <script>
-import { isEmpty } from "plugins"
-import CryptoJS from "crypto-js"
+import { isEmpty } from 'plugins'
+import CryptoJS from 'crypto-js'
 
 export default {
-  name: "Plex",
+  name: 'Plex',
   computed: {
     message() {
-      return this.$store.getters["webSocket/message"]
+      return this.$store.getters['webSocket/message']
     },
     isConnected() {
       return this.settings && this.settings.token
@@ -89,11 +90,11 @@ export default {
         if (val) {
           this.$set(
             this.settings,
-            "password",
+            'password',
             CryptoJS.AES.encrypt(val, UUID).toString()
           )
         } else {
-          this.settings.password = ""
+          this.settings.password = ''
         }
       }
     }
@@ -111,9 +112,9 @@ export default {
   },
   watch: {
     isConnected(val) {
-      this.$emit("is-valid", val)
+      this.$emit('is-valid', val)
     },
-    "settings.username"(newValue, oldValue) {
+    'settings.username'(newValue, oldValue) {
       this.update()
 
       if (oldValue !== undefined) {
@@ -122,7 +123,7 @@ export default {
         }, 2000)
       }
     },
-    "settings.password"(newValue, oldValue) {
+    'settings.password'(newValue, oldValue) {
       this.update()
 
       if (oldValue !== undefined) {
@@ -131,36 +132,36 @@ export default {
         }, 2000)
       }
     },
-    "settings.synchronizeAfterTransfert"() {
+    'settings.synchronizeAfterTransfert'() {
       this.update()
     },
     message(data) {
-      if (data.object === "plex") {
+      if (data.object === 'plex') {
         this.error = null
         switch (data.method) {
-          case "getAll":
-            if (data.error) {
-              this.error = data.error
-            } else {
-              this.settings = Object.assign({}, data.results)
-            }
-            break
-          case "update":
-            if (data.error) {
-              this.error = data.error
-            } else {
-              this.settings = Object.assign({}, data.results)
-            }
-            break
-          case "signin":
-            if (data.error) {
-              this.$emit("is-valid", false)
-            } else {
-              this.getAll()
-            }
-            break
-          default:
-            console.log(`Unknow method : ${data.method}`)
+        case 'getAll':
+          if (data.error) {
+            this.error = data.error
+          } else {
+            this.settings = Object.assign({}, data.results)
+          }
+          break
+        case 'update':
+          if (data.error) {
+            this.error = data.error
+          } else {
+            this.settings = Object.assign({}, data.results)
+          }
+          break
+        case 'signin':
+          if (data.error) {
+            this.$emit('is-valid', false)
+          } else {
+            this.getAll()
+          }
+          break
+        default:
+          console.log(`Unknow method : ${data.method}`)
         }
       }
     }
@@ -185,16 +186,16 @@ export default {
       this.update()
     },
     getAll() {
-      this.$store.commit("webSocket/send", {
-        object: "plex",
-        method: "getAll"
+      this.$store.commit('webSocket/send', {
+        object: 'plex',
+        method: 'getAll'
       })
     },
     update() {
       if (!isEmpty(this.settings)) {
-        this.$store.commit("webSocket/send", {
-          object: "plex",
-          method: "update",
+        this.$store.commit('webSocket/send', {
+          object: 'plex',
+          method: 'update',
           params: this.settings
         })
       }
@@ -205,9 +206,9 @@ export default {
         this.settings.password &&
         this.settings.password.length > 3
       ) {
-        this.$store.commit("webSocket/send", {
-          object: "plex",
-          method: "signin",
+        this.$store.commit('webSocket/send', {
+          object: 'plex',
+          method: 'signin',
           params: { uuid: UUID }
         })
       }

@@ -1,4 +1,6 @@
-import { getID } from "plugins"
+/* eslint-disable node/no-missing-import */
+/* eslint-disable node/no-unsupported-features/es-syntax */
+import { getID } from 'plugins'
 
 const BOUND_TIMER = 100
 const TIMER = 3000
@@ -21,7 +23,7 @@ const mutations = {
   timer(state, item) {
     state.list.map((e, index) => {
       if (e.id === item.id) {
-        state.list[index].remain = item.remain - 1 * BOUND_TIMER
+        state.list[index].remain = item.remain - Number(BOUND_TIMER)
         state.list[index].width = Math.ceil(
           (state.list[index].remain / item.timeout) * 100
         )
@@ -45,33 +47,33 @@ const actions = {
     item.id = getID()
 
     switch (item.type) {
-      case "success":
-        item.color = "green"
-        item.timeout = TIMER
-        item.remain = item.timeout
-        item.width = 100
-        break
-      case "warning":
-        item.color = "orange"
-        break
-      case "error":
-        item.color = "red"
-        break
-      default:
-        item.color = "teal"
-        item.timeout = TIMER
-        item.remain = item.timeout
-        item.width = 100
+    case 'success':
+      item.color = 'green'
+      item.timeout = TIMER
+      item.remain = item.timeout
+      item.width = 100
+      break
+    case 'warning':
+      item.color = 'orange'
+      break
+    case 'error':
+      item.color = 'red'
+      break
+    default:
+      item.color = 'teal'
+      item.timeout = TIMER
+      item.remain = item.timeout
+      item.width = 100
     }
 
-    commit("add", item)
+    commit('add', item)
 
     if (item.timeout) {
       setTimeout(
         () =>
           state.list.map((e, index) => {
             if (e.id === item.id) {
-              commit("remove", index)
+              commit('remove', index)
             }
           }),
         item.timeout
@@ -79,7 +81,7 @@ const actions = {
 
       const timer = setInterval(() => {
         if (item.remain > BOUND_TIMER) {
-          commit("timer", item)
+          commit('timer', item)
         } else {
           clearInterval(timer)
         }
@@ -87,8 +89,8 @@ const actions = {
     }
   },
 
-  remove({ commit, state }, index) {
-    commit("remove", index)
+  remove({ commit }, index) {
+    commit('remove', index)
   }
 }
 

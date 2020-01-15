@@ -10,11 +10,11 @@
 </template>
 
 <script>
-import Sidebar from "components/settings/sidebar.vue";
+import Sidebar from 'components/settings/sidebar.vue'
 export default {
   components: {
     Sidebar
   }
-};
+}
 </script>
 

@@ -28,16 +28,16 @@
 
 <script>
 export default {
-  name: "subtitles",
+  name: 'subtitles',
   computed: {
     hasEpisodes() {
-      return this.episodes && this.episodes.length > 0;
+      return this.episodes && this.episodes.length > 0
     },
     hasNoEpisode() {
-      return this.episodes && this.episodes.length === 0;
+      return this.episodes && this.episodes.length === 0
     },
     message() {
-      return this.$store.getters["webSocket/message"];
+      return this.$store.getters['webSocket/message']
     }
   },
   data() {
@@ -48,71 +48,71 @@ export default {
       results: null,
       isLoading: false,
       loadingMessage: null
-    };
+    }
   },
   created() {
-    this.getAll();
+    this.getAll()
   },
   watch: {
     message(data) {
-      if (data.object === "subtitles") {
+      if (data.object === 'subtitles') {
         switch (data.method) {
-          case "getAll":
-            if (data.error) {
-              this.error = data.error;
-            } else {
-              this.settings = Object.assign({}, data.results);
-            }
-            break;
-          case "search":
-            this.isLoading = false;
-            if (data.error) {
-              this.error = data.error;
-            } else {
-              this.episodes = data.results.map(file => {
-                return { file: file, subtitle: {} };
-              });
-            }
-            break;
-          case "getSubtitle":
-            if (data.error) {
-              this.error = data.error;
-            } else {
-              this.episodes.map((episode, index) => {
-                if (data.params.file === episode.file) {
-                  this.$set(
-                    this.episodes,
-                    index,
-                    Object.assign(episode, {
-                      loading: false,
-                      subtitle: data.results.subtitle
-                    })
-                  );
-                }
-              });
-            }
-            break;
+        case 'getAll':
+          if (data.error) {
+            this.error = data.error
+          } else {
+            this.settings = Object.assign({}, data.results)
+          }
+          break
+        case 'search':
+          this.isLoading = false
+          if (data.error) {
+            this.error = data.error
+          } else {
+            this.episodes = data.results.map(file => {
+              return { file: file, subtitle: {} }
+            })
+          }
+          break
+        case 'getSubtitle':
+          if (data.error) {
+            this.error = data.error
+          } else {
+            this.episodes.map((episode, index) => {
+              if (data.params.file === episode.file) {
+                this.$set(
+                  this.episodes,
+                  index,
+                  Object.assign(episode, {
+                    loading: false,
+                    subtitle: data.results.subtitle
+                  })
+                )
+              }
+            })
+          }
+          break
         }
       }
     }
   },
   methods: {
     getAll() {
-      this.$store.commit("webSocket/send", {
-        object: "subtitles",
-        method: "getAll"
-      });
+      this.$store.commit('webSocket/send', {
+        object: 'subtitles',
+        method: 'getAll'
+      })
     },
     search() {
       if (this.settings) {
-        this.episodes = null;
-        this.isLoading = true;
-        this.loadingMessage = `Searching recent episodes...`;
-        this.$store.commit("webSocket/send", {
-          object: "subtitles",
-          method: "search",
+        this.episodes = null
+        this.isLoading = true
+        this.loadingMessage = 'Searching recent episodes...'
+        this.$store.commit('webSocket/send', {
+          object: 'subtitles',
+          method: 'search',
           params: { fileAge: this.settings.daysOld }
-        });
+        })
       }
     },
     getSubtitle(episode, index) {
@@ -120,21 +120,21 @@ export default {
         this.episodes,
         index,
         Object.assign(episode, { loading: true, subtitle: null })
-      );
+      )
 
-      this.$store.commit("webSocket/send", {
-        object: "subtitles",
-        method: "getSubtitle",
+      this.$store.commit('webSocket/send', {
+        object: 'subtitles',
+        method: 'getSubtitle',
         params: { file: episode.file }
-      });
+      })
     },
     run() {
       if (this.episodes) {
         this.episodes.map((episode, index) => {
-          this.getSubtitle(episode, index);
-        });
+          this.getSubtitle(episode, index)
+        })
       }
     }
   }
-};
+}
 </script>

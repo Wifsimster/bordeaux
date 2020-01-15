@@ -23,18 +23,18 @@
 export default {
   computed: {
     isAlive() {
-      return this.$store.getters["webSocket/isAlive"];
+      return this.$store.getters['webSocket/isAlive']
     }
   },
   methods: {
     connect() {
       this.$store.dispatch(
-        "webSocket/ws",
+        'webSocket/ws',
         new WebSocket(`ws://${location.hostname}:8080`)
-      );
+      )
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

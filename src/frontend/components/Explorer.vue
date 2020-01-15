@@ -29,7 +29,7 @@
 
 <script>
 export default {
-  name: "Explorer",
+  name: 'Explorer',
   data() {
     return {
       error: null,
@@ -39,7 +39,7 @@ export default {
   },
   computed: {
     message() {
-      return this.$store.getters["webSocket/message"]
+      return this.$store.getters['webSocket/message']
     },
     baseUrl() {
       if (this.root) {
@@ -55,39 +55,39 @@ export default {
       this.getDirectories()
     },
     message(data) {
-      if (data.object === "explorer") {
+      if (data.object === 'explorer') {
         this.error = null
         switch (data.method) {
-          case "getRoot":
-            if (data.error) {
-              this.error = data.error
-            } else {
-              this.root = data.results
-            }
-            break
-          case "getDirectories":
-            if (data.error) {
-              this.error = data.error
-            } else {
-              this.directories = Object.assign({}, data.results)
-            }
-            break
+        case 'getRoot':
+          if (data.error) {
+            this.error = data.error
+          } else {
+            this.root = data.results
+          }
+          break
+        case 'getDirectories':
+          if (data.error) {
+            this.error = data.error
+          } else {
+            this.directories = Object.assign({}, data.results)
+          }
+          break
         }
       }
     }
   },
   methods: {
     previous() {
-      var array = this.root.split("/")
+      let array = this.root.split('/')
       if (array.length > 2) {
         array.splice(array.length - 2, 1)
-        this.root = array.join("/")
+        this.root = array.join('/')
       }
     },
     getRoot() {
-      this.$store.commit("webSocket/send", {
-        object: "explorer",
-        method: "getRoot"
+      this.$store.commit('webSocket/send', {
+        object: 'explorer',
+        method: 'getRoot'
       })
     },
     getDirectories(item) {
@@ -99,9 +99,9 @@ export default {
         }
       }
 
-      this.$store.commit("webSocket/send", {
-        object: "explorer",
-        method: "getDirectories",
+      this.$store.commit('webSocket/send', {
+        object: 'explorer',
+        method: 'getDirectories',
         params: { root: this.root }
       })
     }

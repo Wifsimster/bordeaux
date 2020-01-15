@@ -58,16 +58,16 @@
 
 <script>
 export default {
-  name: "Transfert",
+  name: 'Transfert',
   computed: {
     hasEpisodes() {
-      return this.episodes && this.episodes.length > 0;
+      return this.episodes && this.episodes.length > 0
     },
     hasNoEpisode() {
-      return this.episodes && this.episodes.length === 0;
+      return this.episodes && this.episodes.length === 0
     },
     message() {
-      return this.$store.getters["webSocket/message"];
+      return this.$store.getters['webSocket/message']
     }
   },
   data() {
@@ -78,90 +78,90 @@ export default {
       isLoading: false,
       loadingMessage: null,
       subtitlesSettings: null
-    };
+    }
   },
   created() {
-    this.getSubtitlesSettings();
-    this.search();
+    this.getSubtitlesSettings()
+    this.search()
   },
   watch: {
     message(data) {
       switch (data.object) {
-        case "transfert":
-          switch (data.method) {
-            case "search":
-              this.isLoading = false;
-              if (data.error) {
-                this.error = data.error;
-              } else {
-                this.episodes = Object.assign([], data.results);
-              }
-              break;
-            case "move":
-              if (data.error) {
-                console.error(error);
-              } else {
-                this.episodes.map((episode, index) => {
-                  if (data.params.episode.origin.path === episode.origin.path) {
-                    this.getSubtitle(data.params.episode.destination.path);
-                    this.$set(
-                      this.episodes,
-                      index,
-                      Object.assign(episode, {
-                        loading: false,
-                        transfered: true
-                      })
-                    );
-                  }
-                });
-              }
-              break;
+      case 'transfert':
+        switch (data.method) {
+        case 'search':
+          this.isLoading = false
+          if (data.error) {
+            this.error = data.error
+          } else {
+            this.episodes = Object.assign([], data.results)
           }
-          break;
-        case "plex":
-          switch (data.method) {
-            case "refresh":
-              if (data.error) {
-                console.error(data.error);
-                this.$store("notification/add", {
-                  message: "Error when refreshing Plex library !",
-                  type: "error"
-                });
-              } else {
-                console.log(`[Plex] Refresh Tv Shows...`);
+          break
+        case 'move':
+          if (data.error) {
+            console.error(error)
+          } else {
+            this.episodes.map((episode, index) => {
+              if (data.params.episode.origin.path === episode.origin.path) {
+                this.getSubtitle(data.params.episode.destination.path)
+                this.$set(
+                  this.episodes,
+                  index,
+                  Object.assign(episode, {
+                    loading: false,
+                    transfered: true
+                  })
+                )
               }
-              break;
+            })
           }
-          break;
-        case "subtitles":
-          switch (data.method) {
-            case "getAll":
-              if (data.error) {
-                this.error = data.error;
-              } else {
-                this.subtitlesSettings = data.results;
-              }
-              break;
+          break
+        }
+        break
+      case 'plex':
+        switch (data.method) {
+        case 'refresh':
+          if (data.error) {
+            console.error(data.error)
+            this.$store('notification/add', {
+              message: 'Error when refreshing Plex library !',
+              type: 'error'
+            })
+          } else {
+            console.log('[Plex] Refresh Tv Shows...')
           }
-          break;
+          break
+        }
+        break
+      case 'subtitles':
+        switch (data.method) {
+        case 'getAll':
+          if (data.error) {
+            this.error = data.error
+          } else {
+            this.subtitlesSettings = data.results
+          }
+          break
+        }
+        break
       }
     }
   },
   methods: {
     search() {
-      this.isLoading = true;
-      this.loadingMessage = `Searching new files...`;
-      this.$store.commit("webSocket/send", {
-        object: "transfert",
-        method: "search"
-      });
+      this.isLoading = true
+      this.loadingMessage = 'Searching new files...'
+      this.$store.commit('webSocket/send', {
+        object: 'transfert',
+        method: 'search'
+      })
     },
     transfert() {
       if (this.episodes) {
         this.episodes.map((episode, index) => {
-          this.move(episode, index);
-        });
-        this.refreshPlex();
+          this.move(episode, index)
+        })
+        this.refreshPlex()
       }
     },
     move(episode, index) {
@@ -169,38 +169,38 @@ export default {
         this.episodes,
         index,
         Object.assign(episode, { loading: true })
-      );
-      this.$store.commit("webSocket/send", {
-        object: "transfert",
-        method: "move",
+      )
+      this.$store.commit('webSocket/send', {
+        object: 'transfert',
+        method: 'move',
         params: { episode: episode }
-      });
+      })
     },
     refreshPlex() {
-      this.$store.commit("webSocket/send", {
-        object: "plex",
-        method: "refresh",
+      this.$store.commit('webSocket/send', {
+        object: 'plex',
+        method: 'refresh',
         params: { uuid: UUID }
-      });
+      })
     },
     getSubtitlesSettings() {
-      this.$store.commit("webSocket/send", {
-        object: "subtitles",
-        method: "getAll"
-      });
+      this.$store.commit('webSocket/send', {
+        object: 'subtitles',
+        method: 'getAll'
+      })
     },
     getSubtitle(file) {
       if (
         this.subtitlesSettings &&
         this.subtitlesSettings.downloadAfterTransfert
       ) {
-        this.$store.commit("webSocket/send", {
-          object: "subtitles",
-          method: "getSubtitle",
+        this.$store.commit('webSocket/send', {
+          object: 'subtitles',
+          method: 'getSubtitle',
           params: { file: file }
-        });
+        })
       }
     }
   }
-};
+}
 </script>

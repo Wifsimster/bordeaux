@@ -26,13 +26,13 @@ export default {
     },
     size: {
       type: String,
-      default: "lg:max-w:lg"
+      default: 'lg:max-w:lg'
     }
   },
   methods: {
     close(el) {
       if (el.target === this.$refs.container) {
-        this.$emit("close")
+        this.$emit('close')
       }
     }
   }

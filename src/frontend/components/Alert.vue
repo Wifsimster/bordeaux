@@ -9,20 +9,20 @@ export default {
   props: {
     color: {
       type: String,
-      default: "blue"
+      default: 'blue'
     }
   },
   computed: {
     computedColor() {
       switch (this.color) {
-        case "red":
-          return "bg:red-lightest border:red-dark text:red-dark"
-        case "orange":
-          return "bg:orange-lightest border:orange-dark text:orange-dark"
-        case "green":
-          return "bg:green-lightest border:green-dark text:green-dark"
-        default:
-          return "bg:blue-lightest border:blue-dark text:blue-dark"
+      case 'red':
+        return 'bg:red-lightest border:red-dark text:red-dark'
+      case 'orange':
+        return 'bg:orange-lightest border:orange-dark text:orange-dark'
+      case 'green':
+        return 'bg:green-lightest border:green-dark text:green-dark'
+      default:
+        return 'bg:blue-lightest border:blue-dark text:blue-dark'
       }
     }
   }

@@ -20,7 +20,7 @@
           target="__blank"
           href="https://trakt.tv/oauth/applications"
           class="underline text:white"
-          >Trakt.tv</a
+        >Trakt.tv</a
         >
       </div>
       <div class="my:3">2. Insert your client id and secret :</div>
@@ -42,8 +42,9 @@
       </div>
       <div>3. Generate your access code :</div>
       <div class="flex flex:wrap justify:center mt:1">
-        <btn @click="generateDeviceTokenShow = true"
-          >Generate my access code</btn
+        <btn
+          @click="generateDeviceTokenShow = true"
+        >Generate my access code</btn
         >
       </div>
     </div>
@@ -64,15 +65,15 @@
 </template>
 
 <script>
-import { isEmpty } from "plugins"
+import { isEmpty } from 'plugins'
 
-import GenerateDeviceToken from "components/settings/GenerateDeviceToken.vue"
-import CheckDeviceToken from "components/settings/CheckDeviceToken.vue"
+import GenerateDeviceToken from 'components/settings/GenerateDeviceToken.vue'
+import CheckDeviceToken from 'components/settings/CheckDeviceToken.vue'
 export default {
-  name: "Trakt",
+  name: 'Trakt',
   computed: {
     message() {
-      return this.$store.getters["webSocket/message"]
+      return this.$store.getters['webSocket/message']
     }
   },
   components: {
@@ -92,34 +93,34 @@ export default {
     this.getAll()
   },
   watch: {
-    "settings.clientID"() {
+    'settings.clientID'() {
       this.update()
     },
-    "settings.clientSecret"() {
+    'settings.clientSecret'() {
       this.update()
     },
     message(data) {
-      if (data.object === "trakt") {
+      if (data.object === 'trakt') {
         this.error = null
         switch (data.method) {
-          case "getAll":
-            if (data.error) {
-              this.error = data.error
-            } else {
-              this.settings = Object.assign({}, data.results)
-              this.isValid()
-            }
-            break
-          case "update":
-            if (data.error) {
-              this.error = data.error
-            } else {
-              this.settings = Object.assign({}, data.results)
-              this.isValid()
-            }
-            break
-          default:
-            console.log(data.method)
+        case 'getAll':
+          if (data.error) {
+            this.error = data.error
+          } else {
+            this.settings = Object.assign({}, data.results)
+            this.isValid()
+          }
+          break
+        case 'update':
+          if (data.error) {
+            this.error = data.error
+          } else {
+            this.settings = Object.assign({}, data.results)
+            this.isValid()
+          }
+          break
+        default:
+          console.log(data.method)
         }
       }
     }
@@ -143,23 +144,23 @@ export default {
       this.update()
     },
     getAll() {
-      this.$store.commit("webSocket/send", {
-        object: "trakt",
-        method: "getAll"
+      this.$store.commit('webSocket/send', {
+        object: 'trakt',
+        method: 'getAll'
       })
     },
     update() {
       if (!isEmpty(this.settings)) {
-        this.$store.commit("webSocket/send", {
-          object: "trakt",
-          method: "update",
+        this.$store.commit('webSocket/send', {
+          object: 'trakt',
+          method: 'update',
           params: this.settings
         })
       }
     },
     isValid() {
       this.$emit(
-        "is-valid",
+        'is-valid',
         this.settings.code &&
           this.settings.accessToken &&
           this.settings.refreshToken

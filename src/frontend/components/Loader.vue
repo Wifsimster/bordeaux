@@ -17,7 +17,7 @@ export default {
   props: {
     color: {
       type: String,
-      default: "grey-dark"
+      default: 'grey-dark'
     },
     message: {
       type: String,

@@ -14,7 +14,7 @@
               :href="results.verification_url"
               target="_blank"
               class="text:white underline"
-              >Verification</a
+            >Verification</a
             >
           </div>
           <div class="text:center my:1">2. Click "It's done"</div>
@@ -32,7 +32,7 @@
 export default {
   computed: {
     message() {
-      return this.$store.getters["webSocket/message"]
+      return this.$store.getters['webSocket/message']
     }
   },
   data() {
@@ -46,25 +46,25 @@ export default {
   },
   watch: {
     message(data) {
-      if (data.object === "trakt") {
+      if (data.object === 'trakt') {
         this.error = null
         switch (data.method) {
-          case "getDeviceCode":
-            if (data.error) {
-              this.error = data.error
-            } else {
-              this.results = Object.assign({}, data.results)
-            }
-            break
+        case 'getDeviceCode':
+          if (data.error) {
+            this.error = data.error
+          } else {
+            this.results = Object.assign({}, data.results)
+          }
+          break
         }
       }
     }
   },
   methods: {
     getDeviceCode() {
-      this.$store.commit("webSocket/send", {
-        object: "trakt",
-        method: "getDeviceCode"
+      this.$store.commit('webSocket/send', {
+        object: 'trakt',
+        method: 'getDeviceCode'
       })
     }
   }

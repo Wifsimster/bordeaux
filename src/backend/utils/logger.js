@@ -1,13 +1,13 @@
-const Activity = require("../channels/activity")
+const Activity = require('../channels/activity')
 
 class Logger {
   constructor() {}
 
   static info(object, message) {
     Activity.response({
-      method: "add",
+      method: 'add',
       params: {
-        type: "info",
+        type: 'info',
         object: object,
         message: message
       }
@@ -16,9 +16,9 @@ class Logger {
 
   static warn(object, message) {
     Activity.response({
-      method: "add",
+      method: 'add',
       params: {
-        type: "warn",
+        type: 'warn',
         object: object,
         message: message
       }
@@ -27,9 +27,9 @@ class Logger {
 
   static error(object, message) {
     Activity.response({
-      method: "add",
+      method: 'add',
       params: {
-        type: "error",
+        type: 'error',
         object: object,
         message: message
       }

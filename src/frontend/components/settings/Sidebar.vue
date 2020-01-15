@@ -6,43 +6,43 @@
         to="/settings/directory"
         class="text:grey-light text:9/8 block px:1 py:1/2 hover:bg:grey-darkest"
         exact-active-class="text:orange bg:grey-darkest"
-        >Directories</router-link
+      >Directories</router-link
       >
       <router-link
         to="/settings/plex"
         class="text:grey-light text:9/8 block px:1 py:1/2 hover:bg:grey-darkest"
         exact-active-class="text:orange bg:grey-darkest"
-        >Plex</router-link
+      >Plex</router-link
       >
       <router-link
         to="/settings/server"
         class="text:grey-light text:9/8 block px:1 py:1/2 hover:bg:grey-darkest"
         exact-active-class="text:orange bg:grey-darkest"
-        >Server</router-link
+      >Server</router-link
       >
       <router-link
         to="/settings/subtitles"
         class="text:grey-light text:9/8 block px:1 py:1/2 hover:bg:grey-darkest"
         exact-active-class="text:orange bg:grey-darkest"
-        >Subtitles</router-link
+      >Subtitles</router-link
       >
       <router-link
         to="/settings/trakt"
         class="text:grey-light text:9/8 block px:1 py:1/2 hover:bg:grey-darkest"
         exact-active-class="text:orange bg:grey-darkest"
-        >Trakt</router-link
+      >Trakt</router-link
       >
       <router-link
         to="/settings/transmission"
         class="text:grey-light text:9/8 block px:1 py:1/2 hover:bg:grey-darkest"
         exact-active-class="text:orange bg:grey-darkest"
-        >Transmission</router-link
+      >Transmission</router-link
       >
       <router-link
         to="/settings/update"
         class="text:grey-light text:9/8 block px:1 py:1/2 hover:bg:grey-darkest"
         exact-active-class="text:orange bg:grey-darkest"
-        >Update</router-link
+      >Update</router-link
       >
     </div>
 
@@ -52,43 +52,43 @@
         to="/settings/directory"
         class="text:grey-light text:9/8 block px:1 py:1/2 hover:bg:grey-darkest"
         exact-active-class="text:white border:l:1/4 border:orange bg:grey-darkest"
-        >Directories</router-link
+      >Directories</router-link
       >
       <router-link
         to="/settings/plex"
         class="text:grey-light text:9/8 block px:1 py:1/2 hover:bg:grey-darkest"
         exact-active-class="text:white border:l:1/4 border:orange bg:grey-darkest"
-        >Plex</router-link
+      >Plex</router-link
       >
       <router-link
         to="/settings/server"
         class="text:grey-light text:9/8 block px:1 py:1/2 hover:bg:grey-darkest"
         exact-active-class="text:white border:l:1/4 border:orange bg:grey-darkest"
-        >Server</router-link
+      >Server</router-link
       >
       <router-link
         to="/settings/subtitles"
         class="text:grey-light text:9/8 block px:1 py:1/2 hover:bg:grey-darkest"
         exact-active-class="text:white border:l:1/4 border:orange bg:grey-darkest"
-        >Subtitles</router-link
+      >Subtitles</router-link
       >
       <router-link
         to="/settings/trakt"
         class="text:grey-light text:9/8 block px:1 py:1/2 hover:bg:grey-darkest"
         exact-active-class="text:white border:l:1/4 border:orange bg:grey-darkest"
-        >Trakt</router-link
+      >Trakt</router-link
       >
       <router-link
         to="/settings/transmission"
         class="text:grey-light text:9/8 block px:1 py:1/2 hover:bg:grey-darkest"
         exact-active-class="text:white border:l:1/4 border:orange bg:grey-darkest"
-        >Transmission</router-link
+      >Transmission</router-link
       >
       <router-link
         to="/settings/update"
         class="text:grey-light text:9/8 block px:1 py:1/2 hover:bg:grey-darkest"
         exact-active-class="text:white border:l:1/4 border:orange bg:grey-darkest"
-        >Update</router-link
+      >Update</router-link
       >
     </div>
   </div>

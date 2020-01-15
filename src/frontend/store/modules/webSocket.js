@@ -1,3 +1,4 @@
+/* eslint-disable node/no-unsupported-features/es-syntax */
 const state = {
   ws: null,
   isAlive: null,
@@ -27,18 +28,18 @@ const mutations = {
 
 const actions = {
   ws(payload, data) {
-    payload.commit("ws", data)
+    payload.commit('ws', data)
 
-    payload.state.ws.onopen = evt => {
-      payload.commit("isAlive", true)
+    payload.state.ws.onopen = () => {
+      payload.commit('isAlive', true)
 
       state.ws.onmessage = evt => {
-        payload.commit("message", JSON.parse(evt.data))
+        payload.commit('message', JSON.parse(evt.data))
       }
     }
 
-    payload.state.ws.onclose = evt => {
-      payload.commit("isAlive", false)
+    payload.state.ws.onclose = () => {
+      payload.commit('isAlive', false)
     }
   }
 }

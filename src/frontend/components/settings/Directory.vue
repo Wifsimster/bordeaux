@@ -45,16 +45,16 @@
 </template>
 
 <script>
-import { isEmpty } from "plugins"
-import Explorer from "components/Explorer.vue"
+import { isEmpty } from 'plugins'
+import Explorer from 'components/Explorer.vue'
 export default {
-  name: "directory",
+  name: 'directory',
   components: {
     Explorer
   },
   computed: {
     message() {
-      return this.$store.getters["webSocket/message"]
+      return this.$store.getters['webSocket/message']
     }
   },
   data() {
@@ -70,25 +70,25 @@ export default {
   },
   watch: {
     message(data) {
-      if (data.object === "directory") {
+      if (data.object === 'directory') {
         this.error = null
         switch (data.method) {
-          case "getAll":
-            if (data.error) {
-              this.error = data.error
-            } else {
-              this.settings = Object.assign({}, data.results)
-              this.isValid()
-            }
-            break
-          case "update":
-            if (data.error) {
-              this.error = data.error
-            } else {
-              this.settings = Object.assign({}, data.results)
-              this.isValid()
-            }
-            break
+        case 'getAll':
+          if (data.error) {
+            this.error = data.error
+          } else {
+            this.settings = Object.assign({}, data.results)
+            this.isValid()
+          }
+          break
+        case 'update':
+          if (data.error) {
+            this.error = data.error
+          } else {
+            this.settings = Object.assign({}, data.results)
+            this.isValid()
+          }
+          break
         }
       }
     }
@@ -105,22 +105,22 @@ export default {
       this.update()
     },
     getAll() {
-      this.$store.commit("webSocket/send", {
-        object: "directory",
-        method: "getAll"
+      this.$store.commit('webSocket/send', {
+        object: 'directory',
+        method: 'getAll'
       })
     },
     update() {
       if (!isEmpty(this.settings)) {
-        this.$store.commit("webSocket/send", {
-          object: "directory",
-          method: "update",
+        this.$store.commit('webSocket/send', {
+          object: 'directory',
+          method: 'update',
           params: this.settings
         })
       }
     },
     isValid() {
-      this.$emit("is-valid", this.settings.from && this.settings.to)
+      this.$emit('is-valid', this.settings.from && this.settings.to)
     }
   }
 }

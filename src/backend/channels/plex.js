@@ -1,10 +1,10 @@
-const File = require("../utils/file")
-const Logger = require("../utils/logger")
+const File = require('../utils/file')
+const Logger = require('../utils/logger')
 
-const Pavie = require("pavie")
-const CryptoJS = require("crypto-js")
+const Pavie = require('pavie')
+const CryptoJS = require('crypto-js')
 
-const CONFIG_FILE = "plex-config"
+const CONFIG_FILE = 'plex-config'
 
 class Plex {
   constructor() {}
@@ -20,7 +20,7 @@ class Plex {
 
       return settings
     } catch (err) {
-      Logger.error("Plex", err.message)
+      Logger.error('Plex', err.message)
       throw new Error(err)
     }
   }
@@ -29,48 +29,48 @@ class Plex {
     let pavie, settings, results
 
     switch (data.method) {
-      case "getAll":
-        data.results = await File.readFile(CONFIG_FILE)
-        break
-      case "update":
-        await File.writeFile(CONFIG_FILE, data.params)
-        data.results = await File.readFile(CONFIG_FILE)
-        break
-      case "signin":
-        try {
-          settings = await this.getSettings(data.params.uuid)
-          pavie = new Pavie(settings)
-          results = await pavie.signin()
+    case 'getAll':
+      data.results = await File.readFile(CONFIG_FILE)
+      break
+    case 'update':
+      await File.writeFile(CONFIG_FILE, data.params)
+      data.results = await File.readFile(CONFIG_FILE)
+      break
+    case 'signin':
+      try {
+        settings = await this.getSettings(data.params.uuid)
+        pavie = new Pavie(settings)
+        results = await pavie.signin()
 
-          if (results) {
-            data.results = await pavie.getUser()
+        if (results) {
+          data.results = await pavie.getUser()
 
-            if (data.results && data.results.authToken) {
-              settings.token = data.results.authToken
-              await File.writeFile(CONFIG_FILE, settings)
-            }
+          if (data.results && data.results.authToken) {
+            settings.token = data.results.authToken
+            await File.writeFile(CONFIG_FILE, settings)
           }
-        } catch (err) {
-          Logger.error("Plex", err.message)
-          data.error = err.message
         }
-        break
-      case "refresh":
-        try {
-          Logger.info("Plex", `Synchronize tb show library`)
+      } catch (err) {
+        Logger.error('Plex', err.message)
+        data.error = err.message
+      }
+      break
+    case 'refresh':
+      try {
+        Logger.info('Plex', 'Synchronize tb show library')
 
-          settings = await this.getSettings(data.params.uuid)
-          pavie = new Pavie(settings)
-          await pavie.signin()
-          data.results = await pavie.refresh()
-        } catch (err) {
-          Logger.error("Plex", err.message)
-          data.error = err.message
-        }
-        break
-      default:
-        Logger.warn("Plex", `Unknow method : ${data.method}`)
-        console.warn(`[Plex] Unknow method : ${data.method}`)
+        settings = await this.getSettings(data.params.uuid)
+        pavie = new Pavie(settings)
+        await pavie.signin()
+        data.results = await pavie.refresh()
+      } catch (err) {
+        Logger.error('Plex', err.message)
+        data.error = err.message
+      }
+      break
+    default:
+      Logger.warn('Plex', `Unknow method : ${data.method}`)
+      console.warn(`[Plex] Unknow method : ${data.method}`)
     }
     return data
   }

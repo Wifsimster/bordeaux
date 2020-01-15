@@ -21,7 +21,7 @@
         class="text:white text:3/2 p:1"
         exact-active-class="text:orange"
         title="Dashboard"
-        >Dashboard</router-link
+      >Dashboard</router-link
       >
       <router-link
         v-if="hasTrakt"
@@ -29,35 +29,35 @@
         class="text:white text:3/2 p:1"
         exact-active-class="text:orange"
         title="Calendar"
-        >Calendar</router-link
+      >Calendar</router-link
       >
       <router-link
         to="/transfert"
         class="text:white text:3/2 p:1"
         exact-active-class="text:orange"
         title="Transfert"
-        >Transfert</router-link
+      >Transfert</router-link
       >
       <router-link
         to="/subtitles"
         class="text:white text:3/2 p:1"
         exact-active-class="text:orange"
         title="Subtitles"
-        >Subtitles</router-link
+      >Subtitles</router-link
       >
       <router-link
         to="/activity"
         class="text:white text:3/2 p:1"
         exact-active-class="text:orange"
         title="Activities"
-        >Activities</router-link
+      >Activities</router-link
       >
       <router-link
         to="/settings"
         class="text:white text:3/2 p:1"
         active-class="text:orange"
         title="Settings"
-        >Settings</router-link
+      >Settings</router-link
       >
     </div>
 
@@ -68,7 +68,7 @@
         class="text:white text:3/2 px:1"
         exact-active-class="text:orange"
         title="Dashboard"
-        >Dashboard</router-link
+      >Dashboard</router-link
       >
       <router-link
         v-if="hasTrakt"
@@ -76,21 +76,21 @@
         class="text:white text:3/2 px:1"
         exact-active-class="text:orange"
         title="Calendar"
-        >Calendar</router-link
+      >Calendar</router-link
       >
       <router-link
         to="/transfert"
         class="text:white text:3/2 px:1"
         exact-active-class="text:orange"
         title="Transfert"
-        >Transfert</router-link
+      >Transfert</router-link
       >
       <router-link
         to="/subtitles"
         class="text:white text:3/2 px:1"
         exact-active-class="text:orange"
         title="Subtitles"
-        >Subtitles</router-link
+      >Subtitles</router-link
       >
       <router-link
         to="/activity"
@@ -116,10 +116,10 @@
 export default {
   computed: {
     message() {
-      return this.$store.getters["webSocket/message"]
+      return this.$store.getters['webSocket/message']
     },
     isWizard() {
-      return this.$route.path === `/wizard`
+      return this.$route.path === '/wizard'
     }
   },
   data() {
@@ -133,29 +133,29 @@ export default {
   },
   methods: {
     getTrakt() {
-      this.$store.commit("webSocket/send", {
-        object: "trakt",
-        method: "getAll"
+      this.$store.commit('webSocket/send', {
+        object: 'trakt',
+        method: 'getAll'
       })
     }
   },
   watch: {
     message(data) {
-      if (data.object === "trakt") {
+      if (data.object === 'trakt') {
         this.error = null
         switch (data.method) {
-          case "getAll":
-            if (data.error) {
-              this.error = data.error
-            } else {
-              let settings = Object.assign({}, data.results)
-              this.hasTrakt =
+        case 'getAll':
+          if (data.error) {
+            this.error = data.error
+          } else {
+            let settings = Object.assign({}, data.results)
+            this.hasTrakt =
                 settings.code && settings.accessToken && settings.refreshToken
-            }
-            break
-          case "update":
-            this.getTrakt()
-            break
+          }
+          break
+        case 'update':
+          this.getTrakt()
+          break
         }
       }
     },

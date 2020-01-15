@@ -1,15 +1,15 @@
-const CACHE_NAME = "bordeaux"
+const CACHE_NAME = 'bordeaux'
 
 const urlsToPrefetch = [
-  "/",
-  "/index.html",
-  "/static/fonts/Felona.woff2",
-  "/static/img/favicon.png",
-  "/static/img/logo-192x192.png",
-  "/static/img/logo-512x512.png"
+  '/',
+  '/index.html',
+  '/static/fonts/Felona.woff2',
+  '/static/img/favicon.png',
+  '/static/img/logo-192x192.png',
+  '/static/img/logo-512x512.png'
 ]
 
-self.addEventListener("install", event => {
+self.addEventListener('install', event => {
   event.waitUntil(
     caches
       .open(CACHE_NAME)
@@ -19,12 +19,12 @@ self.addEventListener("install", event => {
           .map(request => fetch(request).then(response => cache.put(request, response.clone())))
       )
       .catch(function(error) {
-        console.error("Pre-fetching failed:", error)
+        console.error('Pre-fetching failed:', error)
       })
   )
 })
 
-self.addEventListener("activate", event => {
+self.addEventListener('activate', event => {
   event.waitUntil(
     Promise.all([
       caches.keys().then(keys => Promise.all(keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))))
@@ -32,7 +32,7 @@ self.addEventListener("activate", event => {
   )
 })
 
-self.addEventListener("fetch", event => {
+self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request).then(function(response) {
       if (response) {
@@ -53,8 +53,8 @@ self.addEventListener("fetch", event => {
   )
 })
 
-addEventListener("message", messageEvent => {
-  if (messageEvent.data === "skipWaiting") {
+addEventListener('message', messageEvent => {
+  if (messageEvent.data === 'skipWaiting') {
     return self.skipWaiting()
   }
 })

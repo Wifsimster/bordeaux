@@ -8,7 +8,7 @@
           <a
             @click="yesterday()"
             class="text:bold cursor:pointer m:1/2 py:1/2 px:3/4 text:3/2 hover:bg:grey-darkest rounded:full"
-            >&lt;</a
+          >&lt;</a
           >
         </div>
         <div class="text:2/3">{{ displayISODate(currentDate) }}</div>
@@ -16,7 +16,7 @@
           <a
             @click="tomorrow()"
             class="text:bold cursor:pointer m:1/2 py:1/2 px:3/4 text:3/2 hover:bg:grey-darkest rounded:full"
-            >&gt;</a
+          >&gt;</a
           >
         </div>
       </div>
@@ -57,18 +57,18 @@
 </template>
 
 <script>
-import parseISO from "date-fns/parseISO"
-import format from "date-fns/format"
-import subDays from "date-fns/subDays"
-import addDays from "date-fns/addDays"
-import compareAsc from "date-fns/compareAsc"
-import compareDesc from "date-fns/compareDesc"
+import parseISO from 'date-fns/parseISO'
+import format from 'date-fns/format'
+import subDays from 'date-fns/subDays'
+import addDays from 'date-fns/addDays'
+import compareAsc from 'date-fns/compareAsc'
+import compareDesc from 'date-fns/compareDesc'
 
 export default {
-  name: "activity",
+  name: 'activity',
   computed: {
     message() {
-      return this.$store.getters["webSocket/message"]
+      return this.$store.getters['webSocket/message']
     }
   },
   data() {
@@ -86,18 +86,18 @@ export default {
       this.getAll()
     },
     message(data) {
-      if (data.object === "activity") {
+      if (data.object === 'activity') {
         switch (data.method) {
-          case "getAll":
-            if (data.error) {
-              this.error = data.error
-            } else {
-              this.activities = Object.assign([], data.results)
-              this.activities = this.activities.sort((a, b) =>
-                compareDesc(new Date(a.date), new Date(b.date))
-              )
-            }
-            break
+        case 'getAll':
+          if (data.error) {
+            this.error = data.error
+          } else {
+            this.activities = Object.assign([], data.results)
+            this.activities = this.activities.sort((a, b) =>
+              compareDesc(new Date(a.date), new Date(b.date))
+            )
+          }
+          break
         }
       }
     }
@@ -110,17 +110,17 @@ export default {
       this.currentDate = addDays(this.currentDate, 1)
     },
     getTime(value) {
-      return format(parseISO(value), "hh:mm:ss a")
+      return format(parseISO(value), 'hh:mm:ss a')
     },
     displayISODate(value) {
-      return format(value, "MM / dd / yyyy")
+      return format(value, 'MM / dd / yyyy')
     },
     getAll() {
       if (this.currentDate) {
-        let date = format(this.currentDate, "yyyy-MM-dd")
-        this.$store.commit("webSocket/send", {
-          object: "activity",
-          method: "getAll",
+        let date = format(this.currentDate, 'yyyy-MM-dd')
+        this.$store.commit('webSocket/send', {
+          object: 'activity',
+          method: 'getAll',
           params: { date: date }
         })
       }

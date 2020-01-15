@@ -33,11 +33,11 @@
 </template>
 
 <script>
-import { isMobile } from "plugins"
+import { isMobile } from 'plugins'
 
-const Navigation = () => import("components/navigation.vue")
-const Logo = () => import("components/logo.vue")
-const Notification = () => import("components/notification.vue")
+const Navigation = () => import('components/navigation.vue')
+const Logo = () => import('components/logo.vue')
+const Notification = () => import('components/notification.vue')
 export default {
   components: {
     Navigation,
@@ -61,7 +61,7 @@ export default {
   methods: {
     // Detect installation prompt for PWA
     isPWA() {
-      window.addEventListener("beforeinstallprompt", e => {
+      window.addEventListener('beforeinstallprompt', e => {
         e.preventDefault()
         this.isPWAPromptTrigger = e
       })
@@ -71,7 +71,7 @@ export default {
     },
     connect() {
       this.$store.dispatch(
-        "webSocket/ws",
+        'webSocket/ws',
         new WebSocket(`ws://${location.hostname}:8080`)
       )
     }

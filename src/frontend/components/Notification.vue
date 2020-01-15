@@ -31,13 +31,13 @@
 export default {
   computed: {
     list() {
-      return this.$store.getters["notification/list"];
+      return this.$store.getters['notification/list']
     }
   },
   methods: {
     close(index) {
-      this.$store.dispatch("notification/remove", index);
+      this.$store.dispatch('notification/remove', index)
     }
   }
-};
+}
 </script>

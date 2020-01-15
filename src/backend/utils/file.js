@@ -1,6 +1,6 @@
-const fs = require("fs")
-const path = require("path")
-const ENCODING = `utf-8`
+const fs = require('fs')
+const path = require('path')
+const ENCODING = 'utf-8'
 
 class File {
   constructor() {}
@@ -12,7 +12,7 @@ class File {
     return true
   }
 
-  static async readFile(filename, options = { flag: "a+" }) {
+  static async readFile(filename, options = { flag: 'a+' }) {
     if (!fs.existsSync(`${__dirname}/../data/`)) {
       fs.mkdirSync(`${__dirname}/../data/`)
     }
@@ -23,7 +23,7 @@ class File {
         flag: options.flag
       })
       .then(data => {
-        if (data === "") {
+        if (data === '') {
           return null
         } else {
           return JSON.parse(data)
@@ -42,7 +42,7 @@ class File {
           JSON.stringify(data),
           {
             encoding: ENCODING,
-            flag: "w"
+            flag: 'w'
           }
         )
         .catch(err => {
@@ -57,7 +57,7 @@ class File {
     const rootPath = path.dirname(
       require.main.filename || process.mainModule.filename
     )
-    const disk = rootPath.split("\\")[0]
+    const disk = rootPath.split('\\')[0]
     return `${disk}/`
   }
 
