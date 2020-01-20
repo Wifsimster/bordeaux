@@ -75,6 +75,7 @@ async function main() {
                 )
               }
               break
+            default: break
             }
             break
           case 'plex':
@@ -82,6 +83,7 @@ async function main() {
             case 'refresh':
               console.log(`[Plex] refresh : ${message.results}`)
               break
+            default: break
             }
             break
           case 'subtitles':
@@ -89,8 +91,10 @@ async function main() {
             case 'getSubtitle':
               console.log(`[Subtitles] getSubtitle : ${message.results}`)
               break
+            default: break
             }
             break
+          default: break
           }
         }
       })

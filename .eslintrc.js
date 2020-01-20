@@ -1,14 +1,21 @@
 module.exports = {
   root: true,
-  extends: ["eslint:recommended", "plugin:vue/essential", "plugin:node/recommended"],
+  env: {
+    browser: true,
+    node: true,
+    es6: true
+  },
   parser: "vue-eslint-parser",
   parserOptions: {
     parser: "babel-eslint",
     ecmaVersion: 2018,
     sourceType: "module"
   },
+  extends: ["eslint:recommended", "plugin:vue/essential", "plugin:node/recommended"],
   plugins: ["vue"],
   rules: {
+    "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
+    "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
     "linebreak-style": "off", // don't matter line ending style
     indent: ["error", 2], // indent with 2 spaces
     quotes: ["error", "single"], // force single quotes
@@ -16,17 +23,10 @@ module.exports = {
     eqeqeq: "warn", // require === and !==
     "default-case": "warn", // require default case in switch statements
     "no-implicit-coercion": "warn", // disallows implicit type conversion methods
-    "no-magic-numbers": [
-      "warn",
-      {
-        // forbid magic numbers (force declaring const)
-        ignore: [-1, 0, 1, 2]
-      }
-    ],
+    "no-magic-numbers": "off",
     yoda: "warn", // requires 'yoda' condition statements
     "no-var": "warn", // requires let or const, not var
     "no-debugger": "warn",
-
     "vue/max-attributes-per-line": [
       "warn",
       {
@@ -60,6 +60,9 @@ module.exports = {
         endTag: "never",
         selfClosingTag: "always"
       }
-    ]
+    ],
+    "node/no-extraneous-require": ["error", {
+      "allowModules": ["date-fns"]
+    }]
   }
 };

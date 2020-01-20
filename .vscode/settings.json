@@ -6,10 +6,14 @@
   "eslint.format.enable": true,
   "eslint.validate": [
     "javascript",
-    "javascriptreact",
-    "vue"
+    "vue",
+    "html"
   ],
   "eslint.workingDirectories": [
     "./src"
-  ]
+  ],
+  "eslint.alwaysShowStatus": true,
+  "editor.wordWrap": "wordWrapColumn",
+  "editor.wordWrapColumn": 150,
+  "editor.wordBasedSuggestions": false
 }

@@ -15,9 +15,9 @@ class Fanart {
   }
 
   static async response(data) {
+    const fanart = new Fanart()
     switch (data.method) {
     case 'getShow':
-      var fanart = new Fanart()
       data.results = await fanart.instance
         .get(`tv/id/${data.params.showId}/`)
         .then(response => {
