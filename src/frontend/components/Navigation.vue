@@ -156,6 +156,8 @@ export default {
         case 'update':
           this.getTrakt()
           break
+        default:
+          break
         }
       }
     },

@@ -1,5 +1,4 @@
-/* eslint-disable node/no-missing-import */
-/* eslint-disable node/no-unsupported-features/es-syntax */
+/* eslint-disable no-undef */
 import Vue from 'vue'
 import Vuex from 'vuex'
 

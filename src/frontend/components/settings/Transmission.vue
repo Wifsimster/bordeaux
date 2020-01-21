@@ -54,8 +54,10 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
 import { isEmpty } from 'plugins'
 import CryptoJS from 'crypto-js'
+
 export default {
   computed: {
     message() {
@@ -71,6 +73,7 @@ export default {
             console.warn(`[Transmission] Password cannot be decrypt : ${e}`)
           }
         }
+        return null
       },
       set(val) {
         if (val) {

@@ -28,6 +28,7 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
 import { isEmpty } from 'plugins'
 import parseISO from 'date-fns/parseISO'
 import format from 'date-fns/format'
@@ -57,10 +58,10 @@ export default {
     this.getAll()
   },
   watch: {
-    'settings.enable'(newVal, oldVal) {
+    'settings.enable'() {
       this.update()
     },
-    'settings.cron'(newVal, oldVal) {
+    'settings.cron'() {
       this.update()
     },
     message(data) {

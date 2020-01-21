@@ -57,6 +57,8 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
+
 export default {
   name: 'Transfert',
   computed: {
@@ -116,6 +118,8 @@ export default {
             })
           }
           break
+        default:
+          break
         }
         break
       case 'plex':
@@ -131,6 +135,8 @@ export default {
             console.log('[Plex] Refresh Tv Shows...')
           }
           break
+        default:
+          break
         }
         break
       case 'subtitles':
@@ -142,7 +148,11 @@ export default {
             this.subtitlesSettings = data.results
           }
           break
+        default:
+          break
         }
+        break
+      default:
         break
       }
     }

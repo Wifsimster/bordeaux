@@ -54,13 +54,13 @@ export default {
     this.getAll()
   },
   watch: {
-    'settings.languages'(newVal, oldVal) {
+    'settings.languages'() {
       this.update()
     },
-    'settings.downloadAfterTransfert'(newVal, oldVal) {
+    'settings.downloadAfterTransfert'() {
       this.update()
     },
-    'settings.daysOld'(newVal, oldVal) {
+    'settings.daysOld'() {
       this.update()
     },
     message(data) {

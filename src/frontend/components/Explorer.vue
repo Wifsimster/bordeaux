@@ -45,6 +45,7 @@ export default {
       if (this.root) {
         return this.root
       }
+      return null
     }
   },
   created() {
@@ -71,6 +72,8 @@ export default {
           } else {
             this.directories = Object.assign({}, data.results)
           }
+          break
+        default:
           break
         }
       }
@@ -108,5 +111,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped></style>

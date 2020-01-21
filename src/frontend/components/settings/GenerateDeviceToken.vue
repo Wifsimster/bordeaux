@@ -56,6 +56,8 @@ export default {
             this.results = Object.assign({}, data.results)
           }
           break
+        default:
+          break
         }
       }
     }

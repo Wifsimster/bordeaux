@@ -82,7 +82,6 @@ import format from 'date-fns/format'
 import addDays from 'date-fns/addDays'
 import subDays from 'date-fns/subDays'
 import isSameDay from 'date-fns/isSameDay'
-import startOfWeek from 'date-fns/startOfWeek'
 
 import EpisodeDetail from 'components/EpisodeDetail.vue'
 
@@ -137,6 +136,8 @@ export default {
             this.settings = Object.assign({}, data.results)
           }
           break
+        default:
+          break
         }
       }
 
@@ -162,6 +163,8 @@ export default {
           } else {
             this.$store.dispatch('trakt/setCollected', data.results)
           }
+          break
+        default:
           break
         }
       }

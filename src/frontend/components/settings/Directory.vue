@@ -89,6 +89,8 @@ export default {
             this.isValid()
           }
           break
+        default:
+          break
         }
       }
     }

@@ -56,19 +56,16 @@ export default {
       switch (this.step) {
       case 1:
         return this.isDirectoryValid
-        break
       case 2:
         return this.isSubtitlesValid
-        break
       case 3:
         return this.isTransmissionValid
-        break
       case 4:
         return this.isPlexValid
-        break
       case 5:
         return this.isTraktValid
-        break
+      default:
+        return false
       }
     }
   },

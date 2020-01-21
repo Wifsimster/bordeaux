@@ -1,5 +1,3 @@
-/* eslint-disable node/no-missing-import */
-/* eslint-disable node/no-unsupported-features/es-syntax */
 import { getID } from 'plugins'
 
 const BOUND_TIMER = 100

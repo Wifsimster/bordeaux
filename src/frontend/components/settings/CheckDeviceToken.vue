@@ -74,6 +74,8 @@ export default {
             this.$emit('token', data.results)
           }
           break
+        default:
+          break
         }
       }
     }

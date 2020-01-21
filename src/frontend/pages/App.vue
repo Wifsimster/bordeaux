@@ -67,7 +67,7 @@ export default {
       })
     },
     addToHomeScreen() {
-      this.isPWAPromptTrigger.userChoice.then(e)
+      this.isPWAPromptTrigger.userChoice.then()
     },
     connect() {
       this.$store.dispatch(

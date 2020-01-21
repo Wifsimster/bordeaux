@@ -61,7 +61,6 @@ import parseISO from 'date-fns/parseISO'
 import format from 'date-fns/format'
 import subDays from 'date-fns/subDays'
 import addDays from 'date-fns/addDays'
-import compareAsc from 'date-fns/compareAsc'
 import compareDesc from 'date-fns/compareDesc'
 
 export default {
@@ -97,6 +96,8 @@ export default {
               compareDesc(new Date(a.date), new Date(b.date))
             )
           }
+          break
+        default:
           break
         }
       }

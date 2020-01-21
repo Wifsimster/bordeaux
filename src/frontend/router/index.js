@@ -1,5 +1,3 @@
-/* eslint-disable node/no-missing-import */
-/* eslint-disable node/no-unsupported-features/es-syntax */
 import Vue from 'vue'
 import Router from 'vue-router'
 

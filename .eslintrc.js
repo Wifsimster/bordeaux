@@ -2,16 +2,15 @@ module.exports = {
   root: true,
   env: {
     browser: true,
-    node: true,
     es6: true
   },
   parser: "vue-eslint-parser",
   parserOptions: {
     parser: "babel-eslint",
-    ecmaVersion: 2018,
+    ecmaVersion: 2020,
     sourceType: "module"
   },
-  extends: ["eslint:recommended", "plugin:vue/essential", "plugin:node/recommended"],
+  extends: ["eslint:recommended", "plugin:vue/essential"],
   plugins: ["vue"],
   rules: {
     "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
@@ -61,8 +60,5 @@ module.exports = {
         selfClosingTag: "always"
       }
     ],
-    "node/no-extraneous-require": ["error", {
-      "allowModules": ["date-fns"]
-    }]
   }
 };

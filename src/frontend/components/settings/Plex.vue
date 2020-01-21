@@ -63,6 +63,7 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
 import { isEmpty } from 'plugins'
 import CryptoJS from 'crypto-js'
 
@@ -85,6 +86,7 @@ export default {
             console.warn(`[Plex] Password cannot be decrypt : ${e}`)
           }
         }
+        return null
       },
       set(val) {
         if (val) {

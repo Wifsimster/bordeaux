@@ -61,13 +61,13 @@ export default {
     this.getAll()
   },
   watch: {
-    'settings.host'(newVal, oldVal) {
+    'settings.host'() {
       this.update()
     },
-    'settings.port'(newVal, oldVal) {
+    'settings.port'() {
       this.update()
     },
-    'settings.cron'(newVal, oldVal) {
+    'settings.cron'() {
       this.update()
     },
     message(data) {

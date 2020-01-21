@@ -30,105 +30,106 @@
             Watched
           </div>
           <div
-            class="shadow bg:orange py:1/2 px:1/4 text:7/8 mx:1/2"
+            class="shadow bg:orange py:1/2 px:1/4 text:7/8 mx:1/2">
             {{ detail.rating.toFixed(1) }}
-            </div>
-            <div
-              @click="$emit('close')"
-              class="shadow cursor:pointer line-height:1 text:2 p:1/2"
+          </div>
+          <div
+            @click="$emit('close')"
+            class="shadow cursor:pointer line-height:1 text:2 p:1/2"
+          >
+            x
+          </div>
+        </div>
+        <div class="absolute b:0 l:0 r:1 pl:1/2 w:full bg:smoke">
+          <div class="text:9/8 line-height:1 text:bold">
+            {{ episode.show.title }}
+          </div>
+          <div class="text:9/8 truncate max-w:11/12">
+            <span
+              class="text:bold"
+            >{{ episode.episode.season }}x{{ episode.episode.number }}</span
             >
-              x
-            </div>
-          </div>
-          <div class="absolute b:0 l:0 r:1 pl:1/2 w:full bg:smoke">
-            <div class="text:9/8 line-height:1 text:bold">
-              {{ episode.show.title }}
-            </div>
-            <div class="text:9/8 truncate max-w:11/12">
-              <span
-                class="text:bold"
-              >{{ episode.episode.season }}x{{ episode.episode.number }}</span
-              >
-              {{ episode.episode.title }}
-            </div>
+            {{ episode.episode.title }}
           </div>
         </div>
-        <div v-if="detail">
-          <div class="flex flex:wrap justify:between">
-            <div class="p:1/2 sm:p:1">{{ detail.runtime }} mn</div>
-            <div class="p:1/2 sm:p:1">{{ getDate(detail.first_aired) }}</div>
-            <div class="none sm:block sm:p:1">{{ detail.votes }} votes</div>
-          </div>
-          <div class="p:1/2 sm:p:1">{{ detail.overview }}</div>
+      </div>
+      <div v-if="detail">
+        <div class="flex flex:wrap justify:between">
+          <div class="p:1/2 sm:p:1">{{ detail.runtime }} mn</div>
+          <div class="p:1/2 sm:p:1">{{ getDate(detail.first_aired) }}</div>
+          <div class="none sm:block sm:p:1">{{ detail.votes }} votes</div>
+        </div>
+        <div class="p:1/2 sm:p:1">{{ detail.overview }}</div>
 
-          <loader v-if="isLoading" :message="loadingMessage"></loader>
+        <loader v-if="isLoading" :message="loadingMessage"></loader>
 
-          <alert color="red" v-if="error">{{ error }}</alert>
+        <alert color="red" v-if="error">{{ error }}</alert>
 
-          <alert color="green" v-if="addedMessage">{{ addedMessage }}</alert>
+        <alert color="green" v-if="addedMessage">{{ addedMessage }}</alert>
 
-          <div class="p:1/2 sm:p:1">
-            <div v-if="tpbList" class="overflow:auto">
-              <table
-                class="border:collapse max-h:xs table:fixed"
-                v-if="tpbList.length > 0"
-              >
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Quality</th>
-                    <th style="min-width: 100px">
-                      <i class="arrow p:1/5 mr:1/4 border:white inline-block"></i>
-                      <span class="inline-block">Seeder</span>
-                    </th>
-                    <th>Size</th>
-                    <th>Uploaded</th>
-                    <th>Download</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    v-for="item in tpbList"
-                    :key="item.name"
-                    @click="addTorentToTransmission(item.magnetLink)"
-                    :class="{
-                      'bg:orange': item.progress,
-                      'hover:bg:grey-darker cursor:pointer': !item.progress
-                    }"
+        <div class="p:1/2 sm:p:1">
+          <div v-if="tpbList" class="overflow:auto">
+            <table
+              class="border:collapse max-h:xs table:fixed"
+              v-if="tpbList.length > 0"
+            >
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Quality</th>
+                  <th style="min-width: 100px">
+                    <i class="arrow p:1/5 mr:1/4 border:white inline-block"></i>
+                    <span class="inline-block">Seeder</span>
+                  </th>
+                  <th>Size</th>
+                  <th>Uploaded</th>
+                  <th>Download</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="item in tpbList"
+                  :key="item.name"
+                  @click="addTorentToTransmission(item.magnetLink)"
+                  :class="{
+                    'bg:orange': item.progress,
+                    'hover:bg:grey-darker cursor:pointer': !item.progress
+                  }"
+                >
+                  <td
+                    class="inline-block truncate p:1/4"
+                    style="max-width:450px"
                   >
-                    <td
-                      class="inline-block truncate p:1/4"
-                      style="max-width:450px"
-                    >
-                      {{ item.name }}
-                    </td>
-                    <td class="w:full text:center p:1/4" style="min-width:50px">
-                      <span v-if="item.quality">{{ item.quality }}</span>
-                    </td>
-                    <td class="w:full text:center p:1/4" style="min-width:50px">
-                      <span v-if="item.seeder">{{ item.seeder }}</span>
-                    </td>
-                    <td class="w:full text:center p:1/4" style="min-width:125px">
-                      <span v-if="item.size">{{ item.size }}</span>
-                    </td>
-                    <td class="w:full text:center p:1/4" style="min-width:100px">
-                      <span v-if="item.uploaded">{{ item.uploaded }}</span>
-                    </td>
-                    <td class="text:center">
-                      <span v-if="item.progress">{{ item.progress }} %</span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <div v-else class="text:center">No results :(</div>
-            </div>
+                    {{ item.name }}
+                  </td>
+                  <td class="w:full text:center p:1/4" style="min-width:50px">
+                    <span v-if="item.quality">{{ item.quality }}</span>
+                  </td>
+                  <td class="w:full text:center p:1/4" style="min-width:50px">
+                    <span v-if="item.seeder">{{ item.seeder }}</span>
+                  </td>
+                  <td class="w:full text:center p:1/4" style="min-width:125px">
+                    <span v-if="item.size">{{ item.size }}</span>
+                  </td>
+                  <td class="w:full text:center p:1/4" style="min-width:100px">
+                    <span v-if="item.uploaded">{{ item.uploaded }}</span>
+                  </td>
+                  <td class="text:center">
+                    <span v-if="item.progress">{{ item.progress }} %</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div v-else class="text:center">No results :(</div>
           </div>
         </div>
+      </div>
     </template>
   </modal>
 </template>
 
 <script>
+/* eslint-disable no-undef */
 import parseISO from 'date-fns/parseISO'
 import format from 'date-fns/format'
 
@@ -189,6 +190,7 @@ export default {
             this.detail = data.results
           }
           break
+        default: break
         }
         break
 
@@ -211,6 +213,7 @@ export default {
             }
           }
           break
+        default: break
         }
         break
 
@@ -223,6 +226,7 @@ export default {
             this.subtitle = data.results
           }
           break
+        default: break
         }
         break
 
@@ -279,8 +283,10 @@ export default {
             }
           }
           break
+        default: break
         }
         break
+      default: break
       }
     }
   },
