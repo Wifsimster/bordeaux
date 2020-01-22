@@ -28,7 +28,7 @@
         <input
           id="trakt_id"
           v-model="settings.clientID"
-          placeholder="Client ID"
+          placeholder="Your client ID"
         />
         <label for="trakt_id">Client ID</label>
       </div>
@@ -36,7 +36,7 @@
         <input
           id="trakt_secret"
           v-model="settings.clientSecret"
-          placeholder="Client Secret"
+          placeholder="Your client secret"
         />
         <label for="trakt_secret">Client Secret</label>
       </div>

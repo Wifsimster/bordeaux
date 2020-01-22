@@ -51,7 +51,7 @@ export default {
         { key: '* * * */7 *', value: 'week' }
       ],
       version: VERSION,
-      buildDate: format(parseISO(BUILD_DATE), 'MM/dd/yyyy HH:mm:ss')
+      buildDate: format(parseISO(BUILD_DATE), 'MM / dd / yyyy - HH:mm:ss')
     }
   },
   created() {

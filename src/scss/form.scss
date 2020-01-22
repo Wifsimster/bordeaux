@@ -10,6 +10,7 @@ label {
   @extend .b\:0;
   @extend .l\:0;
   @extend .w\:full;
+  @extend .text\:grey-dark;
 }
 
 input {
@@ -17,7 +18,7 @@ input {
   caret-color: map-get($colors, "blue-dark");
   @extend .w\:full;
   @extend .text\:1;
-  @extend .text\:grey;
+  @extend .text\:white;
   @extend .bg\:transparent;
   @extend .border\:b;
   @extend .border\:grey;
