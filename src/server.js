@@ -1,14 +1,15 @@
-const http = require('http')
-const fs = require('fs')
-const path = require('path')
-let express = require('express')
-let app = express()
+/* eslint-disable no-undef */
+import http from 'http'
+import fs from 'fs'
+import path from 'path'
+
+import express from 'express'
+const app = express()
 
 const HOST = 'localhost'
 const PORT = 80
 
 const handler = function(req, res) {
-  // console.log(req.url)
   fs.readFile(
     path.join(__dirname, '../dist/index.html'),
     'utf-8',

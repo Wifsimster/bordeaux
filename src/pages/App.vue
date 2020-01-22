@@ -1,6 +1,6 @@
 <template>
   <div class="bg:black text:white h:screen w:screen overflow:hidden">
-    <transition name="opacity">
+    <transition name="fade">
       <div
         class="fixed b:0 l:0 r:0 bg:grey-darkest flex justify:center py:1 shadow:large z:10 flex items:center"
         v-if="isMobile && isPWAPromptTrigger"
@@ -38,6 +38,7 @@ import { isMobile } from 'plugins'
 const Navigation = () => import('components/navigation.vue')
 const Logo = () => import('components/logo.vue')
 const Notification = () => import('components/notification.vue')
+
 export default {
   components: {
     Navigation,

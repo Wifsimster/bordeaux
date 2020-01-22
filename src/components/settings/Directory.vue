@@ -3,9 +3,11 @@
     <alert color="red" v-if="error">{{ error }}</alert>
     <div>
       <div class="text:3/2">Directories</div>
+
       <div class="text:grey-dark">
         Directories scan for transfert & subtitles.
       </div>
+
       <form v-if="settings">
         <div class="relative my:3">
           <input
@@ -30,17 +32,19 @@
           <label for="to">Existing tv shows</label>
         </div>
       </form>
-      <explorer
-        v-if="openExplorerFrom"
-        @close="openExplorerFrom = false"
-        @selected="fromSelected"
-      ></explorer>
-      <explorer
-        v-if="openExplorerTo"
-        @close="openExplorerTo = false"
-        @selected="toSelected"
-      ></explorer>
     </div>
+
+    <explorer
+      v-if="openExplorerFrom"
+      @close="openExplorerFrom = false"
+      @selected="fromSelected"
+    ></explorer>
+
+    <explorer
+      v-if="openExplorerTo"
+      @close="openExplorerTo = false"
+      @selected="toSelected"
+    ></explorer>
   </div>
 </template>
 

@@ -7,8 +7,7 @@ module.exports = {
   parser: "vue-eslint-parser",
   parserOptions: {
     parser: "babel-eslint",
-    ecmaVersion: 2020,
-    sourceType: "module"
+    ecmaVersion: 2020
   },
   extends: ["eslint:recommended", "plugin:vue/essential"],
   plugins: ["vue"],
@@ -25,7 +24,6 @@ module.exports = {
     "no-magic-numbers": "off",
     yoda: "warn", // requires 'yoda' condition statements
     "no-var": "warn", // requires let or const, not var
-    "no-debugger": "warn",
     "vue/max-attributes-per-line": [
       "warn",
       {

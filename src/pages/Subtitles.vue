@@ -14,7 +14,7 @@
           </div>
         </div>
       </div>
-      <transition name="opacity">
+      <transition name="fade">
         <div v-if="hasNoEpisode" class="text:center">No recent episode found :(</div>
       </transition>
     </div>
