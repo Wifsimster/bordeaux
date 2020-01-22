@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex:wrap">
-    <alert color="red" v-if="error">{{ error }}</alert>
+    <alert class="w:full" color="red" v-if="error">{{ error }}</alert>
 
     <div class="sticky w:full t:0 bg:black z:10 py:1/2">
       <div class="flex justify:between items:center">
@@ -15,6 +15,7 @@
         <div class="py:1/2">
           <a
             @click="tomorrow()"
+            v-if="!isToday()"
             class="text:bold cursor:pointer m:1/2 py:1/2 px:3/4 text:3/2 hover:bg:grey-darkest rounded:full"
           >&gt;</a
           >
@@ -62,6 +63,7 @@ import format from 'date-fns/format'
 import subDays from 'date-fns/subDays'
 import addDays from 'date-fns/addDays'
 import compareDesc from 'date-fns/compareDesc'
+import isToday from 'date-fns/isToday'
 
 export default {
   name: 'activity',
@@ -86,10 +88,12 @@ export default {
     },
     message(data) {
       if (data.object === 'activity') {
+        this.error = null
         switch (data.method) {
         case 'getAll':
           if (data.error) {
-            this.error = data.error
+            console.error(data.error)
+            this.activities = []
           } else {
             this.activities = Object.assign([], data.results)
             this.activities = this.activities.sort((a, b) =>
@@ -104,6 +108,9 @@ export default {
     }
   },
   methods: {
+    isToday() {
+      return isToday(this.currentDate)
+    },
     yesterday() {
       this.currentDate = subDays(this.currentDate, 1)
     },
