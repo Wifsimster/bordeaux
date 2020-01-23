@@ -19,8 +19,8 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Cron transfert",
-      "program": "${workspaceFolder}\\src\\backend\\cron\\transfert.js"
+      "name": "Server",
+      "program": "${workspaceFolder}\\server.js"
     }
   ]
 }
