@@ -1,3 +1,4 @@
 node_modules/
 src/backend/data/
 package-lock.json
+activity*.json

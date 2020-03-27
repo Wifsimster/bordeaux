@@ -8,16 +8,16 @@
     "start": "concurrently \"node dist/backend\"  \"node dist/frontend\""
   },
   "dependencies": {
-    "bordeaux-backend": "0.1.1",
-    "bordeaux-frontend": "^0.1.0",
+    "bordeaux-backend": "0.1.2",
+    "bordeaux-frontend": "^0.1.1",
     "express": "^4.17.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
-    "concurrently": "^5.0.2",
+    "concurrently": "^5.1.0",
     "eslint": "^6.8.0",
-    "husky": "^4.2.0"
+    "husky": "^4.2.3"
   },
   "repository": {
     "type": "git",
